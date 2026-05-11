@@ -46,7 +46,7 @@ const T = {
       stats: [
         { val: "Cohort 01",  lbl: "Be a founding member"  },
         { val: "First ever", lbl: "At Tec de Monterrey"   },
-        { val: "All majors", lbl: "ITC · LCD · LAF · LEC" },
+        { val: "All majors", lbl: "ITC · IDM · LAF · LEC" },
       ],
     },
     pillars: {
@@ -101,7 +101,7 @@ const T = {
       stats: [
         { val: "Cohorte 01",      lbl: "Sé miembro fundador"   },
         { val: "El primero",      lbl: "En Tec de Monterrey"   },
-        { val: "Todas las carr.", lbl: "ITC · LCD · LAF · LEC" },
+        { val: "Todas las carr.", lbl: "ITC · IDM · LAF · LEC" },
       ],
     },
     pillars: {
