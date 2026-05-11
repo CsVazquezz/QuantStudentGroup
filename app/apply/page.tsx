@@ -56,16 +56,16 @@ const T = {
       campusSub:        "Required for Active Researchers & Board members",
     },
     majors: [
-      { label: "LAF",        full: "Finanzas"      },
+      { label: "LAF",        full: "Finance"       },
       { label: "ITC",        full: "Comp. Science" },
       { label: "IDM",        full: "Data Science"  },
-      { label: "LEC",        full: "Economía"      },
+      { label: "LEC",        full: "Economics"     },
       { label: "Other Eng.", full: "Engineering"   },
       { label: "Other Bus.", full: "Business"      },
     ],
     stages: [
       { id: "exploration",    label: "Exploration",    range: "1–3 Sem",  desc: "Finding your path"    },
-      { id: "enfoque",        label: "Enfoque",        range: "4–5 Sem",  desc: "Sharpening your edge" },
+      { id: "enfoque",        label: "Focus",          range: "4–5 Sem",  desc: "Sharpening your edge" },
       { id: "specialization", label: "Specialization", range: "6–8+ Sem", desc: "Deep technical work"  },
     ],
     techLevels: [
