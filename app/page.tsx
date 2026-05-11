@@ -25,14 +25,14 @@ const TICKER: Record<Lang, string[]> = {
 };
 
 const PILLAR_STYLES = [
-  { iconClr: "text-tec-600",    Icon: GitBranch },
-  { iconClr: "text-violet-600", Icon: Brain     },
-  { iconClr: "text-amber-600",  Icon: Users     },
+  { iconClr: "text-tec-600", Icon: GitBranch },
+  { iconClr: "text-tec-600", Icon: Brain     },
+  { iconClr: "text-tec-600", Icon: Users     },
 ];
 
 const T = {
   en: {
-    nav: { status: "Fall 2026 — Open", about: "About", team: "Team", learn: "Learn", apply: "Apply" },
+    nav: { status: "Fall 2026 · Open", about: "About", team: "Team", learn: "Learn", apply: "Apply" },
     hero: {
       eyebrow:      "Tec de Monterrey · Campus Querétaro · Founding Cohort 2026",
       line1:        "CRACK THE",
@@ -40,7 +40,7 @@ const T = {
       line3:        "NOISE.",
       descPre:      "The ",
       descAccent:   "first quant student club",
-      descPost:     " in Tec de Monterrey history. A community for students curious about where markets, data, and mathematics meet — no prior experience required.",
+      descPost:     " in Tec de Monterrey history. A community for students curious about where markets, data, and mathematics meet. No prior experience required.",
       ctaPrimary:   "JOIN THE FOUNDING COHORT",
       ctaSecondary: "HOW IT WORKS",
       stats: [
@@ -51,21 +51,21 @@ const T = {
     },
     pillars: {
       heading: "What we do together.",
-      sub:     "Three areas of focus — all taught from scratch, all open to any major. You don't need to arrive knowing any of this. That's the point.",
+      sub:     "Three areas of focus, all taught from scratch, all open to any major. You don't need to arrive knowing any of this. That's the point.",
       items: [
         {
           title: "Algorithmic Strategy",
-          desc:  "From your first backtest to a live paper-trading strategy. We teach systematic thinking from the ground up — no prior finance knowledge required. You build real models, step by step.",
+          desc:  "From your first backtest to a live paper-trading strategy. We teach systematic thinking from the ground up. No prior finance knowledge required. You build real models, step by step.",
           tags:  ["Start From Zero", "Backtesting", "Risk Mgmt", "Python"],
         },
         {
           title: "High-Dimensional Data",
-          desc:  "Curious about AI and markets but unsure where to begin? We explore ML, NLP, and alternative data as a team — applied to real financial problems. Curiosity is the only prerequisite.",
+          desc:  "Curious about AI and markets but unsure where to begin? We explore ML, NLP, and alternative data as a team, applied to real financial problems. Curiosity is the only prerequisite.",
           tags:  ["Beginners Welcome", "Machine Learning", "NLP", "Alt Data"],
         },
         {
           title: "Shared Ecosystem",
-          desc:  "LAF, ITC, IDM, LEC — all welcome. Your background in finance, code, or data is a strength, not a requirement. The best research happens when different disciplines work on the same problem.",
+          desc:  "LAF, ITC, IDM, LEC: all welcome. Your background in finance, code, or data is a strength, not a requirement. The best research happens when different disciplines work on the same problem.",
           tags:  ["All Majors", "Hackathons", "Network", "Industry"],
         },
       ],
@@ -74,20 +74,20 @@ const T = {
       section:    "Leadership",
       role:       "President & Founder",
       badge:      "Quantitative Researcher",
-      quote:      "“Quant finance barely registers as a path for students in Mexico. The people who get in usually stumble onto it — I did. This club exists to make that less random.”",
-      para:       "I’m a Quantitative Researcher, aspiring MSc/PhD in applied mathematics, and the president of QuantTec — but this isn’t a lecture series. We’re all figuring this out together. The idea is to learn by doing: real projects, real competitions, real mistakes.",
+      quote:      "“Quant finance barely registers as a path for students in Mexico. The people who get in usually stumble onto it. I did. This club exists to make that less random.”",
+      para:       "I'm a Quantitative Researcher, aspiring MSc/PhD in applied mathematics, and the president of QuantTec. This isn't a lecture series. We're all figuring this out together. The idea is to learn by doing: real projects, real competitions, real mistakes.",
       activities: ["Research projects", "Hackathons", "Trading competitions", "Poker & game theory", "Industry workshops"],
     },
     cta: {
       heading: "Ready to be part of this?",
-      para:    "Applications take about 10 minutes. No quant experience required — just tell us who you are and what excites you.",
+      para:    "Applications take about 10 minutes. No quant experience required. Just tell us who you are and what excites you.",
       btn:     "JOIN THE FOUNDING COHORT",
     },
     footer: "Extracting alpha from noise.",
   },
 
   es: {
-    nav: { status: "Otoño 2026 — Abierto", about: "Acerca", team: "Equipo", learn: "Aprender", apply: "Aplicar" },
+    nav: { status: "Otoño 2026 · Abierto", about: "Acerca", team: "Equipo", learn: "Aprender", apply: "Aplicar" },
     hero: {
       eyebrow:      "Tec de Monterrey · Campus Querétaro · Cohorte Fundadora 2026",
       line1:        "DESCIFRA EL",
@@ -95,7 +95,7 @@ const T = {
       line3:        "DEL MERCADO.",
       descPre:      "El ",
       descAccent:   "primer club de quant",
-      descPost:     " en la historia del Tec de Monterrey. Una comunidad para estudiantes curiosos sobre la intersección de mercados, datos y matemáticas — sin experiencia previa requerida.",
+      descPost:     " en la historia del Tec de Monterrey. Una comunidad para estudiantes curiosos sobre la intersección de mercados, datos y matemáticas. Sin experiencia previa requerida.",
       ctaPrimary:   "ÚNETE A LA COHORTE FUNDADORA",
       ctaSecondary: "CÓMO FUNCIONA",
       stats: [
@@ -106,21 +106,21 @@ const T = {
     },
     pillars: {
       heading: "Lo que hacemos juntos.",
-      sub:     "Tres áreas de enfoque — todas desde cero, todas abiertas a cualquier carrera. No necesitas llegar sabiendo nada de esto. Ese es el punto.",
+      sub:     "Tres áreas de enfoque, todas desde cero, todas abiertas a cualquier carrera. No necesitas llegar sabiendo nada de esto. Ese es el punto.",
       items: [
         {
           title: "Estrategia Algorítmica",
-          desc:  "Desde tu primer backtest hasta una estrategia activa en papel. Enseñamos pensamiento sistemático desde cero — sin conocimientos previos de finanzas. Construyes modelos reales, paso a paso.",
+          desc:  "Desde tu primer backtest hasta una estrategia activa en papel. Enseñamos pensamiento sistemático desde cero. Sin conocimientos previos de finanzas. Construyes modelos reales, paso a paso.",
           tags:  ["Desde Cero", "Backtesting", "Gestión de Riesgo", "Python"],
         },
         {
           title: "Datos de Alta Dimensión",
-          desc:  "¿Curioso sobre IA y mercados pero sin saber por dónde empezar? Exploramos ML, NLP y datos alternativos en equipo — aplicados a problemas financieros reales. La curiosidad es el único requisito.",
+          desc:  "¿Curioso sobre IA y mercados pero sin saber por dónde empezar? Exploramos ML, NLP y datos alternativos en equipo, aplicados a problemas financieros reales. La curiosidad es el único requisito.",
           tags:  ["Principiantes", "Machine Learning", "NLP", "Datos Alt."],
         },
         {
           title: "Ecosistema Compartido",
-          desc:  "LAF, ITC, IDM, LEC — todos bienvenidos. Tu carrera en finanzas, código o datos es una fortaleza, no un requisito. La mejor investigación surge cuando distintas disciplinas trabajan en el mismo problema.",
+          desc:  "LAF, ITC, IDM, LEC: todos bienvenidos. Tu carrera en finanzas, código o datos es una fortaleza, no un requisito. La mejor investigación surge cuando distintas disciplinas trabajan en el mismo problema.",
           tags:  ["Todas las Carreras", "Hackathones", "Red", "Industria"],
         },
       ],
@@ -129,13 +129,13 @@ const T = {
       section:    "Liderazgo",
       role:       "Presidente y Fundador",
       badge:      "Investigador Cuantitativo",
-      quote:      "“Las finanzas cuantitativas apenas existen como opción de carrera para estudiantes en México. Los que llegan ahí suelen tropezar con ello — yo lo hice. Este club existe para que eso sea menos aleatorio.”",
-      para:       "Soy Investigador Cuantitativo, aspirante a MSc/PhD en matemáticas aplicadas y presidente de QuantTec — pero esto no es una clase magistral. Todos lo estamos descubriendo juntos. La idea es aprender haciendo: proyectos reales, competencias reales, errores reales.",
+      quote:      "“Las finanzas cuantitativas apenas existen como opción de carrera para estudiantes en México. Los que llegan ahí suelen tropezar con ello. Yo lo hice. Este club existe para que eso sea menos aleatorio.”",
+      para:       "Soy Investigador Cuantitativo, aspirante a MSc/PhD en matemáticas aplicadas y presidente de QuantTec. Esto no es una clase magistral. Todos lo estamos descubriendo juntos. La idea es aprender haciendo: proyectos reales, competencias reales, errores reales.",
       activities: ["Proyectos de investigación", "Hackathones", "Competencias de trading", "Póker y teoría de juegos", "Talleres de industria"],
     },
     cta: {
       heading: "¿Listo para ser parte de esto?",
-      para:    "La solicitud toma unos 10 minutos. No se requiere experiencia en quant — solo cuéntanos quién eres y qué te emociona.",
+      para:    "La solicitud toma unos 10 minutos. No se requiere experiencia en quant. Solo cuéntanos quién eres y qué te emociona.",
       btn:     "ÚNETE A LA COHORTE FUNDADORA",
     },
     footer: "Extrayendo alpha del ruido.",
