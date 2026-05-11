@@ -74,6 +74,14 @@ const BOOKS = [
     desc_en: "The foundational text. Every quant finance professional has read this. Covers derivatives pricing from first principles, rigorously.",
     desc_es: "El texto fundamental. Todo profesional de finanzas cuantitativas lo ha leído. Cubre valuación de derivados desde primeros principios.",
   },
+  {
+    tier: 2,
+    title: "Active Portfolio Management",
+    author: "Grinold & Kahn",
+    year: 2000,
+    desc_en: "The definitive framework for quantitative equity portfolio management. Introduces the Fundamental Law of Active Management and the full alpha-to-portfolio pipeline.",
+    desc_es: "El marco definitivo para la gestión cuantitativa de portafolios de renta variable. Introduce la Ley Fundamental de la Gestión Activa y el pipeline completo de alpha a portafolio.",
+  },
 ];
 
 const CONCEPTS = [
