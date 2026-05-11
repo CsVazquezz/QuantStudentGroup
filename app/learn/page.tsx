@@ -15,8 +15,8 @@ const BOOKS = [
     title: "The Man Who Solved the Market",
     author: "Gregory Zuckerman",
     year: 2019,
-    desc_en: "The inside story of Jim Simons and Renaissance Technologies. No math required — reads like a thriller, hits like a blueprint.",
-    desc_es: "La historia de Jim Simons y Renaissance Technologies. Sin matemáticas — se lee como un thriller y golpea como un plano.",
+    desc_en: "The inside story of Jim Simons and Renaissance Technologies. No math required. Reads like a thriller, hits like a blueprint.",
+    desc_es: "La historia de Jim Simons y Renaissance Technologies. Sin matemáticas. Se lee como un thriller y golpea como un plano.",
   },
   {
     tier: 0,
@@ -47,8 +47,8 @@ const BOOKS = [
     title: "Inside the Black Box",
     author: "Rishi K. Narang",
     year: 2013,
-    desc_en: "How quant hedge funds actually work — research, risk management, and execution — explained without requiring advanced math.",
-    desc_es: "Cómo funcionan realmente los fondos cuantitativos — investigación, riesgo y ejecución — explicados sin matemáticas avanzadas.",
+    desc_en: "How quant hedge funds actually work: research, risk management, and execution. No advanced math required.",
+    desc_es: "Cómo funcionan realmente los fondos cuantitativos: investigación, riesgo y ejecución. Sin matemáticas avanzadas.",
   },
   {
     tier: 1,
@@ -78,10 +78,10 @@ const BOOKS = [
 
 const CONCEPTS = [
   { Icon: TrendingUp,   id: "arb", en: "Statistical Arbitrage", es: "Arbitraje Estadístico",  en_s: "Find and exploit pricing gaps between related assets using math.",       es_s: "Encontrar y explotar diferencias de precio entre activos relacionados."   },
-  { Icon: BarChart2,    id: "fac", en: "Factor Investing",      es: "Inversión por Factores",  en_s: "Identify systematic risk premia — value, momentum, quality, size.",       es_s: "Identificar primas de riesgo sistemáticas — valor, momentum, calidad."   },
+  { Icon: BarChart2,    id: "fac", en: "Factor Investing",      es: "Inversión por Factores",  en_s: "Identify systematic risk premia: value, momentum, quality, size.",       es_s: "Identificar primas de riesgo sistemáticas: valor, momentum, calidad."   },
   { Icon: FlaskConical, id: "der", en: "Derivatives Pricing",   es: "Valuación de Derivados",  en_s: "Price options and other instruments using mathematical models.",           es_s: "Valuar opciones y otros instrumentos con modelos matemáticos."           },
   { Icon: Zap,          id: "hft", en: "High-Freq. Trading",    es: "Trading de Alta Freq.",   en_s: "Exploit microsecond inefficiencies through speed and systems.",           es_s: "Explotar ineficiencias en microsegundos mediante velocidad y sistemas."  },
-  { Icon: Database,     id: "alt", en: "Alternative Data",      es: "Datos Alternativos",      en_s: "Satellite images, transaction data, NLP — signals beyond price history.", es_s: "Imágenes satelitales, transacciones, NLP — señales más allá del precio." },
+  { Icon: Database,     id: "alt", en: "Alternative Data",      es: "Datos Alternativos",      en_s: "Satellite images, transaction data, NLP: signals beyond price history.", es_s: "Imágenes satelitales, transacciones, NLP: señales más allá del precio." },
   { Icon: Cpu,          id: "ml",  en: "ML & Forecasting",      es: "ML y Pronóstico",         en_s: "Machine learning applied to return prediction and risk estimation.",       es_s: "Machine learning aplicado a predicción de retornos y estimación de riesgo."},
 ];
 
@@ -95,7 +95,7 @@ const T = {
     },
     what: {
       heading: "What is it, really?",
-      body1:   "Most people think about finance in terms of news cycles, earnings calls, and gut instinct. Quantitative finance takes a different approach: find persistent, measurable patterns in data and bet on them systematically — the same way a physicist studies a physical system.",
+      body1:   "Most people think about finance in terms of news cycles, earnings calls, and gut instinct. Quantitative finance takes a different approach: find persistent, measurable patterns in data and bet on them systematically, the same way a physicist studies a physical system.",
       body2:   "The core idea is that markets, like other complex systems, have hidden structure. You can't always explain why a pattern exists. But if it appears consistently in clean data and survives out-of-sample testing, you trade it.",
       principle: "No forecasts. No opinions. Just signal.",
     },
@@ -106,9 +106,9 @@ const T = {
       role:     "Mathematician · Cryptographer · Investor",
       quote:    "“We search through historical data looking for anomalous patterns that we would not expect to occur by chance.”",
       quoteCtx: "From a 2015 TED talk on mathematics and markets",
-      bio1:     "Before he was one of the most successful investors in history, Simons was a mathematician. He earned his PhD from UC Berkeley at 23, broke codes for the NSA during the Cold War, and chaired the math department at Stony Brook — where he co-developed Chern–Simons theory, a foundational result in modern geometry.",
-      bio2:     "He founded Renaissance Technologies in 1982 with a different hypothesis: that financial markets, like other complex systems, contain hidden mathematical structure. He hired physicists, mathematicians, and computer scientists — not economists, not traders — and gave them complete freedom to follow the data.",
-      bio3:     "The result was the Medallion Fund. Closed to outside investors since 1993, it has returned an average of 66% gross annually from 1988 to 2018 — the best risk-adjusted performance of any investment fund in recorded history, by most accounts.",
+      bio1:     "Before he was one of the most successful investors in history, Simons was a mathematician. He earned his PhD from UC Berkeley at 23, broke codes for the NSA during the Cold War, and chaired the math department at Stony Brook, where he co-developed Chern–Simons theory, a foundational result in modern geometry.",
+      bio2:     "He founded Renaissance Technologies in 1982 with a different hypothesis: that financial markets, like other complex systems, contain hidden mathematical structure. He hired physicists, mathematicians, and computer scientists, not economists, not traders, and gave them complete freedom to follow the data.",
+      bio3:     "The result was the Medallion Fund. Closed to outside investors since 1993, it has returned an average of 66% gross annually from 1988 to 2018, the best risk-adjusted performance of any investment fund in recorded history, by most accounts.",
       stats: [
         { val: "1982",  lbl: "Founded Renaissance Technologies" },
         { val: "~66%",  lbl: "Avg. annual gross return, Medallion (1988–2018)" },
@@ -117,14 +117,14 @@ const T = {
       ],
       principlesHeading: "What he got right",
       principles: [
-        { title: "Hire scientists, not economists", body: "Renaissance didn't look for people who understood finance. They looked for people who understood pattern recognition, signal processing, and rigorous testing. Domain knowledge was considered a liability — it brought bias." },
-        { title: "Follow the signal, not the story", body: "Simons never cared why a pattern existed. If the data showed it worked out-of-sample, they traded it. This was radical in the 1980s. It's still hard to follow in practice — humans want narratives." },
+        { title: "Hire scientists, not economists", body: "Renaissance didn't look for people who understood finance. They looked for people who understood pattern recognition, signal processing, and rigorous testing. Domain knowledge was considered a liability. It brought bias." },
+        { title: "Follow the signal, not the story", body: "Simons never cared why a pattern existed. If the data showed it worked out-of-sample, they traded it. This was radical in the 1980s. It's still hard to follow in practice. Humans want narratives." },
         { title: "Never override the model", body: "The hardest rule in quant finance. When your gut says one thing and the model says another, you listen to the model. Renaissance made this a culture, not just a policy." },
       ],
     },
     books: {
       heading: "Reading list.",
-      sub:     "Organized by difficulty — start at the top if you've never touched quant before.",
+      sub:     "Organized by difficulty. Start at the top if you've never touched quant before.",
       tiers: [
         { label: "Start Here",           tag: "No math required" },
         { label: "Technical Foundation", tag: "Python & stats"   },
@@ -137,7 +137,7 @@ const T = {
     },
     cta: {
       heading: "Ready to start?",
-      sub:     "Join the founding cohort at QuantTec — the first quant student group in Tec de Monterrey history.",
+      sub:     "Join the founding cohort at QuantTec, the first quant student group in Tec de Monterrey history.",
       btn:     "APPLY NOW",
     },
     footer: "Extracting alpha from noise.",
@@ -152,7 +152,7 @@ const T = {
     },
     what: {
       heading: "¿Qué son realmente?",
-      body1:   "La mayoría piensa en finanzas en términos de noticias, llamadas de ganancias e instinto. Las finanzas cuantitativas toman un enfoque diferente: encontrar patrones persistentes y medibles en los datos y apostar en ellos sistemáticamente — igual que un físico estudia un sistema físico.",
+      body1:   "La mayoría piensa en finanzas en términos de noticias, llamadas de ganancias e instinto. Las finanzas cuantitativas toman un enfoque diferente: encontrar patrones persistentes y medibles en los datos y apostar en ellos sistemáticamente, igual que un físico estudia un sistema físico.",
       body2:   "La idea central es que los mercados, como otros sistemas complejos, tienen estructura oculta. No siempre puedes explicar por qué existe un patrón. Pero si aparece consistentemente en datos limpios y sobrevive pruebas fuera de muestra, lo operas.",
       principle: "Sin pronósticos. Sin opiniones. Solo señal.",
     },
@@ -163,9 +163,9 @@ const T = {
       role:     "Matemático · Criptógrafo · Inversionista",
       quote:    "“Buscamos en datos históricos patrones anómalos que no esperaríamos que ocurrieran por azar.”",
       quoteCtx: "De una charla TED 2015 sobre matemáticas y mercados",
-      bio1:     "Antes de ser uno de los inversionistas más exitosos de la historia, Simons era matemático. Obtuvo su doctorado de UC Berkeley a los 23 años, desifró códigos para la NSA durante la Guerra Fría, y dirigió el departamento de matemáticas de Stony Brook — donde co-desarrolló la teoría de Chern–Simons, un resultado fundamental en geometría moderna.",
-      bio2:     "Fundó Renaissance Technologies en 1982 con una hipótesis diferente: que los mercados financieros, como otros sistemas complejos, contienen estructura matemática oculta. Contrató físicos, matemáticos y científicos computacionales — no economistas, no traders — y les dio libertad total para seguir los datos.",
-      bio3:     "El resultado fue el Medallion Fund. Cerrado a inversionistas externos desde 1993, ha retornado un promedio de 66% bruto anual de 1988 a 2018 — el mejor rendimiento ajustado por riesgo de cualquier fondo de inversión en la historia registrada, por la mayoría de los cálculos.",
+      bio1:     "Antes de ser uno de los inversionistas más exitosos de la historia, Simons era matemático. Obtuvo su doctorado de UC Berkeley a los 23 años, desifró códigos para la NSA durante la Guerra Fría, y dirigió el departamento de matemáticas de Stony Brook, donde co-desarrolló la teoría de Chern–Simons, un resultado fundamental en geometría moderna.",
+      bio2:     "Fundó Renaissance Technologies en 1982 con una hipótesis diferente: que los mercados financieros, como otros sistemas complejos, contienen estructura matemática oculta. Contrató físicos, matemáticos y científicos computacionales, no economistas, no traders, y les dio libertad total para seguir los datos.",
+      bio3:     "El resultado fue el Medallion Fund. Cerrado a inversionistas externos desde 1993, ha retornado un promedio de 66% bruto anual de 1988 a 2018, el mejor rendimiento ajustado por riesgo de cualquier fondo de inversión en la historia registrada, por la mayoría de los cálculos.",
       stats: [
         { val: "1982",  lbl: "Fundó Renaissance Technologies" },
         { val: "~66%",  lbl: "Retorno bruto promedio anual, Medallion (1988–2018)" },
@@ -174,14 +174,14 @@ const T = {
       ],
       principlesHeading: "Lo que hizo bien",
       principles: [
-        { title: "Contrata científicos, no economistas", body: "Renaissance no buscaba personas que entendieran finanzas. Buscaba personas que entendieran reconocimiento de patrones, procesamiento de señales y pruebas rigurosas. El conocimiento del dominio financiero se consideraba una desventaja — traía sesgo." },
-        { title: "Sigue la señal, no la historia", body: "Simons nunca le importó por qué existía un patrón. Si los datos mostraban que funcionaba fuera de muestra, lo operaban. Esto era radical en los 80. Sigue siendo difícil de seguir en la práctica — los humanos queremos narrativas." },
+        { title: "Contrata científicos, no economistas", body: "Renaissance no buscaba personas que entendieran finanzas. Buscaba personas que entendieran reconocimiento de patrones, procesamiento de señales y pruebas rigurosas. El conocimiento del dominio financiero se consideraba una desventaja. Traía sesgo." },
+        { title: "Sigue la señal, no la historia", body: "Simons nunca le importó por qué existía un patrón. Si los datos mostraban que funcionaba fuera de muestra, lo operaban. Esto era radical en los 80. Sigue siendo difícil de seguir en la práctica. Los humanos queremos narrativas." },
         { title: "Nunca anules el modelo", body: "La regla más difícil de las finanzas cuantitativas. Cuando tu intuición dice una cosa y el modelo dice otra, escuchas al modelo. Renaissance hizo de esto una cultura, no solo una política." },
       ],
     },
     books: {
       heading: "Lista de lectura.",
-      sub:     "Organizada por dificultad — empieza desde arriba si nunca has tocado quant.",
+      sub:     "Organizada por dificultad. Empieza desde arriba si nunca has tocado quant.",
       tiers: [
         { label: "Empieza Aquí",          tag: "Sin matemáticas" },
         { label: "Fundamentos Técnicos",  tag: "Python y stats"  },
@@ -194,7 +194,7 @@ const T = {
     },
     cta: {
       heading: "¿Listo para empezar?",
-      sub:     "Únete a la cohorte fundadora de QuantTec — el primer grupo estudiantil de quant en la historia del Tec de Monterrey.",
+      sub:     "Únete a la cohorte fundadora de QuantTec, el primer grupo estudiantil de quant en la historia del Tec de Monterrey.",
       btn:     "APLICAR AHORA",
     },
     footer: "Extrayendo alpha del ruido.",

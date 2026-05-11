@@ -31,7 +31,7 @@ const T = {
       heading:    "Apply to QuantTec.",
       desc:       "We're looking for curious students from ",
       descAccent: "any background",
-      descPost:   " who want to be part of building something genuinely new at Tec. Tell us about yourself — that's all we need.",
+      descPost:   " who want to be part of building something genuinely new at Tec. Tell us about yourself. That's all we need.",
       strip:      ["First quant club at Tec de Monterrey", "All majors welcome", "No prior experience required"],
     },
     sections: {
@@ -41,7 +41,7 @@ const T = {
       technical:      "Technical Background",
       techHelper:     "Honest answers help us pair you with the right projects. There's no wrong answer.",
       interests:      "Areas of Interest",
-      interestHelper: "Pick everything that sounds interesting — you don't need to know these topics yet.",
+      interestHelper: "Pick everything that sounds interesting. You don't need to know these topics yet.",
       role:           "How You'd Like to Participate",
       sandbox:        "Tell Us About Yourself",
       sandboxHelper:  "Share a project you've built, a market idea you find interesting, or simply why you want to join. Write like you'd talk to us in person.",
@@ -82,7 +82,7 @@ const T = {
       { label: "Financial Infrastructure" },
     ],
     roles: [
-      { id: "researcher", label: "Active Quant Researcher", desc: "Full research stack — modeling, backtesting, deployment" },
+      { id: "researcher", label: "Active Quant Researcher", desc: "Full research stack: modeling, backtesting, deployment" },
       { id: "board",      label: "Executive Board / Staff", desc: "Ops, partnerships, and community building"              },
       { id: "community",  label: "Community Member",        desc: "Events, workshops, and network access"                  },
     ],
@@ -102,7 +102,7 @@ const T = {
       campusConfirmed: "Confirm in-person availability to proceed",
       openSandbox:     "Write at least 50 characters",
       duplicateEmail:  "This email has already been submitted",
-      submitFailed:    "Something went wrong — please try again",
+      submitFailed:    "Something went wrong. Please try again.",
     },
     success: {
       eyebrow:    "Application Received",
@@ -123,7 +123,7 @@ const T = {
       heading:    "Aplica a QuantTec.",
       desc:       "Buscamos estudiantes curiosos de ",
       descAccent: "cualquier carrera",
-      descPost:   " que quieran ser parte de construir algo genuinamente nuevo en el Tec. Cuéntanos sobre ti — eso es todo lo que necesitamos.",
+      descPost:   " que quieran ser parte de construir algo genuinamente nuevo en el Tec. Cuéntanos sobre ti. Eso es todo lo que necesitamos.",
       strip:      ["Primer club de quant en Tec de Monterrey", "Todas las carreras bienvenidas", "Sin experiencia previa requerida"],
     },
     sections: {
@@ -133,7 +133,7 @@ const T = {
       technical:      "Nivel Técnico",
       techHelper:     "Respuestas honestas nos ayudan a asignarte a los proyectos correctos. No hay respuesta incorrecta.",
       interests:      "Áreas de Interés",
-      interestHelper: "Elige todo lo que suene interesante — no necesitas conocer estos temas todavía.",
+      interestHelper: "Elige todo lo que suene interesante. No necesitas conocer estos temas todavía.",
       role:           "Cómo Quieres Participar",
       sandbox:        "Cuéntanos Sobre Ti",
       sandboxHelper:  "Comparte un proyecto que hayas construido, una idea de mercado que te parezca interesante, o simplemente por qué quieres unirte. Escribe como si hablaras con nosotros en persona.",
@@ -194,7 +194,7 @@ const T = {
       campusConfirmed: "Confirma disponibilidad presencial para continuar",
       openSandbox:     "Escribe al menos 50 caracteres",
       duplicateEmail:  "Este correo ya fue registrado",
-      submitFailed:    "Algo salió mal — intenta de nuevo",
+      submitFailed:    "Algo salió mal. Intenta de nuevo.",
     },
     success: {
       eyebrow:    "Solicitud Recibida",
