@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Brain, Users, GitBranch, Linkedin } from "lucide-react";
+import { ArrowRight, Brain, Users, GitBranch, Instagram, Linkedin, Mail } from "lucide-react";
 import { useLang } from "@/lib/useLang";
 import type { Lang } from "@/lib/useLang";
 
@@ -35,9 +35,9 @@ const T = {
     nav: { status: "Fall 2026 · Open", about: "About", team: "Team", learn: "Learn", apply: "Apply" },
     hero: {
       eyebrow:      "Tec de Monterrey · Campus Querétaro · Founding Cohort 2026",
-      line1:        "CRACK THE",
-      accent:       "MARKET",
-      line3:        "NOISE.",
+      line1:        "Tec Monterrey",
+      accent:       "Quant",
+      line3:        "Society.",
       descPre:      "The ",
       descAccent:   "first quant student club",
       descPost:     " in Tec de Monterrey history. A community for students curious about where markets, data, and mathematics meet. No prior experience required.",
@@ -70,13 +70,16 @@ const T = {
         },
       ],
     },
-    founder: {
-      section:    "Leadership",
-      role:       "President & Founder",
-      badge:      "Quantitative Researcher",
-      quote:      "“Quant finance barely registers as a path for students in Mexico. The people who get in usually stumble onto it. I did. This club exists to make that less random.”",
-      para:       "I'm a Quantitative Researcher, aspiring MSc/PhD in applied mathematics, and the president of QuantTec. This isn't a lecture series. We're all figuring this out together. The idea is to learn by doing: real projects, real competitions, real mistakes.",
-      activities: ["Research projects", "Hackathons", "Trading competitions", "Poker & game theory", "Industry workshops"],
+    sponsors: {
+      heading: "Sponsors.",
+      sub:     "Organizations that believe in what we're building. Interested in supporting TMQS?",
+      empty:   "Sponsorship opportunities open for Fall 2026.",
+      contact: "Get in touch",
+    },
+    highlights: {
+      heading: "Fall 2026 Highlights.",
+      sub:     "Events, projects, and milestones from our founding semester.",
+      empty:   "Our first semester hasn't started yet. Check back in Fall 2026.",
     },
     cta: {
       heading: "Ready to be part of this?",
@@ -90,9 +93,9 @@ const T = {
     nav: { status: "Otoño 2026 · Abierto", about: "Acerca", team: "Equipo", learn: "Aprender", apply: "Aplicar" },
     hero: {
       eyebrow:      "Tec de Monterrey · Campus Querétaro · Cohorte Fundadora 2026",
-      line1:        "DESCIFRA EL",
-      accent:       "RUIDO",
-      line3:        "DEL MERCADO.",
+      line1:        "Tec Monterrey",
+      accent:       "Quant",
+      line3:        "Society.",
       descPre:      "El ",
       descAccent:   "primer club de quant",
       descPost:     " en la historia del Tec de Monterrey. Una comunidad para estudiantes curiosos sobre la intersección de mercados, datos y matemáticas. Sin experiencia previa requerida.",
@@ -125,13 +128,16 @@ const T = {
         },
       ],
     },
-    founder: {
-      section:    "Liderazgo",
-      role:       "Presidente y Fundador",
-      badge:      "Investigador Cuantitativo",
-      quote:      "“Las finanzas cuantitativas apenas existen como opción de carrera para estudiantes en México. Los que llegan ahí suelen tropezar con ello. Yo lo hice. Este club existe para que eso sea menos aleatorio.”",
-      para:       "Soy Investigador Cuantitativo, aspirante a MSc/PhD en matemáticas aplicadas y presidente de QuantTec. Esto no es una clase magistral. Todos lo estamos descubriendo juntos. La idea es aprender haciendo: proyectos reales, competencias reales, errores reales.",
-      activities: ["Proyectos de investigación", "Hackathones", "Competencias de trading", "Póker y teoría de juegos", "Talleres de industria"],
+    sponsors: {
+      heading: "Patrocinadores.",
+      sub:     "Organizaciones que creen en lo que estamos construyendo. ¿Interesado en apoyar a TMQS?",
+      empty:   "Oportunidades de patrocinio abiertas para Otoño 2026.",
+      contact: "Contáctanos",
+    },
+    highlights: {
+      heading: "Highlights Otoño 2026.",
+      sub:     "Eventos, proyectos e hitos de nuestro semestre fundador.",
+      empty:   "Nuestro primer semestre aún no ha comenzado. Vuelve en Otoño 2026.",
     },
     cta: {
       heading: "¿Listo para ser parte de esto?",
@@ -344,7 +350,7 @@ function TickerBar({ items }: { items: string[] }) {
       >
         {items.map((term, i) => (
           <span key={i} className="inline-flex items-center gap-6 px-6">
-            <span className="text-xs font-display text-slate-500 tracking-widest">{term}</span>
+            <span className="text-xs font-serif text-slate-500 tracking-widest">{term}</span>
           </span>
         ))}
       </motion.div>
@@ -355,14 +361,6 @@ function TickerBar({ items }: { items: string[] }) {
 // ─────────────────────────────────────────────────────────────────
 // Shared
 // ─────────────────────────────────────────────────────────────────
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-xs font-display font-semibold tracking-widest uppercase text-slate-400 mb-4">
-      {children}
-    </p>
-  );
-}
 
 // ─────────────────────────────────────────────────────────────────
 // Page
@@ -384,37 +382,43 @@ export default function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-6">
 
           <div className="flex items-center gap-3 shrink-0">
-            <span className="text-sm font-display font-semibold text-slate-900">
-              Quant<span className="text-tec-600">Tec</span>
+            <span className="text-lg font-serif tracking-tight text-slate-900">
+              <span className="text-tec-600">TM</span>QS
             </span>
           </div>
 
           <nav className="hidden md:flex items-center gap-7">
-            <a href="#pillars" className="text-xs font-display text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</a>
-            <a href="#team"    className="text-xs font-display text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</a>
-            <Link href="/learn" className="text-xs font-display text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
+            <a href="#pillars"  className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</a>
+            <Link href="/team"  className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
+            <Link href="/learn" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
-            <div className="hidden lg:flex items-center gap-1.5 text-xs font-display text-slate-400">
+            <div className="hidden lg:flex items-center gap-1.5 text-xs font-serif text-slate-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               {t.nav.status}
             </div>
             <button
               onClick={toggle}
-              className="text-xs font-display text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
+              className="text-xs font-serif text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
             >
               {lang === "en" ? "ES" : "EN"}
             </button>
             <Link
+              href="/team"
+              className="md:hidden text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors"
+            >
+              {t.nav.team}
+            </Link>
+            <Link
               href="/learn"
-              className="md:hidden text-xs font-display text-slate-500 hover:text-slate-900 transition-colors"
+              className="md:hidden text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors"
             >
               {t.nav.learn}
             </Link>
             <Link
               href="/apply"
-              className="px-4 py-2 text-xs font-display font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
+              className="px-4 py-2 text-xs font-serif font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
             >
               {t.nav.apply}
             </Link>
@@ -454,19 +458,11 @@ export default function Page() {
 
         {/* Mobile only — slogan below the particle */}
         <div className="lg:hidden w-full flex-shrink-0 px-4 sm:px-6">
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.3 }}
-            className="text-xs font-display text-slate-400 mb-4 tracking-wide"
-          >
-            {t.hero.eyebrow}
-          </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.38 }}
-            className="font-display font-extrabold leading-[0.88] tracking-[-0.04em] text-slate-900 text-[2.6rem]"
+            className="font-serif leading-[0.9] tracking-tight text-slate-900 text-[2.6rem]"
           >
             {t.hero.line1}<br />
             <span className="text-tec-600">{t.hero.accent}</span><br />
@@ -478,19 +474,11 @@ export default function Page() {
         <div className="hidden lg:flex items-center min-h-[calc(100vh-3.5rem)] relative z-10
                         max-w-7xl mx-auto px-6 w-full">
           <div className="max-w-[46%]">
-            <motion.p
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.3 }}
-              className="text-xs font-display text-slate-400 mb-8 tracking-wide"
-            >
-              {t.hero.eyebrow}
-            </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.38 }}
-              className="font-display font-extrabold leading-[0.88] tracking-[-0.04em] text-slate-900"
+              transition={{ duration: 0.65, delay: 0.32 }}
+              className="font-serif leading-[0.9] tracking-tight text-slate-900"
               style={{ fontSize: "clamp(2.8rem, 5.5vw, 5.5rem)" }}
             >
               {t.hero.line1}<br />
@@ -501,7 +489,7 @@ export default function Page() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.48 }}
-              className="font-display text-slate-500 text-base sm:text-lg leading-relaxed mt-8 mb-8"
+              className="font-serif text-slate-500 text-base sm:text-lg leading-relaxed mt-8 mb-8"
             >
               {t.hero.descPre}
               <span className="text-slate-900 font-semibold">{t.hero.descAccent}</span>
@@ -515,14 +503,14 @@ export default function Page() {
             >
               <Link
                 href="/apply"
-                className="group font-display inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
+                className="group font-serif inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
               >
                 {t.hero.ctaPrimary}
                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
               <a
                 href="#pillars"
-                className="font-display inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-300 hover:border-slate-500 text-slate-600 hover:text-slate-900 text-sm tracking-wider transition-all duration-200"
+                className="font-serif inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-300 hover:border-slate-500 text-slate-600 hover:text-slate-900 text-sm tracking-wider transition-all duration-200"
               >
                 {t.hero.ctaSecondary}
               </a>
@@ -551,7 +539,7 @@ export default function Page() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="font-display text-slate-500 text-base leading-relaxed mb-8"
+          className="font-serif text-slate-500 text-base leading-relaxed mb-8"
         >
           {t.hero.descPre}
           <span className="text-slate-900 font-semibold">{t.hero.descAccent}</span>
@@ -566,14 +554,14 @@ export default function Page() {
         >
           <Link
             href="/apply"
-            className="group font-display inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-slate-900 text-white text-sm font-bold tracking-wider"
+            className="group font-serif inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-slate-900 text-white text-sm font-bold tracking-wider"
           >
             {t.hero.ctaPrimary}
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
           </Link>
           <a
             href="#pillars"
-            className="font-display inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-300 text-slate-600 text-sm tracking-wider"
+            className="font-serif inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-300 text-slate-600 text-sm tracking-wider"
           >
             {t.hero.ctaSecondary}
           </a>
@@ -610,7 +598,7 @@ export default function Page() {
           <h2 className="font-serif text-slate-900" style={{ fontSize: "clamp(2rem,4vw,3rem)" }}>
             {t.pillars.heading}
           </h2>
-          <p className="font-display text-slate-500 mt-4 max-w-xl text-base leading-relaxed">
+          <p className="font-serif text-slate-500 mt-4 max-w-xl text-base leading-relaxed">
             {t.pillars.sub}
           </p>
         </motion.div>
@@ -626,18 +614,11 @@ export default function Page() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="bg-white p-8 cursor-default"
+                className="bg-white p-8 cursor-default border-l-2 border-tec-600"
               >
-                <Icon size={22} className={`${style.iconClr} mb-5`} />
-                <h3 className="font-display text-base font-semibold text-slate-900 mb-3">{p.title}</h3>
-                <p className="font-display text-slate-500 text-sm leading-relaxed mb-5">{p.desc}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {p.tags.map(tag => (
-                    <span key={tag} className="text-xs font-display px-2.5 py-1 rounded-full border border-slate-200 text-slate-500">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                <Icon size={20} className={`${style.iconClr} mb-5`} />
+                <h3 className="font-serif text-base font-semibold text-slate-900 mb-3">{p.title}</h3>
+                <p className="font-serif text-slate-500 text-sm leading-relaxed">{p.desc}</p>
               </motion.div>
             );
           })}
@@ -645,60 +626,69 @@ export default function Page() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════
-          FOUNDER / TEAM
+          SPONSORS
       ══════════════════════════════════════════════════════════ */}
-      <section id="team" className="max-w-7xl mx-auto px-4 sm:px-6 pb-20 lg:pb-24">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-24 border-t border-slate-100">
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="border border-slate-200 bg-white overflow-hidden"
+          className="mb-10"
         >
-          <div className="grid md:grid-cols-[1fr,1.35fr]">
+          <h2 className="font-serif text-slate-900 mb-3" style={{ fontSize: "clamp(1.8rem,3.5vw,2.8rem)" }}>
+            {t.sponsors.heading}
+          </h2>
+          <p className="font-serif text-slate-500 max-w-lg leading-relaxed">
+            {t.sponsors.sub}
+          </p>
+        </motion.div>
 
-            <div className="p-8 sm:p-10 border-b md:border-b-0 md:border-r border-slate-100">
-              <SectionLabel>{t.founder.section}</SectionLabel>
-              <h3 className="font-display text-xl font-bold text-slate-900 mb-1">
-                Carlos Martínez Vázquez
-              </h3>
-              <p className="text-sm font-display text-tec-600 mb-1">{t.founder.role}</p>
-              <p className="text-sm font-display text-slate-400 mb-6">{t.founder.badge}</p>
-              <div className="flex flex-wrap gap-1.5 mb-5">
-                <span className="text-xs font-mono px-2 py-0.5 border border-tec-200 text-tec-600 bg-tec-50">ITC</span>
-                <span className="text-xs font-mono px-2 py-0.5 border border-slate-200 text-slate-500">Tec de Monterrey · QRO</span>
-              </div>
-              <a
-                href="https://linkedin.com/in/c-vzqz"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-tec-600 transition-colors duration-200"
-              >
-                <Linkedin size={12} />
-                linkedin.com/in/c-vzqz
-              </a>
-            </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="border border-dashed border-slate-200 rounded-sm py-16 flex flex-col items-center gap-4 text-center"
+        >
+          <p className="font-serif text-slate-400 text-sm">{t.sponsors.empty}</p>
+          <a
+            href="mailto:c.mtnzvzqz@gmail.com"
+            className="inline-flex items-center gap-2 text-xs font-mono text-tec-600 hover:text-tec-700 transition-colors"
+          >
+            <Mail size={12} />
+            {t.sponsors.contact}
+          </a>
+        </motion.div>
+      </section>
 
-            <div className="p-8 sm:p-10 flex flex-col justify-center">
-              <blockquote className="font-display text-lg sm:text-xl font-medium text-slate-800 leading-[1.55] mb-5">
-                {t.founder.quote}
-              </blockquote>
-              <p className="font-display text-slate-500 text-sm leading-relaxed mb-6">
-                {t.founder.para}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {t.founder.activities.map(act => (
-                  <span
-                    key={act}
-                    className="text-xs font-mono px-2.5 py-1 border border-slate-200 text-slate-500 bg-slate-50"
-                  >
-                    {act}
-                  </span>
-                ))}
-              </div>
-            </div>
+      {/* ══════════════════════════════════════════════════════════
+          FALL 2026 HIGHLIGHTS
+      ══════════════════════════════════════════════════════════ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-24 border-t border-slate-100">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-10"
+        >
+          <h2 className="font-serif text-slate-900 mb-3" style={{ fontSize: "clamp(1.8rem,3.5vw,2.8rem)" }}>
+            {t.highlights.heading}
+          </h2>
+          <p className="font-serif text-slate-500 max-w-lg leading-relaxed">
+            {t.highlights.sub}
+          </p>
+        </motion.div>
 
-          </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="border border-dashed border-slate-200 rounded-sm py-16 flex items-center justify-center"
+        >
+          <p className="font-serif text-slate-400 text-sm">{t.highlights.empty}</p>
         </motion.div>
       </section>
 
@@ -718,12 +708,12 @@ export default function Page() {
           >
             {t.cta.heading}
           </h2>
-          <p className="font-display text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
+          <p className="font-serif text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
             {t.cta.para}
           </p>
           <Link
             href="/apply"
-            className="group font-display inline-flex items-center gap-2.5 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
+            className="group font-serif inline-flex items-center gap-2.5 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
           >
             {t.cta.btn}
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
@@ -735,11 +725,38 @@ export default function Page() {
           FOOTER
       ══════════════════════════════════════════════════════════ */}
       <footer className="border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span className="text-xs font-display text-slate-400">
-            <span className="font-semibold text-slate-900">Quant<span className="text-tec-600">Tec</span></span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span className="text-xs font-serif text-slate-400">
+            <span className="font-serif text-slate-900"><span className="text-tec-600">TM</span>QS</span>
             {" · Tec de Monterrey · QRO · Est. 2026"}
           </span>
+          <div className="flex items-center gap-5">
+            <a
+              href="https://instagram.com/tmqs.tec"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="text-slate-400 hover:text-slate-700 transition-colors"
+            >
+              <Instagram size={14} />
+            </a>
+            <a
+              href="https://linkedin.com/in/c-vzqz"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="text-slate-400 hover:text-slate-700 transition-colors"
+            >
+              <Linkedin size={14} />
+            </a>
+            <a
+              href="mailto:c.mtnzvzqz@gmail.com"
+              aria-label="Email"
+              className="text-slate-400 hover:text-slate-700 transition-colors"
+            >
+              <Mail size={14} />
+            </a>
+          </div>
           <p className="text-xs font-mono text-slate-400 italic">{t.footer}</p>
         </div>
       </footer>

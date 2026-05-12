@@ -62,8 +62,8 @@ export default function AdminPage() {
       <header className="sticky top-0 z-10 bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div>
-            <span className="text-sm font-display font-semibold text-slate-900">
-              Quant<span className="text-tec-600">Tec</span>
+            <span className="text-lg font-serif tracking-tight text-slate-900">
+              <span className="text-tec-600">TM</span>QS
             </span>
             <span className="ml-2 text-xs font-mono text-slate-400">/ admin</span>
           </div>

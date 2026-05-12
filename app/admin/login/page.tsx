@@ -28,10 +28,10 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        <p className="text-xs font-mono text-slate-400 mb-2 tracking-widest uppercase">
-          QuantTec
+        <p className="text-xl font-serif tracking-tight text-slate-900 mb-2">
+          <span className="text-tec-600">TM</span>QS
         </p>
-        <h1 className="text-2xl font-display font-bold text-slate-900 mb-8">
+        <h1 className="text-2xl font-serif font-bold text-slate-900 mb-8">
           Admin access
         </h1>
         <form onSubmit={submit} className="flex flex-col gap-4">
@@ -50,7 +50,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading || !password}
-            className="w-full py-3 text-sm font-display font-semibold bg-slate-900 text-white
+            className="w-full py-3 text-sm font-serif font-semibold bg-slate-900 text-white
                        rounded-lg hover:bg-slate-800 disabled:opacity-40 transition-colors"
           >
             {loading ? "Checking…" : "Enter"}
