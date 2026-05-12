@@ -28,7 +28,7 @@ export default function FloatingMath() {
         top: "0", left: "0",
         fontFamily: "Georgia, serif",
         fontSize: `${size}rem`,
-        color: "rgba(15,23,42,0.09)",
+        color: "rgba(15,23,42,0.13)",
         lineHeight: "1",
         willChange: "transform",
       });

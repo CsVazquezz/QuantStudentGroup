@@ -9,6 +9,7 @@ export default {
     extend: {
       fontFamily: {
         serif: ["var(--font-serif)", "Georgia", "serif"],
+        sans:  ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       colors: {
         canvas: "#070A10",

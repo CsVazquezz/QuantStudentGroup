@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, DM_Serif_Display } from "next/font/google";
+import { JetBrains_Mono, DM_Serif_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 import FloatingMath from "@/components/FloatingMath";
 
@@ -16,14 +16,20 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "QuantTec — Tec de Monterrey, Campus Querétaro",
+  title: "TMQS — Tec de Monterrey, Campus Querétaro",
   description:
     "The first quant student club at Tec de Monterrey, Campus Querétaro. A community for students curious about where markets, data, and mathematics meet.",
   openGraph: {
-    title: "QuantTec · QRO Campus",
+    title: "TMQS · QRO Campus",
     description:
-      "Apply to the founding cohort of QuantTec — the first quant student group at Tec de Monterrey.",
+      "Apply to the founding cohort of TMQS — the first quant student group at Tec de Monterrey.",
     type: "website",
   },
 };
@@ -34,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${jetbrainsMono.variable} ${dmSerifDisplay.variable} font-mono antialiased bg-white text-slate-900`}
+        className={`${jetbrainsMono.variable} ${dmSerifDisplay.variable} ${dmSans.variable} font-mono antialiased bg-white text-slate-900`}
       >
         <FloatingMath />
         {children}
