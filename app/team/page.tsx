@@ -1,16 +1,25 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Linkedin, ArrowRight } from "lucide-react";
 import { useLang } from "@/lib/useLang";
 
+const MAJOR_NAMES: Record<string, { en: string; es: string }> = {
+  ITC: { en: "Computer Science", es: "Ciencias de la Computación" },
+  IDM: { en: "Data Science and Maths", es: "Ciencia de Datos y Matemáticas" },
+  LAF: { en: "Finance", es: "Finanzas" },
+  IC:  { en: "Civil Engineering", es: "Ingeniería Civil" },
+};
+
 const T = {
   en: {
-    nav: { home: "Home", learn: "Learn", apply: "Apply" },
+    nav: { home: "Home", learn: "Learn", events: "Events", contact: "Contact", apply: "Apply" },
     eyebrow: "Leadership",
     heading: "The team.",
-    sub: "Six seats. One filled. The rest are yours to earn.",
+    sub: "Six seats. All filled for Fall 2026.",
     roles: [
       {
         id: "presidencia",
@@ -18,54 +27,70 @@ const T = {
         filled: true,
         name: "Carlos Martínez Vázquez",
         major: "ITC",
-        badge: "Quantitative Researcher",
         linkedin: "https://linkedin.com/in/c-vzqz",
-        linkedinLabel: "linkedin.com/in/c-vzqz",
-        quote: '“Quant finance barely registers as a path for students in Mexico. The people who get in usually stumble onto it. I did. This club exists to make that less random.”',
-        para: "Founder and President of TMQS. Quantitative Researcher and aspiring MSc/PhD in applied mathematics. Believes the best research happens when different disciplines work on the same problem.",
-        activities: ["Research projects", "Hackathons", "Trading competitions", "Poker & game theory", "Industry workshops"],
+        linkedinLabel: "linkedin/carlos",
       },
       {
         id: "vicepresidencia",
         title: "Vice-Presidency",
-        filled: false,
+        filled: true,
+        name: "Alexis Berthou Haas",
+        major: "ITC",
+        linkedin: "https://www.linkedin.com/in/alexis-berthou-67ab6a223/",
+        linkedinLabel: "linkedin/alexis",
       },
       {
         id: "finanzas",
         title: "Finance",
-        filled: false,
+        filled: true,
+        name: "María Vilchis López",
+        major: "IC",
+        linkedin: "https://www.linkedin.com/in/mfvilchisl/",
+        linkedinLabel: "linkedin/fernanda",
       },
       {
         id: "proyectos",
         title: "Projects",
-        filled: false,
+        filled: true,
+        name: "Jesús Higuera Alanís",
+        major: "IDM",
+        linkedin: "https://www.linkedin.com/in/jesus-higuera/",
+        linkedinLabel: "linkedin/jesus",
       },
       {
         id: "comunicacion",
         title: "Communications",
-        filled: false,
+        filled: true,
+        name: "Patricio Lugo Albor",
+        major: "IDM",
+        linkedin: "https://www.linkedin.com/in/patricio-lugo-albor-381977329/",
+        linkedinLabel: "linkedin/patricio",
       },
       {
         id: "responsabilidad",
         title: "Social Responsibility",
-        filled: false,
+        filled: true,
+        name: "Roberto Hernández Amezola",
+        major: "LAF",
+        linkedin: "https://www.linkedin.com/in/roberto-hernandez-amezola/",
+        linkedinLabel: "linkedin/roberto",
       },
     ],
     open: "Open position",
     openSub: "Applications open · Fall 2026",
     cta: {
-      heading: "Want to lead?",
-      para: "Leadership seats open alongside general membership. Apply and tell us what role excites you.",
+      heading: "Want to be in?",
+      para: "Apply and tell us why you're a fit.",
       btn: "Apply now",
     },
     footer: "Extracting alpha from noise.",
   },
 
   es: {
-    nav: { home: "Inicio", learn: "Aprender", apply: "Aplicar" },
+    nav: { home: "Inicio", learn: "Aprender", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
     eyebrow: "Liderazgo",
     heading: "El equipo.",
-    sub: "Seis puestos. Uno ocupado. El resto está por ganarse.",
+    sub: "Seis puestos. Todos ocupados para Otoño 2026.",
     roles: [
       {
         id: "presidencia",
@@ -73,49 +98,116 @@ const T = {
         filled: true,
         name: "Carlos Martínez Vázquez",
         major: "ITC",
-        badge: "Investigador Cuantitativo",
         linkedin: "https://linkedin.com/in/c-vzqz",
-        linkedinLabel: "linkedin.com/in/c-vzqz",
-        quote: '"Las finanzas cuantitativas apenas existen como opción de carrera para estudiantes en México. Los que llegan ahí suelen tropezar con ello. Yo lo hice. Este club existe para que eso sea menos aleatorio."',
-        para: "Fundador y Presidente de TMQS. Investigador Cuantitativo y aspirante a MSc/PhD en matemáticas aplicadas. Cree que la mejor investigación surge cuando distintas disciplinas trabajan en el mismo problema.",
-        activities: ["Proyectos de investigación", "Hackathones", "Competencias de trading", "Póker y teoría de juegos", "Talleres de industria"],
+        linkedinLabel: "linkedin/carlos",
       },
       {
         id: "vicepresidencia",
         title: "Vicepresidencia",
-        filled: false,
+        filled: true,
+        name: "Alexis Berthou Haas",
+        major: "ITC",
+        linkedin: "https://www.linkedin.com/in/alexis-berthou-67ab6a223/",
+        linkedinLabel: "linkedin/alexis",
       },
       {
         id: "finanzas",
         title: "Finanzas",
-        filled: false,
+        filled: true,
+        name: "María Vilchis López",
+        major: "IC",
+        linkedin: "https://www.linkedin.com/in/mfvilchisl/",
+        linkedinLabel: "linkedin/fernanda",
       },
       {
         id: "proyectos",
         title: "Proyectos",
-        filled: false,
+        filled: true,
+        name: "Jesús Higuera Alanís",
+        major: "IDM",
+        linkedin: "https://www.linkedin.com/in/jesus-higuera/",
+        linkedinLabel: "linkedin/jesus",
       },
       {
         id: "comunicacion",
         title: "Comunicación",
-        filled: false,
+        filled: true,
+        name: "Patricio Lugo Albor",
+        major: "IDM",
+        linkedin: "https://www.linkedin.com/in/patricio-lugo-albor-381977329/",
+        linkedinLabel: "linkedin/patricio",
       },
       {
         id: "responsabilidad",
         title: "Responsabilidad Social",
-        filled: false,
+        filled: true,
+        name: "Roberto Hernández Amezola",
+        major: "LAF",
+        linkedin: "https://www.linkedin.com/in/roberto-hernandez-amezola/",
+        linkedinLabel: "linkedin/roberto",
       },
     ],
     open: "Puesto abierto",
     openSub: "Aplicaciones abiertas · Otoño 2026",
     cta: {
-      heading: "¿Quieres liderar?",
-      para: "Los puestos de liderazgo abren junto con la membresía general. Aplica y cuéntanos qué rol te interesa.",
+      heading: "¿Te unes?",
+      para: "Aplica y cuéntanos por qué eres un buen candidato.",
       btn: "Aplicar ahora",
     },
     footer: "Extrayendo alpha del ruido.",
   },
 };
+
+function photoSlug(name: string): string {
+  return name
+    .split(" ")[0]
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "");
+}
+
+function MemberPhoto({
+  name,
+  zoom = 1,
+  focus = "center",
+}: {
+  name: string;
+  zoom?: number;
+  focus?: string;
+}) {
+  const [failed, setFailed] = useState(false);
+  const initials = name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+
+  if (failed) {
+    return (
+      <div className="aspect-[4/5] w-full flex items-center justify-center bg-tec-50 border border-slate-200 rounded-lg select-none">
+        <span className="font-serif text-4xl sm:text-5xl text-tec-600/70 tracking-tight">
+          {initials}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="aspect-[4/5] w-full relative border border-slate-200 rounded-lg overflow-hidden bg-tec-50">
+      <Image
+        src={`/team/${photoSlug(name)}.jpg`}
+        alt={name}
+        fill
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+        className="object-cover"
+        style={{ objectPosition: focus, transform: zoom !== 1 ? `scale(${zoom})` : undefined, transformOrigin: focus }}
+        onError={() => setFailed(true)}
+      />
+    </div>
+  );
+}
 
 export default function TeamPage() {
   const { lang, toggle } = useLang();
@@ -128,14 +220,14 @@ export default function TeamPage() {
       <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-6">
           <Link href="/" className="shrink-0">
-            <span className="text-lg font-serif tracking-tight text-slate-900">
-              <span className="text-tec-600">TM</span>QS
-            </span>
+            <Image src="/tmqs-logo.png" alt="TMQS" width={1259} height={967} className="h-8 w-auto" priority />
           </Link>
 
           <nav className="hidden md:flex items-center gap-7">
             <Link href="/"      className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.home}</Link>
             <Link href="/learn" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
+            <Link href="/events" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/contact" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
@@ -177,80 +269,75 @@ export default function TeamPage() {
         </motion.div>
       </section>
 
-      {/* ── PRESIDENT CARD ── */}
-      {t.roles.filter(r => r.filled).map((r, i) => (
-        <section key={r.id} className="max-w-7xl mx-auto px-4 sm:px-6 pb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-            className="border border-slate-200 bg-white overflow-hidden"
-          >
-            <div className="grid md:grid-cols-[1fr,1.4fr]">
-              <div className="p-8 sm:p-10 border-b md:border-b-0 md:border-r border-slate-100">
-                <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400 mb-4">
-                  {r.title}
-                </p>
-                <h2 className="font-serif text-2xl text-slate-900 mb-1">{r.name}</h2>
-                <p className="text-sm font-serif text-tec-600 mb-1">Founder &amp; President</p>
-                <p className="text-sm font-serif text-slate-400 mb-6">{r.badge}</p>
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  <span className="text-xs font-mono px-2 py-0.5 border border-tec-200 text-tec-600 bg-tec-50">{r.major}</span>
-                  <span className="text-xs font-mono px-2 py-0.5 border border-slate-200 text-slate-500">Tec de Monterrey · QRO</span>
-                </div>
-                <a
-                  href={r.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-tec-600 transition-colors duration-200"
-                >
-                  <Linkedin size={12} />
-                  {r.linkedinLabel}
-                </a>
-              </div>
-
-              <div className="p-8 sm:p-10 flex flex-col justify-center">
-                <blockquote className="font-serif text-lg sm:text-xl text-slate-800 leading-[1.55] mb-5">
-                  {r.quote}
-                </blockquote>
-                <p className="font-serif text-slate-500 text-sm leading-relaxed mb-6">
-                  {r.para}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {r.activities!.map(act => (
-                    <span key={act} className="text-xs font-mono px-2.5 py-1 border border-slate-200 text-slate-500 bg-slate-50">
-                      {act}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </section>
-      ))}
-
-      {/* ── OPEN SEATS GRID ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-20 lg:pb-28">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-100">
-          {t.roles.filter(r => !r.filled).map((r, i) => (
+      {/* ── TEAM CARDS ── */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-14">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {t.roles.filter((r) => r.filled).map((r, i) => (
             <motion.div
               key={r.id}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.45, delay: i * 0.07 }}
-              className="bg-white p-8 border-l-2 border-tec-600 flex flex-col gap-3"
+              transition={{ duration: 0.45, delay: i * 0.08 }}
+              className="border border-slate-200 bg-white flex flex-col rounded-xl overflow-hidden"
             >
-              <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400">
-                {r.title}
-              </p>
-              <p className="font-serif text-slate-300 text-lg">{t.open}</p>
-              <p className="text-xs font-mono text-slate-300">{t.openSub}</p>
+              <div className="p-3">
+                <MemberPhoto
+                  name={r.name!}
+                  zoom={r.id === "presidencia" ? 1.3 : 1}
+                  focus={r.id === "presidencia" ? "50% 10%" : "center"}
+                />
+              </div>
+
+              <div className="p-5 flex flex-col gap-1">
+                <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400 mb-1">
+                  {r.title}
+                </p>
+                <h2 className="font-serif text-xl text-slate-900 leading-snug">{r.name}</h2>
+
+                <p className="text-xs font-mono text-tec-600 mt-2">
+                  {r.major}
+                  {MAJOR_NAMES[r.major!] && ` · ${MAJOR_NAMES[r.major!][lang]}`}
+                </p>
+
+                <a
+                  href={r.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-tec-600 transition-colors duration-200 mt-4"
+                >
+                  <Linkedin size={12} />
+                  {r.linkedinLabel}
+                </a>
+              </div>
             </motion.div>
           ))}
         </div>
       </section>
+
+      {/* ── OPEN SEATS GRID ── */}
+      {t.roles.some(r => !r.filled) && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-20 lg:pb-28">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-100">
+            {t.roles.filter(r => !r.filled).map((r, i) => (
+              <motion.div
+                key={r.id}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: i * 0.07 }}
+                className="bg-white p-8 border-l-2 border-tec-600 flex flex-col gap-3"
+              >
+                <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400">
+                  {r.title}
+                </p>
+                <p className="font-serif text-slate-300 text-lg">{t.open}</p>
+                <p className="text-xs font-mono text-slate-300">{t.openSub}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── CTA ── */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 py-16 lg:py-20 text-center">
@@ -283,8 +370,7 @@ export default function TeamPage() {
       <footer className="border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span className="text-xs font-sans text-slate-400">
-            <span className="font-serif text-slate-900"><span className="text-tec-600">TM</span>QS</span>
-            {" · Tec de Monterrey · QRO · Est. 2026"}
+            Tec de Monterrey Campus Querétaro, Est. 2026
           </span>
           <p className="text-xs font-mono text-slate-400 italic">{t.footer}</p>
         </div>
