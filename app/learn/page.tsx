@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, BookOpen, TrendingUp, Database, Cpu, BarChart2, Zap, FlaskConical } from "lucide-react";
@@ -95,7 +96,7 @@ const CONCEPTS = [
 
 const T = {
   en: {
-    nav:    { home: "Home", about: "About", team: "Team", apply: "Apply" },
+    nav:    { home: "Home", about: "About", team: "Team", events: "Events", contact: "Contact", apply: "Apply" },
     hero: {
       eyebrow: "Quant Finance 101",
       heading: "Understanding Quantitative Finance.",
@@ -110,16 +111,16 @@ const T = {
     simons: {
       eyebrow:  "Case Study",
       name:     "James Harris Simons",
-      dates:    "1938 – 2024",
-      role:     "Mathematician · Cryptographer · Investor",
+      dates:    "1938-2024",
+      role:     "Mathematician, Cryptographer, Investor",
       quote:    "“We search through historical data looking for anomalous patterns that we would not expect to occur by chance.”",
       quoteCtx: "From a 2015 TED talk on mathematics and markets",
-      bio1:     "Before he was one of the most successful investors in history, Simons was a mathematician. He earned his PhD from UC Berkeley at 23, broke codes for the NSA during the Cold War, and chaired the math department at Stony Brook, where he co-developed Chern–Simons theory, a foundational result in modern geometry.",
+      bio1:     "Before he was one of the most successful investors in history, Simons was a mathematician. He earned his PhD from UC Berkeley at 23, broke codes for the NSA during the Cold War, and chaired the math department at Stony Brook, where he co-developed Chern-Simons theory, a foundational result in modern geometry.",
       bio2:     "He founded Renaissance Technologies in 1982 with a different hypothesis: that financial markets, like other complex systems, contain hidden mathematical structure. He hired physicists, mathematicians, and computer scientists, not economists, not traders, and gave them complete freedom to follow the data.",
       bio3:     "The result was the Medallion Fund. Closed to outside investors since 1993, it has returned an average of 66% gross annually from 1988 to 2018, the best risk-adjusted performance of any investment fund in recorded history, by most accounts.",
       stats: [
         { val: "1982",  lbl: "Founded Renaissance Technologies" },
-        { val: "~66%",  lbl: "Avg. annual gross return, Medallion (1988–2018)" },
+        { val: "~66%",  lbl: "Avg. annual gross return, Medallion (1988-2018)" },
         { val: "+80%",  lbl: "Return in 2008, when S&P fell 38%" },
         { val: "PhD",   lbl: "Mathematics, UC Berkeley, age 23" },
       ],
@@ -152,7 +153,7 @@ const T = {
   },
 
   es: {
-    nav:    { home: "Inicio", about: "Acerca", team: "Equipo", apply: "Aplicar" },
+    nav:    { home: "Inicio", about: "Acerca", team: "Equipo", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
     hero: {
       eyebrow: "Finanzas Cuantitativas 101",
       heading: "Entendiendo las Finanzas Cuantitativas.",
@@ -167,16 +168,16 @@ const T = {
     simons: {
       eyebrow:  "Caso de Estudio",
       name:     "James Harris Simons",
-      dates:    "1938 – 2024",
-      role:     "Matemático · Criptógrafo · Inversionista",
+      dates:    "1938-2024",
+      role:     "Matemático, Criptógrafo, Inversionista",
       quote:    "“Buscamos en datos históricos patrones anómalos que no esperaríamos que ocurrieran por azar.”",
       quoteCtx: "De una charla TED 2015 sobre matemáticas y mercados",
-      bio1:     "Antes de ser uno de los inversionistas más exitosos de la historia, Simons era matemático. Obtuvo su doctorado de UC Berkeley a los 23 años, desifró códigos para la NSA durante la Guerra Fría, y dirigió el departamento de matemáticas de Stony Brook, donde co-desarrolló la teoría de Chern–Simons, un resultado fundamental en geometría moderna.",
+      bio1:     "Antes de ser uno de los inversionistas más exitosos de la historia, Simons era matemático. Obtuvo su doctorado de UC Berkeley a los 23 años, desifró códigos para la NSA durante la Guerra Fría, y dirigió el departamento de matemáticas de Stony Brook, donde co-desarrolló la teoría de Chern-Simons, un resultado fundamental en geometría moderna.",
       bio2:     "Fundó Renaissance Technologies en 1982 con una hipótesis diferente: que los mercados financieros, como otros sistemas complejos, contienen estructura matemática oculta. Contrató físicos, matemáticos y científicos computacionales, no economistas, no traders, y les dio libertad total para seguir los datos.",
       bio3:     "El resultado fue el Medallion Fund. Cerrado a inversionistas externos desde 1993, ha retornado un promedio de 66% bruto anual de 1988 a 2018, el mejor rendimiento ajustado por riesgo de cualquier fondo de inversión en la historia registrada, por la mayoría de los cálculos.",
       stats: [
         { val: "1982",  lbl: "Fundó Renaissance Technologies" },
-        { val: "~66%",  lbl: "Retorno bruto promedio anual, Medallion (1988–2018)" },
+        { val: "~66%",  lbl: "Retorno bruto promedio anual, Medallion (1988-2018)" },
         { val: "+80%",  lbl: "Retorno en 2008, cuando el S&P cayó 38%" },
         { val: "PhD",   lbl: "Matemáticas, UC Berkeley, a los 23 años" },
       ],
@@ -226,15 +227,15 @@ export default function LearnPage() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 shrink-0">
-            <span className="text-lg font-serif tracking-tight text-slate-900">
-              <span className="text-tec-600">TM</span>QS
-            </span>
+            <Image src="/tmqs-logo.png" alt="TMQS" width={1259} height={967} className="h-8 w-auto" priority />
           </Link>
 
           {/* Center nav */}
           <nav className="hidden md:flex items-center gap-7">
             <Link href="/#pillars" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</Link>
             <Link href="/team" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
+            <Link href="/events" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/contact" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
           {/* Right */}
@@ -533,8 +534,7 @@ export default function LearnPage() {
       <footer className="border-t border-slate-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span className="text-xs font-serif text-slate-400">
-            <span className="font-serif text-slate-900"><span className="text-tec-600">TM</span>QS</span>
-            {" · Tec de Monterrey · QRO · Est. 2026"}
+            Tec de Monterrey Campus Querétaro, Est. 2026
           </span>
           <p className="text-xs font-mono text-slate-400 italic">{t.footer}</p>
         </div>

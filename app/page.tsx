@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Brain, Users, GitBranch, Instagram, Linkedin, Mail } from "lucide-react";
@@ -32,9 +33,9 @@ const PILLAR_STYLES = [
 
 const T = {
   en: {
-    nav: { status: "Fall 2026 · Open", about: "About", team: "Team", learn: "Learn", apply: "Apply" },
+    nav: { status: "Fall 2026 · Open", about: "About", team: "Team", learn: "Learn", events: "Events", contact: "Contact", apply: "Apply" },
     hero: {
-      eyebrow:      "Tec de Monterrey · Campus Querétaro · Founding Cohort 2026",
+      eyebrow:      "Tec de Monterrey, Campus Querétaro · Founding Cohort 2026",
       line1:        "Tec Monterrey",
       accent:       "Quant",
       line3:        "Society.",
@@ -46,7 +47,7 @@ const T = {
       stats: [
         { val: "Cohort 01",  lbl: "Be a founding member"  },
         { val: "First ever", lbl: "At Tec de Monterrey"   },
-        { val: "All majors", lbl: "ITC · IDM · LAF · LEC" },
+        { val: "All majors", lbl: "ITC / IDM / LAF / LEC" },
       ],
     },
     pillars: {
@@ -90,9 +91,9 @@ const T = {
   },
 
   es: {
-    nav: { status: "Otoño 2026 · Abierto", about: "Acerca", team: "Equipo", learn: "Aprender", apply: "Aplicar" },
+    nav: { status: "Otoño 2026 · Abierto", about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
     hero: {
-      eyebrow:      "Tec de Monterrey · Campus Querétaro · Cohorte Fundadora 2026",
+      eyebrow:      "Tec de Monterrey, Campus Querétaro · Cohorte Fundadora 2026",
       line1:        "Tec Monterrey",
       accent:       "Quant",
       line3:        "Society.",
@@ -104,7 +105,7 @@ const T = {
       stats: [
         { val: "Cohorte 01",      lbl: "Sé miembro fundador"   },
         { val: "El primero",      lbl: "En Tec de Monterrey"   },
-        { val: "Todas las carr.", lbl: "ITC · IDM · LAF · LEC" },
+        { val: "Todas las carr.", lbl: "ITC / IDM / LAF / LEC" },
       ],
     },
     pillars: {
@@ -382,20 +383,19 @@ export default function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-6">
 
           <div className="flex items-center gap-3 shrink-0">
-            <span className="text-lg font-serif tracking-tight text-slate-900">
-              <span className="text-tec-600">TM</span>QS
-            </span>
+            <Image src="/tmqs-logo.png" alt="TMQS" width={1259} height={967} className="h-8 w-auto" priority />
           </div>
 
           <nav className="hidden md:flex items-center gap-7">
             <a href="#pillars"  className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</a>
             <Link href="/team"  className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
             <Link href="/learn" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
+            <Link href="/events" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/contact" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
             <div className="hidden lg:flex items-center gap-1.5 text-xs font-serif text-slate-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               {t.nav.status}
             </div>
             <button
@@ -603,10 +603,10 @@ export default function Page() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-px bg-slate-100">
+        <div className="border-t border-slate-200">
           {t.pillars.items.map((p, i) => {
-            const style = PILLAR_STYLES[i];
-            const Icon  = style.Icon;
+            const { Icon } = PILLAR_STYLES[i];
+            const flip = i % 2 === 1;
             return (
               <motion.div
                 key={i}
@@ -614,11 +614,45 @@ export default function Page() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="bg-white p-8 cursor-default border-l-2 border-tec-600"
+                className="grid md:grid-cols-12 gap-x-8 gap-y-4 border-b border-slate-200 py-10 lg:py-14"
               >
-                <Icon size={20} className={`${style.iconClr} mb-5`} />
-                <h3 className="font-serif text-base font-semibold text-slate-900 mb-3">{p.title}</h3>
-                <p className="font-serif text-slate-500 text-sm leading-relaxed">{p.desc}</p>
+                {/* Rail: oversized index number + icon */}
+                <div
+                  className={`md:col-span-4 flex items-start gap-4 ${
+                    flip ? "md:order-2 md:justify-end md:text-right" : "md:order-1"
+                  }`}
+                >
+                  <span
+                    className="font-serif leading-none text-slate-200 select-none"
+                    style={{ fontSize: "clamp(3.5rem,7vw,6rem)" }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <Icon size={20} className="text-tec-600 mt-3 shrink-0" />
+                </div>
+
+                {/* Content: title + desc + tags */}
+                <div className={`md:col-span-8 ${flip ? "md:order-1" : "md:order-2"}`}>
+                  <h3
+                    className="font-serif font-semibold text-slate-900"
+                    style={{ fontSize: "clamp(1.25rem,2vw,1.75rem)" }}
+                  >
+                    {p.title}
+                  </h3>
+                  <p className="font-serif text-slate-500 text-sm leading-relaxed mt-3 max-w-xl">
+                    {p.desc}
+                  </p>
+                  <ul className="flex flex-wrap gap-x-5 gap-y-1 mt-5">
+                    {p.tags.map((tag) => (
+                      <li
+                        key={tag}
+                        className="font-serif text-xs tracking-wide text-slate-400 border-l border-tec-600 pl-2"
+                      >
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </motion.div>
             );
           })}
@@ -727,12 +761,11 @@ export default function Page() {
       <footer className="border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-xs font-serif text-slate-400">
-            <span className="font-serif text-slate-900"><span className="text-tec-600">TM</span>QS</span>
-            {" · Tec de Monterrey · QRO · Est. 2026"}
+            Tec de Monterrey Campus Querétaro, Est. 2026
           </span>
           <div className="flex items-center gap-5">
             <a
-              href="https://instagram.com/tmqs.tec"
+              href="https://www.instagram.com/tmqs_qro/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -741,7 +774,7 @@ export default function Page() {
               <Instagram size={14} />
             </a>
             <a
-              href="https://linkedin.com/in/c-vzqz"
+              href="https://www.linkedin.com/company/tec-monterrey-quant-society/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
@@ -750,7 +783,7 @@ export default function Page() {
               <Linkedin size={14} />
             </a>
             <a
-              href="mailto:c.mtnzvzqz@gmail.com"
+              href="mailto:tecmonterreyquantsociety@gmail.com"
               aria-label="Email"
               className="text-slate-400 hover:text-slate-700 transition-colors"
             >

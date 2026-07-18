@@ -23,13 +23,13 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "TMQS — Tec de Monterrey, Campus Querétaro",
+  title: "TMQS, Tec de Monterrey, Campus Querétaro",
   description:
     "The first quant student club at Tec de Monterrey, Campus Querétaro. A community for students curious about where markets, data, and mathematics meet.",
   openGraph: {
     title: "TMQS · QRO Campus",
     description:
-      "Apply to the founding cohort of TMQS — the first quant student group at Tec de Monterrey.",
+      "Apply to the founding cohort of TMQS, the first quant student group at Tec de Monterrey.",
     type: "website",
   },
 };

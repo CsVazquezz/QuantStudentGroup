@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
@@ -25,7 +26,7 @@ const INTEREST_ICONS = [BarChart2, Zap, Database, Cpu]          as const;
 
 const T = {
   en: {
-    nav: { home: "Home", about: "About", team: "Team", learn: "Learn" },
+    nav: { home: "Home", about: "About", team: "Team", learn: "Learn", events: "Events", contact: "Contact" },
     page: {
       eyebrow:    "Founding Cohort · Fall 2026",
       heading:    "Apply to TMQS.",
@@ -64,9 +65,9 @@ const T = {
       { label: "Other Bus.", full: "Business"      },
     ],
     stages: [
-      { id: "exploration",    label: "Exploration",    range: "1–3 Sem",  desc: "Finding your path"    },
-      { id: "enfoque",        label: "Focus",          range: "4–5 Sem",  desc: "Sharpening your edge" },
-      { id: "specialization", label: "Specialization", range: "6–8+ Sem", desc: "Deep technical work"  },
+      { id: "exploration",    label: "Exploration",    range: "1-3 Sem",  desc: "Finding your path"    },
+      { id: "enfoque",        label: "Focus",          range: "4-5 Sem",  desc: "Sharpening your edge" },
+      { id: "specialization", label: "Specialization", range: "6-8+ Sem", desc: "Deep technical work"  },
     ],
     techLevels: [
       { value: 1, label: "Curious",   desc: "No code / Finance 101"      },
@@ -89,7 +90,7 @@ const T = {
     submit: {
       idle:    "SUBMIT APPLICATION",
       loading: "SENDING APPLICATION...",
-      footer:  "We read every application personally · Results in 2–3 weeks",
+      footer:  "We read every application personally · Results in 2-3 weeks",
     },
     errors: {
       fullName:        "Full name is required",
@@ -108,7 +109,7 @@ const T = {
       eyebrow:    "Application Received",
       heading:    "We'll be in touch.",
       body:       "We read every application personally and will get back to you within ",
-      bodyAccent: "2–3 weeks",
+      bodyAccent: "2-3 weeks",
       bodyPost:   ". Thanks for being part of building something new.",
       sentOn:     "Sent on",
       backHome:   "Back to home",
@@ -117,7 +118,7 @@ const T = {
   },
 
   es: {
-    nav: { home: "Inicio", about: "Acerca", team: "Equipo", learn: "Aprender" },
+    nav: { home: "Inicio", about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", contact: "Contacto" },
     page: {
       eyebrow:    "Cohorte Fundadora · Otoño 2026",
       heading:    "Aplica a TMQS.",
@@ -156,9 +157,9 @@ const T = {
       { label: "Otra Adm.", full: "Negocios"          },
     ],
     stages: [
-      { id: "exploration",    label: "Exploración",     range: "1–3 Sem",  desc: "Explorando tu camino"      },
-      { id: "enfoque",        label: "Enfoque",         range: "4–5 Sem",  desc: "Definiendo tu dirección"   },
-      { id: "specialization", label: "Especialización", range: "6–8+ Sem", desc: "Trabajo técnico avanzado"  },
+      { id: "exploration",    label: "Exploración",     range: "1-3 Sem",  desc: "Explorando tu camino"      },
+      { id: "enfoque",        label: "Enfoque",         range: "4-5 Sem",  desc: "Definiendo tu dirección"   },
+      { id: "specialization", label: "Especialización", range: "6-8+ Sem", desc: "Trabajo técnico avanzado"  },
     ],
     techLevels: [
       { value: 1, label: "Curioso",     desc: "Sin código / Finanzas básicas"   },
@@ -181,7 +182,7 @@ const T = {
     submit: {
       idle:    "ENVIAR SOLICITUD",
       loading: "ENVIANDO SOLICITUD...",
-      footer:  "Leemos cada solicitud personalmente · Resultados en 2–3 semanas",
+      footer:  "Leemos cada solicitud personalmente · Resultados en 2-3 semanas",
     },
     errors: {
       fullName:        "El nombre completo es requerido",
@@ -200,7 +201,7 @@ const T = {
       eyebrow:    "Solicitud Recibida",
       heading:    "Nos pondremos en contacto.",
       body:       "Leemos cada solicitud personalmente y te responderemos en ",
-      bodyAccent: "2–3 semanas",
+      bodyAccent: "2-3 semanas",
       bodyPost:   ". Gracias por ser parte de construir algo nuevo.",
       sentOn:     "Enviado el",
       backHome:   "Volver al inicio",
@@ -333,9 +334,7 @@ export default function ApplyPage() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 shrink-0">
-            <span className="text-lg font-serif tracking-tight text-slate-900">
-              <span className="text-tec-600">TM</span>QS
-            </span>
+            <Image src="/tmqs-logo.png" alt="TMQS" width={1259} height={967} className="h-8 w-auto" priority />
           </Link>
 
           {/* Center nav */}
@@ -343,6 +342,8 @@ export default function ApplyPage() {
             <Link href="/#pillars" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</Link>
             <Link href="/team" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
             <Link href="/learn" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
+            <Link href="/events" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/contact" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
           {/* Right */}
@@ -439,10 +440,9 @@ export default function ApplyPage() {
               </motion.div>
 
               {/* Context strip */}
-              <div className="flex flex-wrap gap-4 mb-8 pb-8 border-b border-slate-100">
+              <div className="flex flex-wrap divide-x divide-slate-200 mb-8 pb-8 border-b border-slate-100">
                 {t.page.strip.map(item => (
-                  <span key={item} className="flex items-center gap-2 text-xs font-serif text-slate-500">
-                    <span className="w-1 h-1 rounded-full bg-tec-400" />
+                  <span key={item} className="text-xs font-serif text-slate-500 px-4 first:pl-0">
                     {item}
                   </span>
                 ))}
@@ -773,8 +773,7 @@ export default function ApplyPage() {
       <footer className="border-t border-slate-100 mt-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span className="text-xs font-serif text-slate-400">
-            <span className="font-serif text-slate-900"><span className="text-tec-600">TM</span>QS</span>
-            {" · Tec de Monterrey · QRO · Est. 2026"}
+            Tec de Monterrey Campus Querétaro, Est. 2026
           </span>
           <Link
             href="/"
