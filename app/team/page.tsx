@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Linkedin, ArrowRight } from "lucide-react";
 import { useLang } from "@/lib/useLang";
+import MobileNav from "@/components/MobileNav";
 
 const MAJOR_NAMES: Record<string, { en: string; es: string }> = {
   ITC: { en: "Computer Science", es: "Ciencias de la Computación" },
@@ -19,7 +20,6 @@ const T = {
     nav: { home: "Home", learn: "Learn", events: "Events", contact: "Contact", apply: "Apply" },
     eyebrow: "Leadership",
     heading: "The team.",
-    sub: "Six seats. All filled for Fall 2026.",
     roles: [
       {
         id: "presidencia",
@@ -90,7 +90,6 @@ const T = {
     nav: { home: "Inicio", learn: "Aprender", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
     eyebrow: "Liderazgo",
     heading: "El equipo.",
-    sub: "Seis puestos. Todos ocupados para Otoño 2026.",
     roles: [
       {
         id: "presidencia",
@@ -150,7 +149,7 @@ const T = {
     open: "Puesto abierto",
     openSub: "Aplicaciones abiertas · Otoño 2026",
     cta: {
-      heading: "¿Te unes?",
+      heading: "¿Quieres unirte?",
       para: "Aplica y cuéntanos por qué eres un buen candidato.",
       btn: "Aplicar ahora",
     },
@@ -168,10 +167,12 @@ function photoSlug(name: string): string {
 
 function MemberPhoto({
   name,
+  photo,
   zoom = 1,
   focus = "center",
 }: {
   name: string;
+  photo?: string;
   zoom?: number;
   focus?: string;
 }) {
@@ -197,7 +198,7 @@ function MemberPhoto({
   return (
     <div className="aspect-[4/5] w-full relative border border-slate-200 rounded-lg overflow-hidden bg-tec-50">
       <Image
-        src={`/team/${photoSlug(name)}.jpg`}
+        src={`/team/${photo ?? photoSlug(name)}.jpg`}
         alt={name}
         fill
         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
@@ -243,6 +244,12 @@ export default function TeamPage() {
             >
               {t.nav.apply}
             </Link>
+            <MobileNav links={[
+              { href: "/", label: t.nav.home },
+              { href: "/learn", label: t.nav.learn },
+              { href: "/events", label: t.nav.events },
+              { href: "/contact", label: t.nav.contact },
+            ]} />
           </div>
         </div>
       </header>
@@ -263,9 +270,6 @@ export default function TeamPage() {
           >
             {t.heading}
           </h1>
-          <p className="font-serif text-slate-500 text-lg max-w-lg leading-relaxed">
-            {t.sub}
-          </p>
         </motion.div>
       </section>
 
@@ -284,8 +288,9 @@ export default function TeamPage() {
               <div className="p-3">
                 <MemberPhoto
                   name={r.name!}
-                  zoom={r.id === "presidencia" ? 1.3 : 1}
-                  focus={r.id === "presidencia" ? "50% 10%" : "center"}
+                  photo={r.id === "finanzas" ? "fernanda" : undefined}
+                  zoom={r.id === "presidencia" || r.id === "finanzas" ? 1.3 : 1}
+                  focus={r.id === "presidencia" || r.id === "finanzas" ? "50% 10%" : "center"}
                 />
               </div>
 

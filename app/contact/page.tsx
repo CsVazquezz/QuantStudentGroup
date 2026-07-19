@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Instagram, Linkedin, Mail, ArrowRight } from "lucide-react";
 import { useLang } from "@/lib/useLang";
+import MobileNav from "@/components/MobileNav";
 
 const T = {
   en: {
@@ -83,6 +84,12 @@ export default function ContactPage() {
             >
               {t.nav.apply}
             </Link>
+            <MobileNav links={[
+              { href: "/", label: t.nav.home },
+              { href: "/team", label: t.nav.team },
+              { href: "/learn", label: t.nav.learn },
+              { href: "/events", label: t.nav.events },
+            ]} />
           </div>
         </div>
       </header>
@@ -120,11 +127,11 @@ export default function ContactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.45 }}
-            className="group border border-slate-200 bg-white p-8 flex flex-col gap-3 hover:border-tec-300 transition-colors"
+            className="group border border-slate-200 bg-white p-5 sm:p-8 flex flex-col gap-3 hover:border-tec-300 transition-colors min-w-0"
           >
             <Instagram size={20} className="text-tec-600" />
             <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400">{t.channels.instagram.label}</p>
-            <p className="font-serif text-lg text-slate-900 leading-snug break-words">{t.channels.instagram.value}</p>
+            <p className="font-serif text-base sm:text-lg text-slate-900 leading-snug break-words">{t.channels.instagram.value}</p>
             <span className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 group-hover:text-tec-600 transition-colors mt-2">
               {t.channels.instagram.action}
               <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
@@ -139,11 +146,11 @@ export default function ContactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.45, delay: 0.1 }}
-            className="group border border-slate-200 bg-white p-8 flex flex-col gap-3 hover:border-tec-300 transition-colors"
+            className="group border border-slate-200 bg-white p-5 sm:p-8 flex flex-col gap-3 hover:border-tec-300 transition-colors min-w-0"
           >
             <Linkedin size={20} className="text-tec-600" />
             <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400">{t.channels.linkedin.label}</p>
-            <p className="font-serif text-lg text-slate-900 leading-snug break-words">{t.channels.linkedin.value}</p>
+            <p className="font-serif text-base sm:text-lg text-slate-900 leading-snug break-words">{t.channels.linkedin.value}</p>
             <span className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 group-hover:text-tec-600 transition-colors mt-2">
               {t.channels.linkedin.action}
               <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
@@ -156,11 +163,11 @@ export default function ContactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.45, delay: 0.2 }}
-            className="group border border-slate-200 bg-white p-8 flex flex-col gap-3 hover:border-tec-300 transition-colors"
+            className="group border border-slate-200 bg-white p-5 sm:p-8 flex flex-col gap-3 hover:border-tec-300 transition-colors min-w-0"
           >
             <Mail size={20} className="text-tec-600" />
             <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400">{t.channels.email.label}</p>
-            <p className="font-serif text-lg text-slate-900 leading-snug break-words">{t.channels.email.value}</p>
+            <p className="font-serif text-base sm:text-lg text-slate-900 leading-snug break-words">{t.channels.email.value}</p>
             <span className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 group-hover:text-tec-600 transition-colors mt-2">
               {t.channels.email.action}
               <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
@@ -176,12 +183,12 @@ export default function ContactPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.45 }}
-          className="font-serif text-slate-500 text-sm leading-relaxed"
+          className="font-serif text-slate-500 text-sm leading-relaxed break-words"
         >
           {t.founder.line}{" "}
           <a
             href="mailto:c.mtnzvzqz@gmail.com"
-            className="font-mono text-tec-600 hover:text-tec-700 transition-colors"
+            className="font-mono text-tec-600 hover:text-tec-700 transition-colors break-words"
           >
             c.mtnzvzqz@gmail.com
           </a>
