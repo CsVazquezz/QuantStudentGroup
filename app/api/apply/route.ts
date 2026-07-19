@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getConnection } from "@/lib/db";
+import { sendApplicationConfirmation } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   let body: Record<string, unknown>;
@@ -17,7 +18,7 @@ export async function POST(req: NextRequest) {
   // Server-side validation (mirrors client)
   if (
     typeof fullName      !== "string" || !fullName.trim()                   ||
-    typeof email         !== "string" || !/^[^@]+@tec\.mx$/.test(email)    ||
+    typeof email         !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
     typeof major         !== "string" || !major                             ||
     typeof academicStage !== "string" || !academicStage                    ||
     typeof openSandbox   !== "string" || openSandbox.trim().length < 50
@@ -46,6 +47,14 @@ export async function POST(req: NextRequest) {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       values,
     );
+
+    // Fire-and-forget confirmation. We don't fail the request if Resend is
+    // down or misconfigured — the application is already saved.
+    sendApplicationConfirmation({
+      name:  values[0] as string,
+      email: values[1] as string,
+    }).catch(err => console.error("[api/apply] email send failed", err));
+
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
     const code = (err as { code?: string }).code;
