@@ -9,6 +9,7 @@ import {
   CheckCircle, AlertCircle, Send,
 } from "lucide-react";
 import { useLang } from "@/lib/useLang";
+import MobileNav from "@/components/MobileNav";
 
 // ─────────────────────────────────────────────────────────────────
 // Static (language-agnostic)
@@ -360,6 +361,13 @@ export default function ApplyPage() {
             >
               {t.nav.home}
             </Link>
+            <MobileNav links={[
+              { href: "/#pillars", label: t.nav.about },
+              { href: "/team", label: t.nav.team },
+              { href: "/learn", label: t.nav.learn },
+              { href: "/events", label: t.nav.events },
+              { href: "/contact", label: t.nav.contact },
+            ]} />
           </div>
 
         </div>

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ArrowRight, Brain, Users, GitBranch, Instagram, Linkedin, Mail } from "lucide-react";
 import { useLang } from "@/lib/useLang";
 import type { Lang } from "@/lib/useLang";
+import MobileNav from "@/components/MobileNav";
 
 const TICKER: Record<Lang, string[]> = {
   en: [
@@ -405,23 +406,18 @@ export default function Page() {
               {lang === "en" ? "ES" : "EN"}
             </button>
             <Link
-              href="/team"
-              className="md:hidden text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors"
-            >
-              {t.nav.team}
-            </Link>
-            <Link
-              href="/learn"
-              className="md:hidden text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors"
-            >
-              {t.nav.learn}
-            </Link>
-            <Link
               href="/apply"
               className="px-4 py-2 text-xs font-serif font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
             >
               {t.nav.apply}
             </Link>
+            <MobileNav links={[
+              { href: "#pillars", label: t.nav.about },
+              { href: "/team", label: t.nav.team },
+              { href: "/learn", label: t.nav.learn },
+              { href: "/events", label: t.nav.events },
+              { href: "/contact", label: t.nav.contact },
+            ]} />
           </div>
 
         </div>

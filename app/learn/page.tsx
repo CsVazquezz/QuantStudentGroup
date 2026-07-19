@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, BookOpen, TrendingUp, Database, Cpu, BarChart2, Zap, FlaskConical } from "lucide-react";
 import { useLang } from "@/lib/useLang";
+import MobileNav from "@/components/MobileNav";
 
 // ─────────────────────────────────────────────────────────────────
 // Data
@@ -252,6 +253,12 @@ export default function LearnPage() {
             >
               {t.nav.apply}
             </Link>
+            <MobileNav links={[
+              { href: "/#pillars", label: t.nav.about },
+              { href: "/team", label: t.nav.team },
+              { href: "/events", label: t.nav.events },
+              { href: "/contact", label: t.nav.contact },
+            ]} />
           </div>
 
         </div>

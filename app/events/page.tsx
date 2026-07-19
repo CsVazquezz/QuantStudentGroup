@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Instagram, ArrowRight } from "lucide-react";
 import { useLang } from "@/lib/useLang";
+import MobileNav from "@/components/MobileNav";
 
 const T = {
   en: {
@@ -79,6 +80,12 @@ export default function EventsPage() {
             >
               {t.nav.apply}
             </Link>
+            <MobileNav links={[
+              { href: "/", label: t.nav.home },
+              { href: "/team", label: t.nav.team },
+              { href: "/learn", label: t.nav.learn },
+              { href: "/contact", label: t.nav.contact },
+            ]} />
           </div>
         </div>
       </header>
