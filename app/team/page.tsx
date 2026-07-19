@@ -289,8 +289,8 @@ export default function TeamPage() {
                 <MemberPhoto
                   name={r.name!}
                   photo={r.id === "finanzas" ? "fernanda" : undefined}
-                  zoom={r.id === "presidencia" || r.id === "finanzas" ? 1.3 : 1}
-                  focus={r.id === "presidencia" || r.id === "finanzas" ? "50% 10%" : "center"}
+                  zoom={r.id === "presidencia" ? 1.3 : r.id === "finanzas" ? 1.24 : 1}
+                  focus={r.id === "presidencia" ? "50% 10%" : "center"}
                 />
               </div>
 
