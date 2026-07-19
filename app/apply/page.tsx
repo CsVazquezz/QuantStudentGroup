@@ -50,9 +50,9 @@ const T = {
     },
     fields: {
       fullName:         "FULL NAME",
-      email:            "INSTITUTIONAL EMAIL",
+      email:            "EMAIL",
       namePlaceholder:  "Firstname Lastname",
-      emailPlaceholder: "a01234567@tec.mx",
+      emailPlaceholder: "you@example.com",
       chars:            "chars",
       campusLabel:      "I can attend in-person sessions at Campus Querétaro",
       campusSub:        "Required for Active Researchers & Board members",
@@ -95,7 +95,7 @@ const T = {
     },
     errors: {
       fullName:        "Full name is required",
-      email:           "Must be a valid @tec.mx institutional email",
+      email:           "Must be a valid email address",
       major:           "Select your major",
       academicStage:   "Select your academic stage",
       technicalLevel:  "Rate your technical background",
@@ -142,9 +142,9 @@ const T = {
     },
     fields: {
       fullName:         "NOMBRE COMPLETO",
-      email:            "CORREO INSTITUCIONAL",
+      email:            "CORREO ELECTRÓNICO",
       namePlaceholder:  "Nombre Apellido",
-      emailPlaceholder: "a01234567@tec.mx",
+      emailPlaceholder: "tu@correo.com",
       chars:            "caracteres",
       campusLabel:      "Puedo asistir a sesiones presenciales en Campus Querétaro",
       campusSub:        "Requerido para Investigadores Activos y Directivos",
@@ -187,7 +187,7 @@ const T = {
     },
     errors: {
       fullName:        "El nombre completo es requerido",
-      email:           "Debe ser un correo institucional @tec.mx válido",
+      email:           "Debe ser un correo electrónico válido",
       major:           "Selecciona tu carrera",
       academicStage:   "Selecciona tu etapa académica",
       technicalLevel:  "Indica tu nivel técnico",
@@ -278,7 +278,7 @@ export default function ApplyPage() {
     const e: Record<string, string> = {};
     const err = t.errors;
     if (!form.fullName.trim())               e.fullName        = err.fullName;
-    if (!/^[^@]+@tec\.mx$/.test(form.email)) e.email           = err.email;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = err.email;
     if (!form.major)                          e.major           = err.major;
     if (!form.academicStage)                  e.academicStage   = err.academicStage;
     if (!form.technicalLevel)                 e.technicalLevel  = err.technicalLevel;
