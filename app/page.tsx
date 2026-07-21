@@ -9,23 +9,6 @@ import { useLang } from "@/lib/useLang";
 import type { Lang } from "@/lib/useLang";
 import MobileNav from "@/components/MobileNav";
 
-const TICKER: Record<Lang, string[]> = {
-  en: [
-    "QUANT FINANCE", "OPEN TO ALL MAJORS", "PYTHON & R",
-    "FINANCIAL MODELING", "FIRST IN TEC HISTORY", "MACHINE LEARNING",
-    "BUILD REAL MODELS", "MARKETS & DATA", "CAMPUS QUERÉTARO",
-    "LEARN TOGETHER", "SYSTEMATIC TRADING", "FOUNDING COHORT 2026",
-    "MATHEMATICS", "DATA SCIENCE", "FINANCIAL MARKETS",
-  ],
-  es: [
-    "FINANZAS CUANTITATIVAS", "TODAS LAS CARRERAS", "PYTHON & R",
-    "MODELADO FINANCIERO", "PRIMERO EN TEC", "MACHINE LEARNING",
-    "MODELOS REALES", "MERCADOS Y DATOS", "CAMPUS QUERÉTARO",
-    "APRENDER JUNTOS", "TRADING SISTEMÁTICO", "COHORTE FUNDADORA 2026",
-    "MATEMÁTICAS", "CIENCIA DE DATOS", "MERCADOS FINANCIEROS",
-  ],
-};
-
 const PILLAR_STYLES = [
   { iconClr: "text-tec-600", Icon: GitBranch },
   { iconClr: "text-tec-600", Icon: Brain     },
@@ -34,7 +17,7 @@ const PILLAR_STYLES = [
 
 const T = {
   en: {
-    nav: { status: "Fall 2026 · Open", about: "About", team: "Team", learn: "Learn", events: "Events", contact: "Contact", apply: "Apply" },
+    nav: { about: "About", team: "Team", learn: "Learn", events: "Events", contact: "Contact", apply: "Apply" },
     hero: {
       eyebrow:      "Tec de Monterrey, Campus Querétaro · Founding Cohort 2026",
       line1:        "Tec Monterrey",
@@ -92,7 +75,7 @@ const T = {
   },
 
   es: {
-    nav: { status: "Otoño 2026 · Abierto", about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
+    nav: { about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
     hero: {
       eyebrow:      "Tec de Monterrey, Campus Querétaro · Cohorte Fundadora 2026",
       line1:        "Tec Monterrey",
@@ -339,39 +322,12 @@ function ParticleLogo({
 }
 
 // ─────────────────────────────────────────────────────────────────
-// Ticker
-// ─────────────────────────────────────────────────────────────────
-
-function TickerBar({ items }: { items: string[] }) {
-  return (
-    <div className="overflow-hidden bg-slate-100 py-3 select-none">
-      <motion.div
-        animate={{ x: "-50%" }}
-        transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
-        className="flex whitespace-nowrap"
-      >
-        {items.map((term, i) => (
-          <span key={i} className="inline-flex items-center gap-6 px-6">
-            <span className="text-xs font-serif text-slate-500 tracking-widest">{term}</span>
-          </span>
-        ))}
-      </motion.div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────
-// Shared
-// ─────────────────────────────────────────────────────────────────
-
-// ─────────────────────────────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────────────────────────────
 
 export default function Page() {
   const { lang, toggle } = useLang();
   const t = T[lang];
-  const tickerItems = [...TICKER[lang], ...TICKER[lang]];
   const heroTilt = useRef({ nx: 0.5, ny: 0.5, active: false });
 
   return (
@@ -388,26 +344,23 @@ export default function Page() {
           </div>
 
           <nav className="hidden md:flex items-center gap-7">
-            <a href="#pillars"  className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</a>
-            <Link href="/team"  className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
-            <Link href="/learn" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
-            <Link href="/events" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
-            <Link href="/contact" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
+            <a href="#pillars"  className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</a>
+            <Link href="/team"  className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
+            <Link href="/learn" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
+            <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
-            <div className="hidden lg:flex items-center gap-1.5 text-xs font-serif text-slate-400">
-              {t.nav.status}
-            </div>
             <button
               onClick={toggle}
-              className="text-xs font-serif text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
+              className="text-xs font-sans text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
             >
               {lang === "en" ? "ES" : "EN"}
             </button>
             <Link
               href="/apply"
-              className="px-4 py-2 text-xs font-serif font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
+              className="px-4 py-2 text-xs font-sans font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
             >
               {t.nav.apply}
             </Link>
@@ -485,7 +438,7 @@ export default function Page() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.48 }}
-              className="font-serif text-slate-500 text-base sm:text-lg leading-relaxed mt-8 mb-8"
+              className="font-sans text-slate-500 text-base sm:text-lg leading-relaxed mt-8 mb-8"
             >
               {t.hero.descPre}
               <span className="text-slate-900 font-semibold">{t.hero.descAccent}</span>
@@ -499,14 +452,14 @@ export default function Page() {
             >
               <Link
                 href="/apply"
-                className="group font-serif inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
+                className="group font-sans inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
               >
                 {t.hero.ctaPrimary}
                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
               <a
                 href="#pillars"
-                className="font-serif inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-300 hover:border-slate-500 text-slate-600 hover:text-slate-900 text-sm tracking-wider transition-all duration-200"
+                className="font-sans inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-300 hover:border-slate-500 text-slate-600 hover:text-slate-900 text-sm tracking-wider transition-all duration-200"
               >
                 {t.hero.ctaSecondary}
               </a>
@@ -535,7 +488,7 @@ export default function Page() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="font-serif text-slate-500 text-base leading-relaxed mb-8"
+          className="font-sans text-slate-500 text-base leading-relaxed mb-8"
         >
           {t.hero.descPre}
           <span className="text-slate-900 font-semibold">{t.hero.descAccent}</span>
@@ -550,14 +503,14 @@ export default function Page() {
         >
           <Link
             href="/apply"
-            className="group font-serif inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-slate-900 text-white text-sm font-bold tracking-wider"
+            className="group font-sans inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-slate-900 text-white text-sm font-bold tracking-wider"
           >
             {t.hero.ctaPrimary}
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
           </Link>
           <a
             href="#pillars"
-            className="font-serif inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-300 text-slate-600 text-sm tracking-wider"
+            className="font-sans inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-300 text-slate-600 text-sm tracking-wider"
           >
             {t.hero.ctaSecondary}
           </a>
@@ -578,9 +531,6 @@ export default function Page() {
         </motion.div>
       </div>
 
-      {/* Ticker */}
-      <TickerBar key={lang} items={tickerItems} />
-
       {/* ══════════════════════════════════════════════════════════
           PILLARS
       ══════════════════════════════════════════════════════════ */}
@@ -594,7 +544,7 @@ export default function Page() {
           <h2 className="font-serif text-slate-900" style={{ fontSize: "clamp(2rem,4vw,3rem)" }}>
             {t.pillars.heading}
           </h2>
-          <p className="font-serif text-slate-500 mt-4 max-w-xl text-base leading-relaxed">
+          <p className="font-sans text-slate-500 mt-4 max-w-xl text-base leading-relaxed">
             {t.pillars.sub}
           </p>
         </motion.div>
@@ -635,14 +585,14 @@ export default function Page() {
                   >
                     {p.title}
                   </h3>
-                  <p className="font-serif text-slate-500 text-sm leading-relaxed mt-3 max-w-xl">
+                  <p className="font-sans text-slate-500 text-sm leading-relaxed mt-3 max-w-xl">
                     {p.desc}
                   </p>
                   <ul className="flex flex-wrap gap-x-5 gap-y-1 mt-5">
                     {p.tags.map((tag) => (
                       <li
                         key={tag}
-                        className="font-serif text-xs tracking-wide text-slate-400 border-l border-tec-600 pl-2"
+                        className="font-sans text-xs tracking-wide text-slate-400 border-l border-tec-600 pl-2"
                       >
                         {tag}
                       </li>
@@ -669,7 +619,7 @@ export default function Page() {
           <h2 className="font-serif text-slate-900 mb-3" style={{ fontSize: "clamp(1.8rem,3.5vw,2.8rem)" }}>
             {t.sponsors.heading}
           </h2>
-          <p className="font-serif text-slate-500 max-w-lg leading-relaxed">
+          <p className="font-sans text-slate-500 max-w-lg leading-relaxed">
             {t.sponsors.sub}
           </p>
         </motion.div>
@@ -681,7 +631,7 @@ export default function Page() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="border border-dashed border-slate-200 rounded-sm py-16 flex flex-col items-center gap-4 text-center"
         >
-          <p className="font-serif text-slate-400 text-sm">{t.sponsors.empty}</p>
+          <p className="font-sans text-slate-400 text-sm">{t.sponsors.empty}</p>
           <a
             href="mailto:c.mtnzvzqz@gmail.com"
             className="inline-flex items-center gap-2 text-xs font-mono text-tec-600 hover:text-tec-700 transition-colors"
@@ -706,7 +656,7 @@ export default function Page() {
           <h2 className="font-serif text-slate-900 mb-3" style={{ fontSize: "clamp(1.8rem,3.5vw,2.8rem)" }}>
             {t.highlights.heading}
           </h2>
-          <p className="font-serif text-slate-500 max-w-lg leading-relaxed">
+          <p className="font-sans text-slate-500 max-w-lg leading-relaxed">
             {t.highlights.sub}
           </p>
         </motion.div>
@@ -718,7 +668,7 @@ export default function Page() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="border border-dashed border-slate-200 rounded-sm py-16 flex items-center justify-center"
         >
-          <p className="font-serif text-slate-400 text-sm">{t.highlights.empty}</p>
+          <p className="font-sans text-slate-400 text-sm">{t.highlights.empty}</p>
         </motion.div>
       </section>
 
@@ -738,12 +688,12 @@ export default function Page() {
           >
             {t.cta.heading}
           </h2>
-          <p className="font-serif text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
+          <p className="font-sans text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
             {t.cta.para}
           </p>
           <Link
             href="/apply"
-            className="group font-serif inline-flex items-center gap-2.5 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
+            className="group font-sans inline-flex items-center gap-2.5 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
           >
             {t.cta.btn}
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
@@ -756,7 +706,7 @@ export default function Page() {
       ══════════════════════════════════════════════════════════ */}
       <footer className="border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-xs font-serif text-slate-400">
+          <span className="text-xs font-sans text-slate-400">
             Tec de Monterrey Campus Querétaro, Est. 2026
           </span>
           <div className="flex items-center gap-5">

@@ -188,7 +188,7 @@ function MemberPhoto({
   if (failed) {
     return (
       <div className="aspect-[4/5] w-full flex items-center justify-center bg-tec-50 border border-slate-200 rounded-lg select-none">
-        <span className="font-serif text-4xl sm:text-5xl text-tec-600/70 tracking-tight">
+        <span className="font-sans text-4xl sm:text-5xl text-tec-600/70 tracking-tight">
           {initials}
         </span>
       </div>
@@ -225,22 +225,22 @@ export default function TeamPage() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-7">
-            <Link href="/"      className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.home}</Link>
-            <Link href="/learn" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
-            <Link href="/events" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
-            <Link href="/contact" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
+            <Link href="/"      className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.home}</Link>
+            <Link href="/learn" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
+            <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={toggle}
-              className="text-xs font-serif text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
+              className="text-xs font-sans text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
             >
               {lang === "en" ? "ES" : "EN"}
             </button>
             <Link
               href="/apply"
-              className="px-4 py-2 text-xs font-serif font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
+              className="px-4 py-2 text-xs font-sans font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
             >
               {t.nav.apply}
             </Link>
@@ -298,7 +298,7 @@ export default function TeamPage() {
                 <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400 mb-1">
                   {r.title}
                 </p>
-                <h2 className="font-serif text-xl text-slate-900 leading-snug">{r.name}</h2>
+                <h2 className="font-sans text-xl text-slate-900 leading-snug">{r.name}</h2>
 
                 <p className="text-xs font-mono text-tec-600 mt-2">
                   {r.major}
@@ -336,7 +336,7 @@ export default function TeamPage() {
                 <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400">
                   {r.title}
                 </p>
-                <p className="font-serif text-slate-300 text-lg">{t.open}</p>
+                <p className="font-sans text-slate-300 text-lg">{t.open}</p>
                 <p className="text-xs font-mono text-slate-300">{t.openSub}</p>
               </motion.div>
             ))}
@@ -358,7 +358,7 @@ export default function TeamPage() {
           >
             {t.cta.heading}
           </h2>
-          <p className="font-serif text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
+          <p className="font-sans text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
             {t.cta.para}
           </p>
           <Link

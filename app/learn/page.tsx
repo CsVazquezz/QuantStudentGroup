@@ -233,23 +233,23 @@ export default function LearnPage() {
 
           {/* Center nav */}
           <nav className="hidden md:flex items-center gap-7">
-            <Link href="/#pillars" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</Link>
-            <Link href="/team" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
-            <Link href="/events" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
-            <Link href="/contact" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
+            <Link href="/#pillars" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</Link>
+            <Link href="/team" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
+            <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
           {/* Right */}
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={toggle}
-              className="text-xs font-serif text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
+              className="text-xs font-sans text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
             >
               {lang === "en" ? "ES" : "EN"}
             </button>
             <Link
               href="/apply"
-              className="px-4 py-2 text-xs font-serif font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
+              className="px-4 py-2 text-xs font-sans font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
             >
               {t.nav.apply}
             </Link>
@@ -274,7 +274,7 @@ export default function LearnPage() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="text-xs font-serif font-semibold tracking-widest uppercase text-slate-400 mb-5"
+            className="text-xs font-sans font-semibold tracking-widest uppercase text-slate-400 mb-5"
           >
             {t.hero.eyebrow}
           </motion.p>
@@ -291,7 +291,7 @@ export default function LearnPage() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="font-serif text-slate-500 text-lg leading-relaxed max-w-2xl"
+            className="font-sans text-slate-500 text-lg leading-relaxed max-w-2xl"
           >
             {t.hero.sub}
           </motion.p>
@@ -307,7 +307,7 @@ export default function LearnPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <p className="text-xs font-serif font-semibold tracking-widest uppercase text-slate-400 mb-4">// THE BASICS</p>
+              <p className="text-xs font-sans font-semibold tracking-widest uppercase text-slate-400 mb-4">// THE BASICS</p>
               <h2 className="font-serif text-slate-900 mb-0" style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)" }}>
                 {t.what.heading}
               </h2>
@@ -320,10 +320,10 @@ export default function LearnPage() {
               transition={{ delay: 0.1 }}
               className="space-y-4"
             >
-              <p className="font-serif text-slate-600 leading-relaxed">{t.what.body1}</p>
-              <p className="font-serif text-slate-600 leading-relaxed">{t.what.body2}</p>
+              <p className="font-sans text-slate-600 leading-relaxed">{t.what.body1}</p>
+              <p className="font-sans text-slate-600 leading-relaxed">{t.what.body2}</p>
               <div className="mt-6 pl-5 border-l-2 border-tec-400">
-                <p className="font-serif text-slate-800 text-lg font-medium italic">{t.what.principle}</p>
+                <p className="font-sans text-slate-800 text-lg font-medium italic">{t.what.principle}</p>
               </div>
             </motion.div>
           </div>
@@ -339,11 +339,11 @@ export default function LearnPage() {
             viewport={{ once: true }}
             className="mb-10"
           >
-            <p className="text-xs font-serif font-semibold tracking-widest uppercase text-slate-400 mb-4">// SUBFIELDS</p>
+            <p className="text-xs font-sans font-semibold tracking-widest uppercase text-slate-400 mb-4">// SUBFIELDS</p>
             <h2 className="font-serif text-slate-900 mb-3" style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)" }}>
               {t.concepts.heading}
             </h2>
-            <p className="font-serif text-slate-500 max-w-xl">{t.concepts.sub}</p>
+            <p className="font-sans text-slate-500 max-w-xl">{t.concepts.sub}</p>
           </motion.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-100">
@@ -361,8 +361,8 @@ export default function LearnPage() {
                   className="bg-white p-6 hover:bg-slate-50 transition-colors duration-200"
                 >
                   <Icon size={16} className="text-tec-500 mb-4" />
-                  <h3 className="font-serif text-sm font-semibold text-slate-900 mb-2">{label}</h3>
-                  <p className="font-serif text-xs text-slate-500 leading-relaxed">{sub}</p>
+                  <h3 className="font-sans text-sm font-semibold text-slate-900 mb-2">{label}</h3>
+                  <p className="font-sans text-xs text-slate-500 leading-relaxed">{sub}</p>
                 </motion.div>
               );
             })}
@@ -380,7 +380,7 @@ export default function LearnPage() {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <p className="text-xs font-serif font-semibold tracking-widest uppercase text-slate-400 mb-4">{t.simons.eyebrow}</p>
+            <p className="text-xs font-sans font-semibold tracking-widest uppercase text-slate-400 mb-4">{t.simons.eyebrow}</p>
             <h2 className="font-serif text-slate-900" style={{ fontSize: "clamp(1.8rem,4vw,3rem)" }}>
               {t.simons.name}
             </h2>
@@ -396,7 +396,7 @@ export default function LearnPage() {
             className="mb-12 pl-6 border-l-2 border-tec-400"
           >
             <blockquote
-              className="font-serif font-medium text-slate-800 leading-[1.5] mb-3"
+              className="font-sans font-medium text-slate-800 leading-[1.5] mb-3"
               style={{ fontSize: "clamp(1.1rem,2.5vw,1.5rem)" }}
             >
               {t.simons.quote}
@@ -415,7 +415,7 @@ export default function LearnPage() {
             {t.simons.stats.map(s => (
               <div key={s.val} className="bg-white px-6 py-5">
                 <div className="text-2xl font-bold font-mono text-tec-600 mb-1">{s.val}</div>
-                <div className="text-xs font-serif text-slate-500 leading-snug">{s.lbl}</div>
+                <div className="text-xs font-sans text-slate-500 leading-snug">{s.lbl}</div>
               </div>
             ))}
           </motion.div>
@@ -428,9 +428,9 @@ export default function LearnPage() {
               viewport={{ once: true }}
               className="space-y-4"
             >
-              <p className="font-serif text-slate-600 leading-relaxed">{t.simons.bio1}</p>
-              <p className="font-serif text-slate-600 leading-relaxed">{t.simons.bio2}</p>
-              <p className="font-serif text-slate-600 leading-relaxed">{t.simons.bio3}</p>
+              <p className="font-sans text-slate-600 leading-relaxed">{t.simons.bio1}</p>
+              <p className="font-sans text-slate-600 leading-relaxed">{t.simons.bio2}</p>
+              <p className="font-sans text-slate-600 leading-relaxed">{t.simons.bio3}</p>
             </motion.div>
 
             {/* Principles */}
@@ -446,8 +446,8 @@ export default function LearnPage() {
                   <div key={i} className="flex gap-4">
                     <div className="w-px bg-tec-200 flex-shrink-0 mt-1.5" />
                     <div>
-                      <h4 className="font-serif text-sm font-semibold text-slate-900 mb-1.5">{p.title}</h4>
-                      <p className="font-serif text-sm text-slate-500 leading-relaxed">{p.body}</p>
+                      <h4 className="font-sans text-sm font-semibold text-slate-900 mb-1.5">{p.title}</h4>
+                      <p className="font-sans text-sm text-slate-500 leading-relaxed">{p.body}</p>
                     </div>
                   </div>
                 ))}
@@ -466,14 +466,14 @@ export default function LearnPage() {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <p className="text-xs font-serif font-semibold tracking-widest uppercase text-slate-400 mb-4">
+            <p className="text-xs font-sans font-semibold tracking-widest uppercase text-slate-400 mb-4">
               <BookOpen size={10} className="inline mr-2" />
               READING LIST
             </p>
             <h2 className="font-serif text-slate-900 mb-3" style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)" }}>
               {t.books.heading}
             </h2>
-            <p className="font-serif text-slate-500 max-w-xl">{t.books.sub}</p>
+            <p className="font-sans text-slate-500 max-w-xl">{t.books.sub}</p>
           </motion.div>
 
           <div className="space-y-8">
@@ -496,11 +496,11 @@ export default function LearnPage() {
                         className="bg-white p-6 hover:bg-slate-50 transition-colors duration-200"
                       >
                         <p className="text-xs font-mono mb-3 text-slate-400">{book.year}</p>
-                        <h3 className="font-serif text-sm font-bold text-slate-900 leading-snug mb-1">
+                        <h3 className="font-sans text-sm font-bold text-slate-900 leading-snug mb-1">
                           {book.title}
                         </h3>
                         <p className="text-xs font-mono text-slate-400 mb-3">{book.author}</p>
-                        <p className="font-serif text-xs text-slate-500 leading-relaxed">
+                        <p className="font-sans text-xs text-slate-500 leading-relaxed">
                           {lang === "en" ? book.desc_en : book.desc_es}
                         </p>
                       </motion.div>
@@ -524,10 +524,10 @@ export default function LearnPage() {
             <h2 className="font-serif text-slate-900 mb-4" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)" }}>
               {t.cta.heading}
             </h2>
-            <p className="font-serif text-slate-500 mb-8 leading-relaxed">{t.cta.sub}</p>
+            <p className="font-sans text-slate-500 mb-8 leading-relaxed">{t.cta.sub}</p>
             <Link
               href="/apply"
-              className="group font-serif inline-flex items-center gap-2.5 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
+              className="group font-sans inline-flex items-center gap-2.5 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
             >
               {t.cta.btn}
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
@@ -540,7 +540,7 @@ export default function LearnPage() {
       {/* ── FOOTER ── */}
       <footer className="border-t border-slate-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span className="text-xs font-serif text-slate-400">
+          <span className="text-xs font-sans text-slate-400">
             Tec de Monterrey Campus Querétaro, Est. 2026
           </span>
           <p className="text-xs font-mono text-slate-400 italic">{t.footer}</p>

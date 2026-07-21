@@ -57,7 +57,7 @@ export default function MobileNav({ links }: { links: NavLink[] }) {
                     key={l.href}
                     href={l.href}
                     onClick={() => setOpen(false)}
-                    className="py-3 text-sm font-serif text-slate-600 hover:text-slate-900 transition-colors tracking-wide border-b border-slate-100 last:border-b-0"
+                    className="py-3 text-sm font-sans text-slate-600 hover:text-slate-900 transition-colors tracking-wide border-b border-slate-100 last:border-b-0"
                   >
                     {l.label}
                   </Link>

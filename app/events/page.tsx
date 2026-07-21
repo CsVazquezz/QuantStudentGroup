@@ -61,22 +61,22 @@ export default function EventsPage() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-7">
-            <Link href="/"        className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.home}</Link>
-            <Link href="/team"    className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
-            <Link href="/learn"   className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
-            <Link href="/contact" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
+            <Link href="/"        className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.home}</Link>
+            <Link href="/team"    className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
+            <Link href="/learn"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
+            <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={toggle}
-              className="text-xs font-serif text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
+              className="text-xs font-sans text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
             >
               {lang === "en" ? "ES" : "EN"}
             </button>
             <Link
               href="/apply"
-              className="px-4 py-2 text-xs font-serif font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
+              className="px-4 py-2 text-xs font-sans font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
             >
               {t.nav.apply}
             </Link>
@@ -106,7 +106,7 @@ export default function EventsPage() {
           >
             {t.heading}
           </h1>
-          <p className="font-serif text-slate-500 text-lg max-w-lg leading-relaxed">
+          <p className="font-sans text-slate-500 text-lg max-w-lg leading-relaxed">
             {t.sub}
           </p>
         </motion.div>
@@ -121,10 +121,10 @@ export default function EventsPage() {
           transition={{ duration: 0.5 }}
           className="mb-10"
         >
-          <h2 className="font-serif text-slate-900 mb-3" style={{ fontSize: "clamp(1.8rem,3.5vw,2.8rem)" }}>
+          <h2 className="font-sans text-slate-900 mb-3" style={{ fontSize: "clamp(1.8rem,3.5vw,2.8rem)" }}>
             {t.section.heading}
           </h2>
-          <p className="font-serif text-slate-500 max-w-lg leading-relaxed">
+          <p className="font-sans text-slate-500 max-w-lg leading-relaxed">
             {t.section.sub}
           </p>
         </motion.div>
@@ -136,7 +136,7 @@ export default function EventsPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="border border-dashed border-slate-200 rounded-sm py-16 flex flex-col items-center gap-4 text-center px-6"
         >
-          <p className="font-serif text-slate-400 text-sm max-w-md">{t.section.empty}</p>
+          <p className="font-sans text-slate-400 text-sm max-w-md">{t.section.empty}</p>
           <a
             href="https://www.instagram.com/tmqs_qro/"
             target="_blank"
@@ -158,12 +158,12 @@ export default function EventsPage() {
           transition={{ duration: 0.5 }}
         >
           <h2
-            className="font-serif tracking-tight text-slate-900 mb-4"
+            className="font-sans tracking-tight text-slate-900 mb-4"
             style={{ fontSize: "clamp(1.6rem,3.5vw,2.4rem)" }}
           >
             {t.cta.heading}
           </h2>
-          <p className="font-serif text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
+          <p className="font-sans text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
             {t.cta.para}
           </p>
           <Link

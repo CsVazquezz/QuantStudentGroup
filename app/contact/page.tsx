@@ -65,22 +65,22 @@ export default function ContactPage() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-7">
-            <Link href="/"       className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.home}</Link>
-            <Link href="/team"   className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
-            <Link href="/learn"  className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
-            <Link href="/events" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/"       className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.home}</Link>
+            <Link href="/team"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
+            <Link href="/learn"  className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
+            <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={toggle}
-              className="text-xs font-serif text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
+              className="text-xs font-sans text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
             >
               {lang === "en" ? "ES" : "EN"}
             </button>
             <Link
               href="/apply"
-              className="px-4 py-2 text-xs font-serif font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
+              className="px-4 py-2 text-xs font-sans font-semibold bg-tec-600 text-white hover:bg-tec-700 rounded-full transition-colors duration-200"
             >
               {t.nav.apply}
             </Link>
@@ -110,7 +110,7 @@ export default function ContactPage() {
           >
             {t.heading}
           </h1>
-          <p className="font-serif text-slate-500 text-lg max-w-lg leading-relaxed">
+          <p className="font-sans text-slate-500 text-lg max-w-lg leading-relaxed">
             {t.sub}
           </p>
         </motion.div>
@@ -131,7 +131,7 @@ export default function ContactPage() {
           >
             <Instagram size={20} className="text-tec-600" />
             <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400">{t.channels.instagram.label}</p>
-            <p className="font-serif text-base sm:text-lg text-slate-900 leading-snug break-words">{t.channels.instagram.value}</p>
+            <p className="font-sans text-base sm:text-lg text-slate-900 leading-snug break-words">{t.channels.instagram.value}</p>
             <span className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 group-hover:text-tec-600 transition-colors mt-2">
               {t.channels.instagram.action}
               <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
@@ -150,7 +150,7 @@ export default function ContactPage() {
           >
             <Linkedin size={20} className="text-tec-600" />
             <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400">{t.channels.linkedin.label}</p>
-            <p className="font-serif text-base sm:text-lg text-slate-900 leading-snug break-words">{t.channels.linkedin.value}</p>
+            <p className="font-sans text-base sm:text-lg text-slate-900 leading-snug break-words">{t.channels.linkedin.value}</p>
             <span className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 group-hover:text-tec-600 transition-colors mt-2">
               {t.channels.linkedin.action}
               <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
@@ -167,7 +167,7 @@ export default function ContactPage() {
           >
             <Mail size={20} className="text-tec-600" />
             <p className="text-[10px] font-sans font-semibold tracking-[0.18em] uppercase text-slate-400">{t.channels.email.label}</p>
-            <p className="font-serif text-base sm:text-lg text-slate-900 leading-snug break-words">{t.channels.email.value}</p>
+            <p className="font-sans text-base sm:text-lg text-slate-900 leading-snug break-words">{t.channels.email.value}</p>
             <span className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 group-hover:text-tec-600 transition-colors mt-2">
               {t.channels.email.action}
               <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
@@ -183,7 +183,7 @@ export default function ContactPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.45 }}
-          className="font-serif text-slate-500 text-sm leading-relaxed break-words"
+          className="font-sans text-slate-500 text-sm leading-relaxed break-words"
         >
           {t.founder.line}{" "}
           <a
@@ -204,12 +204,12 @@ export default function ContactPage() {
           transition={{ duration: 0.5 }}
         >
           <h2
-            className="font-serif tracking-tight text-slate-900 mb-4"
+            className="font-sans tracking-tight text-slate-900 mb-4"
             style={{ fontSize: "clamp(1.6rem,3.5vw,2.4rem)" }}
           >
             {t.apply.heading}
           </h2>
-          <p className="font-serif text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
+          <p className="font-sans text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
             {t.apply.para}
           </p>
           <Link

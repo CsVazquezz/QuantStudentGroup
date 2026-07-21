@@ -224,7 +224,7 @@ function FormPanel({ title, children }: { title: string; children: React.ReactNo
       transition={{ duration: 0.4 }}
       className="py-7 border-b border-slate-100 last:border-0"
     >
-      <h3 className="font-serif text-sm font-semibold text-slate-700 mb-5">{title}</h3>
+      <h3 className="font-sans text-sm font-semibold text-slate-700 mb-5">{title}</h3>
       {children}
     </motion.div>
   );
@@ -340,24 +340,24 @@ export default function ApplyPage() {
 
           {/* Center nav */}
           <nav className="hidden md:flex items-center gap-7">
-            <Link href="/#pillars" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</Link>
-            <Link href="/team" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
-            <Link href="/learn" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
-            <Link href="/events" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
-            <Link href="/contact" className="text-xs font-serif text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
+            <Link href="/#pillars" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</Link>
+            <Link href="/team" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
+            <Link href="/learn" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
+            <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
           {/* Right */}
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={toggle}
-              className="text-xs font-serif text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
+              className="text-xs font-sans text-slate-400 hover:text-slate-600 transition-colors px-1.5 py-1"
             >
               {lang === "en" ? "ES" : "EN"}
             </button>
             <Link
               href="/"
-              className="px-4 py-2 text-xs font-serif font-semibold border border-slate-200 text-slate-600 hover:border-slate-400 hover:text-slate-900 rounded-full transition-colors duration-200"
+              className="px-4 py-2 text-xs font-sans font-semibold border border-slate-200 text-slate-600 hover:border-slate-400 hover:text-slate-900 rounded-full transition-colors duration-200"
             >
               {t.nav.home}
             </Link>
@@ -394,13 +394,13 @@ export default function ApplyPage() {
               >
                 <CheckCircle size={24} className="text-tec-600" />
               </motion.div>
-              <p className="text-xs font-serif font-semibold tracking-widest uppercase text-tec-600/60 mb-3">
+              <p className="text-xs font-sans font-semibold tracking-widest uppercase text-tec-600/60 mb-3">
                 {t.success.eyebrow}
               </p>
-              <h2 className="font-serif text-2xl font-bold text-slate-900 mb-4">
+              <h2 className="font-sans text-2xl font-bold text-slate-900 mb-4">
                 {t.success.heading}
               </h2>
-              <p className="font-serif text-slate-600 max-w-sm mx-auto leading-relaxed">
+              <p className="font-sans text-slate-600 max-w-sm mx-auto leading-relaxed">
                 {t.success.body}
                 <span className="text-slate-900 font-semibold">{t.success.bodyAccent}</span>
                 {t.success.bodyPost}
@@ -431,7 +431,7 @@ export default function ApplyPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-10"
               >
-                <p className="text-xs font-serif text-slate-400 tracking-wide mb-3">
+                <p className="text-xs font-sans text-slate-400 tracking-wide mb-3">
                   {t.page.eyebrow}
                 </p>
                 <h1
@@ -440,7 +440,7 @@ export default function ApplyPage() {
                 >
                   {t.page.heading}
                 </h1>
-                <p className="font-serif text-slate-500 leading-relaxed max-w-lg">
+                <p className="font-sans text-slate-500 leading-relaxed max-w-lg">
                   {t.page.desc}
                   <span className="text-slate-900 font-semibold">{t.page.descAccent}</span>
                   {t.page.descPost}
@@ -450,7 +450,7 @@ export default function ApplyPage() {
               {/* Context strip */}
               <div className="flex flex-wrap divide-x divide-slate-200 mb-8 pb-8 border-b border-slate-100">
                 {t.page.strip.map(item => (
-                  <span key={item} className="text-xs font-serif text-slate-500 px-4 first:pl-0">
+                  <span key={item} className="text-xs font-sans text-slate-500 px-4 first:pl-0">
                     {item}
                   </span>
                 ))}
@@ -545,10 +545,10 @@ export default function ApplyPage() {
                           <div className={`text-xs font-mono font-bold tracking-widest mb-1.5 ${form.academicStage === stage.id ? "text-tec-600" : "text-slate-400"}`}>
                             {stage.range}
                           </div>
-                          <div className={`text-sm font-semibold font-serif ${form.academicStage === stage.id ? "text-tec-800" : "text-slate-700"}`}>
+                          <div className={`text-sm font-semibold font-sans ${form.academicStage === stage.id ? "text-tec-800" : "text-slate-700"}`}>
                             {stage.label}
                           </div>
-                          <div className="text-xs font-serif text-slate-400 mt-0.5">{stage.desc}</div>
+                          <div className="text-xs font-sans text-slate-400 mt-0.5">{stage.desc}</div>
                         </button>
                       ))}
                     </div>
@@ -557,7 +557,7 @@ export default function ApplyPage() {
 
                   {/* 04 — Technical Level */}
                   <FormPanel title={t.sections.technical}>
-                    <p className="font-serif text-sm text-slate-500 mb-4 leading-relaxed">
+                    <p className="font-sans text-sm text-slate-500 mb-4 leading-relaxed">
                       {t.sections.techHelper}
                     </p>
                     <div className="grid grid-cols-5 gap-2">
@@ -576,10 +576,10 @@ export default function ApplyPage() {
                           <div className={`text-xl font-bold font-mono ${form.technicalLevel === level.value ? "text-tec-600" : "text-slate-300"}`}>
                             {level.value}
                           </div>
-                          <div className={`text-[11px] mt-1 font-semibold font-serif leading-tight ${form.technicalLevel === level.value ? "text-tec-800" : "text-slate-500"}`}>
+                          <div className={`text-[11px] mt-1 font-semibold font-sans leading-tight ${form.technicalLevel === level.value ? "text-tec-800" : "text-slate-500"}`}>
                             {level.label}
                           </div>
-                          <div className="text-[10px] text-slate-400 mt-1 leading-tight font-serif hidden sm:block">
+                          <div className="text-[10px] text-slate-400 mt-1 leading-tight font-sans hidden sm:block">
                             {level.desc}
                           </div>
                         </motion.button>
@@ -597,7 +597,7 @@ export default function ApplyPage() {
 
                   {/* 05 — Interests */}
                   <FormPanel title={t.sections.interests}>
-                    <p className="font-serif text-sm text-slate-500 mb-4 leading-relaxed">
+                    <p className="font-sans text-sm text-slate-500 mb-4 leading-relaxed">
                       {t.sections.interestHelper}
                     </p>
                     <div className="grid sm:grid-cols-2 gap-2.5">
@@ -617,7 +617,7 @@ export default function ApplyPage() {
                             }`}
                           >
                             <Icon size={15} className={sel ? "text-tec-600" : "text-slate-300"} />
-                            <span className={`text-sm font-serif font-medium flex-1 ${sel ? "text-tec-800" : "text-slate-600"}`}>
+                            <span className={`text-sm font-sans font-medium flex-1 ${sel ? "text-tec-800" : "text-slate-600"}`}>
                               {interest.label}
                             </span>
                             <AnimatePresence>
@@ -666,10 +666,10 @@ export default function ApplyPage() {
                             </AnimatePresence>
                           </div>
                           <div>
-                            <div className={`text-sm font-semibold font-serif ${form.desiredRole === role.id ? "text-tec-800" : "text-slate-700"}`}>
+                            <div className={`text-sm font-semibold font-sans ${form.desiredRole === role.id ? "text-tec-800" : "text-slate-700"}`}>
                               {role.label}
                             </div>
-                            <div className="text-xs font-serif text-slate-400 mt-0.5">{role.desc}</div>
+                            <div className="text-xs font-sans text-slate-400 mt-0.5">{role.desc}</div>
                           </div>
                         </button>
                       ))}
@@ -695,10 +695,10 @@ export default function ApplyPage() {
                           />
                         </div>
                         <div>
-                          <div className={`text-sm font-semibold font-serif ${form.campusConfirmed ? "text-tec-800" : "text-slate-700"}`}>
+                          <div className={`text-sm font-semibold font-sans ${form.campusConfirmed ? "text-tec-800" : "text-slate-700"}`}>
                             {t.fields.campusLabel}
                           </div>
-                          <div className="text-xs font-serif text-slate-400 mt-0.5">
+                          <div className="text-xs font-sans text-slate-400 mt-0.5">
                             {t.fields.campusSub}
                           </div>
                         </div>
@@ -709,7 +709,7 @@ export default function ApplyPage() {
 
                   {/* 07 — Open Sandbox */}
                   <FormPanel title={t.sections.sandbox}>
-                    <p className="font-serif text-sm text-slate-500 mb-4 leading-relaxed">
+                    <p className="font-sans text-sm text-slate-500 mb-4 leading-relaxed">
                       {t.sections.sandboxHelper}
                     </p>
                     <div className={`border transition-colors ${errors.openSandbox ? "border-red-400" : "border-slate-200"} focus-within:border-tec-400`}>
@@ -718,10 +718,10 @@ export default function ApplyPage() {
                         onChange={e => setForm(f => ({ ...f, openSandbox: e.target.value }))}
                         rows={8}
                         placeholder={t.sandboxPlaceholder}
-                        className="w-full bg-white text-slate-700 text-sm px-4 py-4 font-serif placeholder-slate-300 focus:outline-none resize-none leading-relaxed"
+                        className="w-full bg-white text-slate-700 text-sm px-4 py-4 font-sans placeholder-slate-300 focus:outline-none resize-none leading-relaxed"
                       />
                       <div className="flex justify-end px-4 py-2 border-t border-slate-100 bg-slate-50">
-                        <span className="text-xs font-serif text-slate-300">
+                        <span className="text-xs font-sans text-slate-300">
                           {form.openSandbox.length} {t.fields.chars}
                         </span>
                       </div>
@@ -747,7 +747,7 @@ export default function ApplyPage() {
                       disabled={submitting}
                       whileHover={submitting ? {} : { scale: 1.008 }}
                       whileTap={submitting ? {} : { scale: 0.996 }}
-                      className="w-full flex items-center justify-center gap-3 py-4 font-serif font-bold text-sm tracking-widest transition-all duration-200 bg-slate-900 hover:bg-slate-800 text-white disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
+                      className="w-full flex items-center justify-center gap-3 py-4 font-sans font-bold text-sm tracking-widest transition-all duration-200 bg-slate-900 hover:bg-slate-800 text-white disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
                     >
                       {submitting ? (
                         <>
@@ -765,7 +765,7 @@ export default function ApplyPage() {
                         </>
                       )}
                     </motion.button>
-                    <p className="text-center text-xs font-serif text-slate-400 mt-3">
+                    <p className="text-center text-xs font-sans text-slate-400 mt-3">
                       {t.submit.footer}
                     </p>
                   </motion.div>
@@ -780,7 +780,7 @@ export default function ApplyPage() {
       {/* ── FOOTER ── */}
       <footer className="border-t border-slate-100 mt-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span className="text-xs font-serif text-slate-400">
+          <span className="text-xs font-sans text-slate-400">
             Tec de Monterrey Campus Querétaro, Est. 2026
           </span>
           <Link
