@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Linkedin, ArrowRight } from "lucide-react";
+import { Linkedin } from "lucide-react";
 import { useLang } from "@/lib/useLang";
 import MobileNav from "@/components/MobileNav";
 
@@ -78,11 +78,6 @@ const T = {
     ],
     open: "Open position",
     openSub: "Applications open · Fall 2026",
-    cta: {
-      heading: "Want to be in?",
-      para: "Apply and tell us why you're a fit.",
-      btn: "Apply now",
-    },
     footer: "Extracting alpha from noise.",
   },
 
@@ -148,11 +143,6 @@ const T = {
     ],
     open: "Puesto abierto",
     openSub: "Aplicaciones abiertas · Otoño 2026",
-    cta: {
-      heading: "¿Quieres unirte?",
-      para: "Aplica y cuéntanos por qué eres un buen candidato.",
-      btn: "Aplicar ahora",
-    },
     footer: "Extrayendo alpha del ruido.",
   },
 };
@@ -343,33 +333,6 @@ export default function TeamPage() {
           </div>
         </section>
       )}
-
-      {/* ── CTA ── */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 py-16 lg:py-20 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2
-            className="font-serif tracking-tight text-slate-900 mb-4"
-            style={{ fontSize: "clamp(1.6rem,3.5vw,2.4rem)" }}
-          >
-            {t.cta.heading}
-          </h2>
-          <p className="font-sans text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
-            {t.cta.para}
-          </p>
-          <Link
-            href="/apply"
-            className="group font-sans inline-flex items-center gap-2.5 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
-          >
-            {t.cta.btn}
-            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
-          </Link>
-        </motion.div>
-      </section>
 
       {/* ── FOOTER ── */}
       <footer className="border-t border-slate-100">

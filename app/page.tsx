@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -26,13 +25,6 @@ const T = {
       descPre:      "The ",
       descAccent:   "first quant student club",
       descPost:     " in Tec de Monterrey history. A community for students curious about where markets, data, and mathematics meet. No prior experience required.",
-      ctaPrimary:   "JOIN THE FOUNDING COHORT",
-      ctaSecondary: "HOW IT WORKS",
-      stats: [
-        { val: "Cohort 01",  lbl: "Be a founding member"  },
-        { val: "First ever", lbl: "At Tec de Monterrey"   },
-        { val: "All majors", lbl: "ITC / IDM / LAF / LEC" },
-      ],
     },
     pillars: {
       heading: "What we do together.",
@@ -84,13 +76,6 @@ const T = {
       descPre:      "El ",
       descAccent:   "primer club de quant",
       descPost:     " en la historia del Tec de Monterrey. Una comunidad para estudiantes curiosos sobre la intersección de mercados, datos y matemáticas. Sin experiencia previa requerida.",
-      ctaPrimary:   "ÚNETE A LA COHORTE FUNDADORA",
-      ctaSecondary: "CÓMO FUNCIONA",
-      stats: [
-        { val: "Cohorte 01",      lbl: "Sé miembro fundador"   },
-        { val: "El primero",      lbl: "En Tec de Monterrey"   },
-        { val: "Todas las carr.", lbl: "ITC / IDM / LAF / LEC" },
-      ],
     },
     pillars: {
       heading: "Lo que hacemos juntos.",
@@ -135,8 +120,11 @@ const T = {
 
 // ─────────────────────────────────────────────────────────────────
 // 3D Particle Logo — samples the Tec flame from tec-logo.png
+// Commented out 2026-07-21: removed from the hero for a more
+// professional look. Needs `useEffect, useRef` back in the import
+// above if restored.
 // ─────────────────────────────────────────────────────────────────
-
+/*
 type TiltRef = { current: { nx: number; ny: number; active: boolean } };
 
 function ParticleLogo({
@@ -320,6 +308,7 @@ function ParticleLogo({
 
   return <canvas ref={ref} className={className} style={{ display: "block" }} />;
 }
+*/
 
 // ─────────────────────────────────────────────────────────────────
 // Page
@@ -328,7 +317,6 @@ function ParticleLogo({
 export default function Page() {
   const { lang, toggle } = useLang();
   const t = T[lang];
-  const heroTilt = useRef({ nx: 0.5, ny: 0.5, active: false });
 
   return (
     <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden">
@@ -379,162 +367,34 @@ export default function Page() {
       {/* ══════════════════════════════════════════════════════════
           HERO
       ══════════════════════════════════════════════════════════ */}
-      <section
-        className="flex flex-col items-center justify-center gap-6
-                   min-h-[calc(100vh-3.5rem)] overflow-hidden
-                   lg:block lg:relative"
-        onMouseMove={(e) => {
-          const r = e.currentTarget.getBoundingClientRect();
-          heroTilt.current.nx = (e.clientX - r.left) / r.width;
-          heroTilt.current.ny = (e.clientY - r.top)  / r.height;
-          heroTilt.current.active = true;
-        }}
-        onMouseLeave={() => { heroTilt.current.active = false; }}
-      >
-        {/* Particle:
-            · Mobile  — square container, centred in viewport
-            · Desktop — absolute, fills the right 55% */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.3, ease: "easeOut" }}
-          className="w-[88vw] max-w-[420px] aspect-square flex-shrink-0 pointer-events-none
-                     lg:max-w-none lg:aspect-auto
-                     lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-[55%]"
-        >
-          <ParticleLogo className="w-full h-full" tiltRef={heroTilt} />
-        </motion.div>
-
-        {/* Mobile only — slogan below the particle */}
-        <div className="lg:hidden w-full flex-shrink-0 px-4 sm:px-6">
+      <section className="min-h-[calc(100vh-3.5rem)] flex items-center">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 w-full">
           <motion.h1
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.38 }}
-            className="font-serif leading-[0.9] tracking-tight text-slate-900 text-[2.6rem]"
+            transition={{ duration: 0.65, delay: 0.15 }}
+            className="font-serif leading-[0.92] tracking-tight text-slate-900"
+            style={{ fontSize: "clamp(3.2rem, 8vw, 7.5rem)" }}
           >
             {t.hero.line1}<br />
             <span className="text-tec-600">{t.hero.accent}</span><br />
             {t.hero.line3}
           </motion.h1>
-        </div>
-
-        {/* Desktop only — full text centred in left column */}
-        <div className="hidden lg:flex items-center min-h-[calc(100vh-3.5rem)] relative z-10
-                        max-w-7xl mx-auto px-6 w-full">
-          <div className="max-w-[46%]">
-            <motion.h1
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.32 }}
-              className="font-serif leading-[0.9] tracking-tight text-slate-900"
-              style={{ fontSize: "clamp(2.8rem, 5.5vw, 5.5rem)" }}
-            >
-              {t.hero.line1}<br />
-              <span className="text-tec-600">{t.hero.accent}</span><br />
-              {t.hero.line3}
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.48 }}
-              className="font-sans text-slate-500 text-base sm:text-lg leading-relaxed mt-8 mb-8"
-            >
-              {t.hero.descPre}
-              <span className="text-slate-900 font-semibold">{t.hero.descAccent}</span>
-              {t.hero.descPost}
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.56 }}
-              className="flex flex-col sm:flex-row gap-3 mb-10"
-            >
-              <Link
-                href="/apply"
-                className="group font-sans inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
-              >
-                {t.hero.ctaPrimary}
-                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
-              </Link>
-              <a
-                href="#pillars"
-                className="font-sans inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-300 hover:border-slate-500 text-slate-600 hover:text-slate-900 text-sm tracking-wider transition-all duration-200"
-              >
-                {t.hero.ctaSecondary}
-              </a>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="flex gap-8 pt-6 border-t border-slate-100"
-            >
-              {t.hero.stats.map(s => (
-                <div key={s.lbl}>
-                  <div className="text-sm font-bold font-mono text-slate-900 leading-tight">{s.val}</div>
-                  <div className="text-xs font-mono text-slate-400 mt-0.5">{s.lbl}</div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.32 }}
+            className="font-serif italic text-slate-500 text-lg sm:text-xl leading-relaxed mt-8 max-w-lg"
+          >
+            {t.hero.descPre}{t.hero.descAccent}{t.hero.descPost}
+          </motion.p>
         </div>
       </section>
-
-      {/* Mobile only — description / CTAs / stats below the fold */}
-      <div className="lg:hidden max-w-7xl mx-auto px-4 sm:px-6 py-10">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
-          className="font-sans text-slate-500 text-base leading-relaxed mb-8"
-        >
-          {t.hero.descPre}
-          <span className="text-slate-900 font-semibold">{t.hero.descAccent}</span>
-          {t.hero.descPost}
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, delay: 0.1 }}
-          className="flex flex-col gap-3 mb-10"
-        >
-          <Link
-            href="/apply"
-            className="group font-sans inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-slate-900 text-white text-sm font-bold tracking-wider"
-          >
-            {t.hero.ctaPrimary}
-            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
-          </Link>
-          <a
-            href="#pillars"
-            className="font-sans inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-slate-300 text-slate-600 text-sm tracking-wider"
-          >
-            {t.hero.ctaSecondary}
-          </a>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="flex gap-8 pt-6 border-t border-slate-100"
-        >
-          {t.hero.stats.map(s => (
-            <div key={s.lbl}>
-              <div className="text-sm font-bold font-mono text-slate-900 leading-tight">{s.val}</div>
-              <div className="text-xs font-mono text-slate-400 mt-0.5">{s.lbl}</div>
-            </div>
-          ))}
-        </motion.div>
-      </div>
 
       {/* ══════════════════════════════════════════════════════════
           PILLARS
       ══════════════════════════════════════════════════════════ */}
-      <section id="pillars" className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-28">
+      <section id="pillars" className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-28 border-t border-slate-100">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}

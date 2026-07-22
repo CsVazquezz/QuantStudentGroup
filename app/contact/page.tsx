@@ -21,11 +21,6 @@ const T = {
     founder: {
       line: "Prefer to reach out directly? I'm Carlos, Quantitative Researcher and founder of TMQS.",
     },
-    apply: {
-      heading: "Looking to join?",
-      para: "If you're a student who wants to become a member, skip the inbox: our short application is the fastest way in.",
-      btn: "Go to the application",
-    },
     footer: "Extracting alpha from noise.",
   },
   es: {
@@ -40,11 +35,6 @@ const T = {
     },
     founder: {
       line: "¿Prefieres escribir directamente? Soy Carlos, Investigador Cuantitativo y fundador de TMQS.",
-    },
-    apply: {
-      heading: "¿Quieres unirte?",
-      para: "Si eres estudiante y quieres ser miembro, evita el correo: nuestra breve solicitud es la vía más rápida.",
-      btn: "Ir a la solicitud",
     },
     footer: "Extrayendo alpha del ruido.",
   },
@@ -193,33 +183,6 @@ export default function ContactPage() {
             c.mtnzvzqz@gmail.com
           </a>
         </motion.p>
-      </section>
-
-      {/* ── APPLY CTA ── */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 py-16 lg:py-20 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2
-            className="font-sans tracking-tight text-slate-900 mb-4"
-            style={{ fontSize: "clamp(1.6rem,3.5vw,2.4rem)" }}
-          >
-            {t.apply.heading}
-          </h2>
-          <p className="font-sans text-slate-500 mb-8 leading-relaxed max-w-md mx-auto">
-            {t.apply.para}
-          </p>
-          <Link
-            href="/apply"
-            className="group font-sans inline-flex items-center gap-2.5 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
-          >
-            {t.apply.btn}
-            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
-          </Link>
-        </motion.div>
       </section>
 
       {/* ── FOOTER ── */}

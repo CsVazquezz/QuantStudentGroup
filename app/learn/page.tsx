@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, BookOpen, TrendingUp, Database, Cpu, BarChart2, Zap, FlaskConical } from "lucide-react";
+import { BookOpen, TrendingUp, Database, Cpu, BarChart2, Zap, FlaskConical } from "lucide-react";
 import { useLang } from "@/lib/useLang";
 import MobileNav from "@/components/MobileNav";
 
@@ -145,11 +145,6 @@ const T = {
       heading: "Key subfields.",
       sub:     "Six areas that make up the quantitative finance landscape. We'll cover all of them inside TMQS.",
     },
-    cta: {
-      heading: "Ready to start?",
-      sub:     "Join the founding cohort at TMQS, the first quant student group in Tec de Monterrey history.",
-      btn:     "APPLY NOW",
-    },
     footer: "Extracting alpha from noise.",
   },
 
@@ -201,11 +196,6 @@ const T = {
     concepts: {
       heading: "Subdisciplinas clave.",
       sub:     "Seis áreas que conforman el panorama de las finanzas cuantitativas. Las cubriremos todas dentro de TMQS.",
-    },
-    cta: {
-      heading: "¿Listo para empezar?",
-      sub:     "Únete a la cohorte fundadora de TMQS, el primer grupo estudiantil de quant en la historia del Tec de Monterrey.",
-      btn:     "APLICAR AHORA",
     },
     footer: "Extrayendo alpha del ruido.",
   },
@@ -510,29 +500,6 @@ export default function LearnPage() {
               );
             })}
           </div>
-        </section>
-
-        {/* ══════════════════════════════════════════════════════════
-            CTA
-        ══════════════════════════════════════════════════════════ */}
-        <section className="py-16 lg:py-20 text-center max-w-2xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="font-serif text-slate-900 mb-4" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)" }}>
-              {t.cta.heading}
-            </h2>
-            <p className="font-sans text-slate-500 mb-8 leading-relaxed">{t.cta.sub}</p>
-            <Link
-              href="/apply"
-              className="group font-sans inline-flex items-center gap-2.5 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold tracking-wider transition-all duration-200"
-            >
-              {t.cta.btn}
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
-            </Link>
-          </motion.div>
         </section>
 
       </main>
