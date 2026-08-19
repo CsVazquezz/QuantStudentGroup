@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Application = {
   id: number;
@@ -73,6 +74,9 @@ export default function AdminPage() {
                 {apps.length} application{apps.length !== 1 ? "s" : ""}
               </span>
             )}
+            <Link href="/admin/blog" className="text-xs font-mono text-slate-400 hover:text-slate-700 transition-colors">
+              Blog →
+            </Link>
             <button
               onClick={logout}
               className="text-xs font-mono text-slate-400 hover:text-slate-700 transition-colors"
