@@ -22,3 +22,18 @@ CREATE TABLE IF NOT EXISTS applications (
 
   UNIQUE KEY uq_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS blog_posts (
+  id           INT AUTO_INCREMENT PRIMARY KEY,
+  slug         VARCHAR(255) NOT NULL,
+  author       VARCHAR(255) NOT NULL,
+  title_en     VARCHAR(255) NOT NULL,
+  title_es     VARCHAR(255) NOT NULL,
+  excerpt_en   TEXT         NOT NULL,
+  excerpt_es   TEXT         NOT NULL,
+  content_en   MEDIUMTEXT   NOT NULL,
+  content_es   MEDIUMTEXT   NOT NULL,
+  published_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  UNIQUE KEY uq_slug (slug)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
