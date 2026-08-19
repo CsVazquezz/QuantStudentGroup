@@ -9,7 +9,7 @@ import MobileNav from "@/components/MobileNav";
 
 const T = {
   en: {
-    nav: { home: "Home", team: "Team", learn: "Learn", events: "Events", apply: "Apply" },
+    nav: { home: "Home", team: "Team", learn: "Learn", events: "Events", blog: "Blog", apply: "Apply" },
     eyebrow: "Get in touch",
     heading: "Contact.",
     sub: "Press, sponsorship, partnerships, or just curious how to get involved: reach us directly. We read everything.",
@@ -24,7 +24,7 @@ const T = {
     footer: "Extracting alpha from noise.",
   },
   es: {
-    nav: { home: "Inicio", team: "Equipo", learn: "Aprender", events: "Eventos", apply: "Aplicar" },
+    nav: { home: "Inicio", team: "Equipo", learn: "Aprender", events: "Eventos", blog: "Blog", apply: "Aplicar" },
     eyebrow: "Contáctanos",
     heading: "Contacto.",
     sub: "Prensa, patrocinios, alianzas, o simplemente curiosidad por participar: escríbenos directamente. Leemos todo.",
@@ -59,6 +59,7 @@ export default function ContactPage() {
             <Link href="/team"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
             <Link href="/learn"  className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
             <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/blog"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.blog}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
@@ -79,6 +80,7 @@ export default function ContactPage() {
               { href: "/team", label: t.nav.team },
               { href: "/learn", label: t.nav.learn },
               { href: "/events", label: t.nav.events },
+              { href: "/blog", label: t.nav.blog },
             ]} />
           </div>
         </div>

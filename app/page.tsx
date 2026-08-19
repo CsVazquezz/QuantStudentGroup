@@ -16,7 +16,7 @@ const PILLAR_STYLES = [
 
 const T = {
   en: {
-    nav: { about: "About", team: "Team", learn: "Learn", events: "Events", contact: "Contact", apply: "Apply" },
+    nav: { about: "About", team: "Team", learn: "Learn", events: "Events", blog: "Blog", contact: "Contact", apply: "Apply" },
     hero: {
       eyebrow:      "Tec de Monterrey, Campus Querétaro · Founding Cohort 2026",
       line1:        "Tec Monterrey",
@@ -67,7 +67,7 @@ const T = {
   },
 
   es: {
-    nav: { about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
+    nav: { about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", blog: "Blog", contact: "Contacto", apply: "Aplicar" },
     hero: {
       eyebrow:      "Tec de Monterrey, Campus Querétaro · Cohorte Fundadora 2026",
       line1:        "Tec Monterrey",
@@ -336,6 +336,7 @@ export default function Page() {
             <Link href="/team"  className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
             <Link href="/learn" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
             <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/blog" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.blog}</Link>
             <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
@@ -357,6 +358,7 @@ export default function Page() {
               { href: "/team", label: t.nav.team },
               { href: "/learn", label: t.nav.learn },
               { href: "/events", label: t.nav.events },
+              { href: "/blog", label: t.nav.blog },
               { href: "/contact", label: t.nav.contact },
             ]} />
           </div>

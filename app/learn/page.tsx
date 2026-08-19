@@ -97,7 +97,7 @@ const CONCEPTS = [
 
 const T = {
   en: {
-    nav:    { home: "Home", about: "About", team: "Team", events: "Events", contact: "Contact", apply: "Apply" },
+    nav:    { home: "Home", about: "About", team: "Team", events: "Events", blog: "Blog", contact: "Contact", apply: "Apply" },
     hero: {
       eyebrow: "Quant Finance 101",
       heading: "Understanding Quantitative Finance.",
@@ -149,7 +149,7 @@ const T = {
   },
 
   es: {
-    nav:    { home: "Inicio", about: "Acerca", team: "Equipo", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
+    nav:    { home: "Inicio", about: "Acerca", team: "Equipo", events: "Eventos", blog: "Blog", contact: "Contacto", apply: "Aplicar" },
     hero: {
       eyebrow: "Finanzas Cuantitativas 101",
       heading: "Entendiendo las Finanzas Cuantitativas.",
@@ -226,6 +226,7 @@ export default function LearnPage() {
             <Link href="/#pillars" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.about}</Link>
             <Link href="/team" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.team}</Link>
             <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
+            <Link href="/blog" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.blog}</Link>
             <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
           </nav>
 
@@ -247,6 +248,7 @@ export default function LearnPage() {
               { href: "/#pillars", label: t.nav.about },
               { href: "/team", label: t.nav.team },
               { href: "/events", label: t.nav.events },
+              { href: "/blog", label: t.nav.blog },
               { href: "/contact", label: t.nav.contact },
             ]} />
           </div>
