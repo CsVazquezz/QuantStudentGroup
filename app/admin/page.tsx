@@ -15,6 +15,9 @@ type Application = {
   campus_confirmed: number;
   open_sandbox: string;
   submitted_at: string;
+  status: "pending" | "accepted";
+  accepted_at: string | null;
+  email_delivery: "sent" | "delivered" | "bounced" | "failed" | null;
 };
 
 const LEVEL_LABEL = ["None", "Beginner", "Intermediate", "Advanced", "Expert"];
@@ -38,6 +41,9 @@ export default function AdminPage() {
   const [apps, setApps] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<number | null>(null);
+  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [sending, setSending] = useState(false);
+  const [verifying, setVerifying] = useState(false);
 
   useEffect(() => {
     fetch("/api/admin/applications")
@@ -57,6 +63,78 @@ export default function AdminPage() {
     return Array.isArray(arr) ? arr.join(", ") : "—";
   };
 
+  const toggleSelected = (id: number) => {
+    setSelected(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const pendingApps = apps.filter(a => a.status === "pending");
+  const allPendingSelected = pendingApps.length > 0 && pendingApps.every(a => selected.has(a.id));
+
+  const toggleSelectAllPending = () => {
+    setSelected(allPendingSelected ? new Set() : new Set(pendingApps.map(a => a.id)));
+  };
+
+  const sendAcceptanceEmails = async () => {
+    const ids = Array.from(selected);
+    if (ids.length === 0) return;
+    if (!confirm(`Send acceptance emails to ${ids.length} applicant${ids.length !== 1 ? "s" : ""}? This can't be undone.`)) return;
+
+    setSending(true);
+    try {
+      const res = await fetch("/api/admin/applications/accept", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids }),
+      });
+      const data = await res.json();
+      const results: Record<number, string> = data.results ?? {};
+
+      setApps(prev => prev.map(a =>
+        results[a.id] === "sent"
+          ? { ...a, status: "accepted", accepted_at: new Date().toISOString(), email_delivery: "sent" }
+          : a
+      ));
+
+      const failed = ids.filter(id => results[id] === "failed");
+      setSelected(new Set(failed));
+
+      if (failed.length > 0) {
+        alert(`${ids.length - failed.length} sent. ${failed.length} failed, still selected so you can retry.`);
+      }
+    } catch {
+      alert("Something went wrong sending the emails. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const verifyDeliveries = async () => {
+    setVerifying(true);
+    try {
+      const res = await fetch("/api/admin/applications/verify-delivery", { method: "POST" });
+      const data = await res.json();
+      const results: Record<number, Application["email_delivery"]> = data.results ?? {};
+
+      setApps(prev => prev.map(a =>
+        results[a.id] ? { ...a, email_delivery: results[a.id] } : a
+      ));
+
+      if (data.checked === 0) {
+        alert("Nothing to verify, every sent email already has a confirmed status.");
+      }
+    } catch {
+      alert("Couldn't reach Resend to verify deliveries. Please try again.");
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const unverifiedCount = apps.filter(a => a.status === "accepted" && (a.email_delivery === "sent" || !a.email_delivery)).length;
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -74,6 +152,23 @@ export default function AdminPage() {
                 {apps.length} application{apps.length !== 1 ? "s" : ""}
               </span>
             )}
+            {!loading && pendingApps.length > 0 && (
+              <button
+                onClick={toggleSelectAllPending}
+                className="text-xs font-mono text-slate-400 hover:text-slate-700 transition-colors"
+              >
+                {allPendingSelected ? "Deselect all" : "Select all pending"}
+              </button>
+            )}
+            {!loading && unverifiedCount > 0 && (
+              <button
+                onClick={verifyDeliveries}
+                disabled={verifying}
+                className="text-xs font-mono text-slate-400 hover:text-slate-700 transition-colors disabled:opacity-50"
+              >
+                {verifying ? "Verifying…" : `Verify ${unverifiedCount} ${unverifiedCount !== 1 ? "deliveries" : "delivery"}`}
+              </button>
+            )}
             <Link href="/admin/blog" className="text-xs font-mono text-slate-400 hover:text-slate-700 transition-colors">
               Blog →
             </Link>
@@ -87,7 +182,7 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <main className={`max-w-7xl mx-auto px-4 sm:px-6 py-8 ${selected.size > 0 ? "pb-24" : ""}`}>
         {loading ? (
           <p className="text-sm font-mono text-slate-400">Loading…</p>
         ) : apps.length === 0 ? (
@@ -100,12 +195,29 @@ export default function AdminPage() {
                 className="bg-white border border-slate-200 rounded-xl overflow-hidden"
               >
                 {/* Main row */}
-                <div className="px-5 py-4 grid grid-cols-[1fr_auto] gap-4 items-start">
+                <div className="px-5 py-4 grid grid-cols-[auto_1fr_auto] gap-4 items-start">
+                  <input
+                    type="checkbox"
+                    checked={selected.has(a.id)}
+                    disabled={a.status === "accepted"}
+                    onChange={() => toggleSelected(a.id)}
+                    className="mt-1 h-4 w-4 accent-tec-600 disabled:opacity-30"
+                  />
                   <div className="flex flex-col gap-2">
                     {/* Name + email */}
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-sm font-semibold text-slate-900">{a.full_name}</span>
                       <span className="text-xs font-mono text-slate-400">{a.email}</span>
+                      {a.status === "accepted" ? (
+                        <>
+                          <Badge color="green">Accepted ✓</Badge>
+                          {a.email_delivery === "delivered" && <Badge color="green">Delivered ✓</Badge>}
+                          {(a.email_delivery === "bounced" || a.email_delivery === "failed") && <Badge color="amber">{a.email_delivery === "bounced" ? "Bounced ✗" : "Failed ✗"}</Badge>}
+                          {(a.email_delivery === "sent" || !a.email_delivery) && <Badge>Unverified</Badge>}
+                        </>
+                      ) : (
+                        <Badge>Pending</Badge>
+                      )}
                       {a.campus_confirmed ? (
                         <Badge color="green">Campus ✓</Badge>
                       ) : (
@@ -159,6 +271,24 @@ export default function AdminPage() {
           </div>
         )}
       </main>
+
+      {/* Sticky send bar */}
+      {selected.size > 0 && (
+        <div className="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.04)]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <span className="text-sm font-mono text-slate-600">
+              {selected.size} applicant{selected.size !== 1 ? "s" : ""} selected
+            </span>
+            <button
+              onClick={sendAcceptanceEmails}
+              disabled={sending}
+              className="px-5 py-2 text-xs font-sans font-semibold bg-tec-600 text-white hover:bg-tec-700 disabled:opacity-50 rounded-full transition-colors duration-200"
+            >
+              {sending ? "Sending…" : `Send acceptance email${selected.size !== 1 ? "s" : ""}`}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
