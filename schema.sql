@@ -19,6 +19,10 @@ CREATE TABLE IF NOT EXISTS applications (
   campus_confirmed TINYINT(1)   NOT NULL DEFAULT 0,
   open_sandbox     TEXT         NOT NULL,
   submitted_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  status           ENUM('pending','accepted') NOT NULL DEFAULT 'pending',
+  accepted_at      TIMESTAMP    NULL,
+  resend_email_id  VARCHAR(255) NULL,
+  email_delivery   ENUM('sent','delivered','bounced','failed') NULL,
 
   UNIQUE KEY uq_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
