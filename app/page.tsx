@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Brain, Users, GitBranch, Instagram, Linkedin, Mail } from "lucide-react";
 import { useLang } from "@/lib/useLang";
-import type { Lang } from "@/lib/useLang";
 import MobileNav from "@/components/MobileNav";
 
 const PILLAR_STYLES = [

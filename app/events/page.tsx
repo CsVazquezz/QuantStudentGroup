@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Instagram, ArrowRight } from "lucide-react";
+import { Instagram } from "lucide-react";
 import { useLang } from "@/lib/useLang";
 import MobileNav from "@/components/MobileNav";
 
