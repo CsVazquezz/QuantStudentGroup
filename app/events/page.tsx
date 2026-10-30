@@ -12,12 +12,10 @@ const T = {
     nav: { home: "Home", team: "Team", learn: "Learn", blog: "Blog", contact: "Contact", apply: "Apply" },
     eyebrow: "What's On",
     heading: "Events.",
-    sub: "Workshops, talks, and socials, starting with our founding semester.",
+    sub: "Workshops, talks, and socials.",
     section: {
-      heading: "Fall 2026.",
-      sub: "Our first calendar starts next semester. This is where it will live.",
-      empty: "Our first semester hasn't started yet. Check back in Fall 2026 for our founding calendar.",
-      follow: "Follow @tmqs_qro for announcements",
+      empty: "No events scheduled right now. New dates are announced on Instagram first.",
+      follow: "Follow @tmqs_qro",
     },
     footer: "Extracting alpha from noise.",
   },
@@ -25,12 +23,10 @@ const T = {
     nav: { home: "Inicio", team: "Equipo", learn: "Aprender", blog: "Blog", contact: "Contacto", apply: "Aplicar" },
     eyebrow: "Agenda",
     heading: "Eventos.",
-    sub: "Talleres, charlas y convivencias, a partir de nuestro semestre fundador.",
+    sub: "Talleres, charlas y convivencias.",
     section: {
-      heading: "Otoño 2026.",
-      sub: "Nuestro primer calendario comienza el próximo semestre. Aquí vivirá.",
-      empty: "Nuestro primer semestre aún no ha comenzado. Vuelve en Otoño 2026 para ver nuestro calendario fundador.",
-      follow: "Sigue a @tmqs_qro para anuncios",
+      empty: "No hay eventos programados por ahora. Las nuevas fechas se anuncian primero en Instagram.",
+      follow: "Sigue a @tmqs_qro",
     },
     footer: "Extrayendo alpha del ruido.",
   },
@@ -104,29 +100,14 @@ export default function EventsPage() {
         </motion.div>
       </section>
 
-      {/* ── FALL 2026 ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-24 border-t border-slate-100">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-10"
-        >
-          <h2 className="font-sans text-slate-900 mb-3" style={{ fontSize: "clamp(1.8rem,3.5vw,2.8rem)" }}>
-            {t.section.heading}
-          </h2>
-          <p className="font-sans text-slate-500 max-w-lg leading-relaxed">
-            {t.section.sub}
-          </p>
-        </motion.div>
-
+      {/* ── UPCOMING ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-100">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="border border-dashed border-slate-200 rounded-sm py-16 flex flex-col items-center gap-4 text-center px-6"
+          className="flex flex-col items-start gap-4"
         >
           <p className="font-sans text-slate-400 text-sm max-w-md">{t.section.empty}</p>
           <a
