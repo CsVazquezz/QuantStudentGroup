@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getConnection } from "@/lib/db";
+import { isAdmin } from "@/lib/auth";
 
 export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const token = req.cookies.get("admin_token")?.value;
-  if (!token || token !== process.env.ADMIN_PASSWORD) {
+  if (!(await isAdmin(req))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 

@@ -1,22 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getConnection } from "@/lib/db";
 import { slugify } from "@/lib/blog";
-
-function isAuthorized(req: NextRequest): boolean {
-  const token = req.cookies.get("admin_token")?.value;
-  return !!token && token === process.env.ADMIN_PASSWORD;
-}
+import { isAdmin } from "@/lib/auth";
 
 // Cheap auth check for the admin blog page to verify login state.
 export async function GET(req: NextRequest) {
-  if (!isAuthorized(req)) {
+  if (!(await isAdmin(req))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   return NextResponse.json({ ok: true });
 }
 
 export async function POST(req: NextRequest) {
-  if (!isAuthorized(req)) {
+  if (!(await isAdmin(req))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
