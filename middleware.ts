@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isAdmin } from "@/lib/auth";
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    const token = req.cookies.get("admin_token")?.value;
-    if (!token || token !== process.env.ADMIN_PASSWORD) {
+    if (!(await isAdmin(req))) {
       return NextResponse.redirect(new URL("/admin/login", req.url));
     }
   }

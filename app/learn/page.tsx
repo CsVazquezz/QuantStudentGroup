@@ -299,7 +299,7 @@ export default function LearnPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <p className="text-xs font-sans font-semibold tracking-widest uppercase text-slate-400 mb-4">// THE BASICS</p>
+              <p className="text-xs font-sans font-semibold tracking-widest uppercase text-slate-400 mb-4">{"// THE BASICS"}</p>
               <h2 className="font-serif text-slate-900 mb-0" style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)" }}>
                 {t.what.heading}
               </h2>
@@ -331,7 +331,7 @@ export default function LearnPage() {
             viewport={{ once: true }}
             className="mb-10"
           >
-            <p className="text-xs font-sans font-semibold tracking-widest uppercase text-slate-400 mb-4">// SUBFIELDS</p>
+            <p className="text-xs font-sans font-semibold tracking-widest uppercase text-slate-400 mb-4">{"// SUBFIELDS"}</p>
             <h2 className="font-serif text-slate-900 mb-3" style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)" }}>
               {t.concepts.heading}
             </h2>

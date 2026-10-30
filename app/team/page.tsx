@@ -58,15 +58,6 @@ const T = {
         linkedinLabel: "linkedin/jesus",
       },
       {
-        id: "comunicacion",
-        title: "Communications",
-        filled: true,
-        name: "Patricio Lugo Albor",
-        major: "IDM",
-        linkedin: "https://www.linkedin.com/in/patricio-lugo-albor-381977329/",
-        linkedinLabel: "linkedin/patricio",
-      },
-      {
         id: "responsabilidad",
         title: "Social Responsibility",
         filled: true,
@@ -121,15 +112,6 @@ const T = {
         major: "IDM",
         linkedin: "https://www.linkedin.com/in/jesus-higuera/",
         linkedinLabel: "linkedin/jesus",
-      },
-      {
-        id: "comunicacion",
-        title: "Comunicación",
-        filled: true,
-        name: "Patricio Lugo Albor",
-        major: "IDM",
-        linkedin: "https://www.linkedin.com/in/patricio-lugo-albor-381977329/",
-        linkedinLabel: "linkedin/patricio",
       },
       {
         id: "responsabilidad",

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getConnection } from "@/lib/db";
+import { isAdmin } from "@/lib/auth";
 import { sendAcceptanceEmail } from "@/lib/email";
 import type { RowDataPacket } from "mysql2";
 
 export async function POST(req: NextRequest) {
-  const token = req.cookies.get("admin_token")?.value;
-  if (!token || token !== process.env.ADMIN_PASSWORD) {
+  if (!(await isAdmin(req))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       [ids]
     );
 
-    const results: Record<number, "sent" | "already_accepted" | "not_found" | "failed"> = {};
+    const results: Record<number, "sent" | "sent_unrecorded" | "already_accepted" | "not_found" | "failed"> = {};
 
     for (const id of ids) {
       const app = rows.find(r => r.id === id);
@@ -31,13 +31,20 @@ export async function POST(req: NextRequest) {
       const sent = await sendAcceptanceEmail({ name: app.full_name, email: app.email });
       if (!sent.ok) { results[id] = "failed"; continue; }
 
-      await conn.execute(
-        `UPDATE applications
-         SET status = 'accepted', accepted_at = NOW(), resend_email_id = ?, email_delivery = 'sent'
-         WHERE id = ?`,
-        [sent.id ?? null, id]
-      );
-      results[id] = "sent";
+      // The email is already out — never report this as "failed", or a retry
+      // would send it twice. Flag it so the admin can fix the row by hand.
+      try {
+        await conn.execute(
+          `UPDATE applications
+           SET status = 'accepted', accepted_at = NOW(), resend_email_id = ?, email_delivery = 'sent'
+           WHERE id = ?`,
+          [sent.id ?? null, id]
+        );
+        results[id] = "sent";
+      } catch (err) {
+        console.error("[api/admin/accept] email sent but DB update failed", id, err);
+        results[id] = "sent_unrecorded";
+      }
     }
 
     return NextResponse.json({ results });

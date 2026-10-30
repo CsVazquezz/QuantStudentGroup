@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Brain, Users, GitBranch, Instagram, Linkedin, Mail } from "lucide-react";
 import { useLang } from "@/lib/useLang";
-import type { Lang } from "@/lib/useLang";
 import MobileNav from "@/components/MobileNav";
 
 const PILLAR_STYLES = [
@@ -18,7 +17,7 @@ const T = {
   en: {
     nav: { about: "About", team: "Team", learn: "Learn", events: "Events", blog: "Blog", contact: "Contact", apply: "Apply" },
     hero: {
-      eyebrow:      "Tec de Monterrey, Campus Querétaro · Founding Cohort 2026",
+      eyebrow:      "Tec de Monterrey, Campus Querétaro · Est. 2026",
       line1:        "Tec Monterrey",
       accent:       "Quant",
       line3:        "Society.",
@@ -50,18 +49,19 @@ const T = {
     sponsors: {
       heading: "Sponsors.",
       sub:     "Organizations that believe in what we're building. Interested in supporting TMQS?",
-      empty:   "Sponsorship opportunities open for Fall 2026.",
+      empty:   "Sponsorship opportunities are open.",
       contact: "Get in touch",
     },
     highlights: {
-      heading: "Fall 2026 Highlights.",
-      sub:     "Events, projects, and milestones from our founding semester.",
-      empty:   "Our first semester hasn't started yet. Check back in Fall 2026.",
+      heading:   "Fall 2026.",
+      sub:       "Our first semester is underway.",
+      stat:      "20+",
+      statLabel: "active members",
     },
     cta: {
       heading: "Ready to be part of this?",
       para:    "Applications take about 10 minutes. No quant experience required. Just tell us who you are and what excites you.",
-      btn:     "JOIN THE FOUNDING COHORT",
+      btn:     "APPLY TO TMQS",
     },
     footer: "Extracting alpha from noise.",
   },
@@ -69,7 +69,7 @@ const T = {
   es: {
     nav: { about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", blog: "Blog", contact: "Contacto", apply: "Aplicar" },
     hero: {
-      eyebrow:      "Tec de Monterrey, Campus Querétaro · Cohorte Fundadora 2026",
+      eyebrow:      "Tec de Monterrey, Campus Querétaro · Fundado en 2026",
       line1:        "Tec Monterrey",
       accent:       "Quant",
       line3:        "Society.",
@@ -101,18 +101,19 @@ const T = {
     sponsors: {
       heading: "Patrocinadores.",
       sub:     "Organizaciones que creen en lo que estamos construyendo. ¿Interesado en apoyar a TMQS?",
-      empty:   "Oportunidades de patrocinio abiertas para Otoño 2026.",
+      empty:   "Oportunidades de patrocinio abiertas.",
       contact: "Contáctanos",
     },
     highlights: {
-      heading: "Highlights Otoño 2026.",
-      sub:     "Eventos, proyectos e hitos de nuestro semestre fundador.",
-      empty:   "Nuestro primer semestre aún no ha comenzado. Vuelve en Otoño 2026.",
+      heading:   "Otoño 2026.",
+      sub:       "Nuestro primer semestre está en marcha.",
+      stat:      "20+",
+      statLabel: "miembros activos",
     },
     cta: {
       heading: "¿Listo para ser parte de esto?",
       para:    "La solicitud toma unos 10 minutos. No se requiere experiencia en quant. Solo cuéntanos quién eres y qué te emociona.",
-      btn:     "ÚNETE A LA COHORTE FUNDADORA",
+      btn:     "APLICA A TMQS",
     },
     footer: "Extrayendo alpha del ruido.",
   },
@@ -505,7 +506,7 @@ export default function Page() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════
-          FALL 2026 HIGHLIGHTS
+          FALL 2026
       ══════════════════════════════════════════════════════════ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-24 border-t border-slate-100">
         <motion.div
@@ -528,9 +529,11 @@ export default function Page() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="border border-dashed border-slate-200 rounded-sm py-16 flex items-center justify-center"
         >
-          <p className="font-sans text-slate-400 text-sm">{t.highlights.empty}</p>
+          <p className="font-serif text-tec-600 leading-none mb-2" style={{ fontSize: "clamp(3rem,7vw,5rem)" }}>
+            {t.highlights.stat}
+          </p>
+          <p className="font-mono text-xs uppercase tracking-wider text-slate-500">{t.highlights.statLabel}</p>
         </motion.div>
       </section>
 
