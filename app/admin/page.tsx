@@ -54,7 +54,6 @@ export default function AdminPage() {
 
   const logout = async () => {
     await fetch("/api/admin/login", { method: "DELETE" });
-    document.cookie = "admin_token=; max-age=0; path=/";
     router.push("/admin/login");
   };
 
@@ -66,7 +65,7 @@ export default function AdminPage() {
   const toggleSelected = (id: number) => {
     setSelected(prev => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) next.delete(id); else next.add(id);
       return next;
     });
   };
@@ -101,6 +100,11 @@ export default function AdminPage() {
 
       const failed = ids.filter(id => results[id] === "failed");
       setSelected(new Set(failed));
+
+      const unrecorded = ids.filter(id => results[id] === "sent_unrecorded");
+      if (unrecorded.length > 0) {
+        alert(`${unrecorded.length} email(s) were sent but couldn't be marked accepted (IDs: ${unrecorded.join(", ")}). Don't resend — fix those rows in the DB.`);
+      }
 
       if (failed.length > 0) {
         alert(`${ids.length - failed.length} sent. ${failed.length} failed, still selected so you can retry.`);

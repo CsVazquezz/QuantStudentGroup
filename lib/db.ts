@@ -4,9 +4,8 @@ import mysql from "mysql2/promise";
 // caller close it. Pools don't survive across Vercel function calls.
 export async function getConnection() {
   if (process.env.DATABASE_URL) {
-    // Production (Railway) — DATABASE_URL includes host/user/pass/db.
-    // SSL required for remote MySQL; rejectUnauthorized:false skips cert
-    // validation (fine for a student project on a private DB).
+    // Production (TiDB Cloud) — DATABASE_URL includes host/user/pass/db.
+    // TiDB requires TLS; the server cert is fully validated.
     return mysql.createConnection({
       uri: process.env.DATABASE_URL,
       ssl: { rejectUnauthorized: true, minVersion: "TLSv1.2" },

@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "TMQS · QRO Campus",
     description:
-      "Apply to the founding cohort of TMQS, the first quant student group at Tec de Monterrey.",
+      "Join TMQS, the first quant student group at Tec de Monterrey, with 20+ active members.",
     type: "website",
   },
 };

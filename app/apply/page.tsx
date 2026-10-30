@@ -29,7 +29,7 @@ const T = {
   en: {
     nav: { home: "Home", about: "About", team: "Team", learn: "Learn", events: "Events", blog: "Blog", contact: "Contact" },
     page: {
-      eyebrow:    "Founding Cohort · Fall 2026",
+      eyebrow:    "Join 20+ active members",
       heading:    "Apply to TMQS.",
       desc:       "We're looking for curious students from ",
       descAccent: "any background",
@@ -121,7 +121,7 @@ const T = {
   es: {
     nav: { home: "Inicio", about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", blog: "Blog", contact: "Contacto" },
     page: {
-      eyebrow:    "Cohorte Fundadora · Otoño 2026",
+      eyebrow:    "Únete a más de 20 miembros activos",
       heading:    "Aplica a TMQS.",
       desc:       "Buscamos estudiantes curiosos de ",
       descAccent: "cualquier carrera",

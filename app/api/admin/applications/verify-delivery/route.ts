@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getConnection } from "@/lib/db";
+import { isAdmin } from "@/lib/auth";
 import type { RowDataPacket } from "mysql2";
 
 function mapDelivery(lastEvent: string | undefined): "delivered" | "bounced" | "sent" {
@@ -9,8 +10,7 @@ function mapDelivery(lastEvent: string | undefined): "delivered" | "bounced" | "
 }
 
 export async function POST(req: NextRequest) {
-  const token = req.cookies.get("admin_token")?.value;
-  if (!token || token !== process.env.ADMIN_PASSWORD) {
+  if (!(await isAdmin(req))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 

@@ -31,7 +31,6 @@ export async function sendApplicationConfirmation(opts: {
     "We've received your application and the founding team will review it soon.",
     "",
     "If you're a strong fit we'll reach out from this address with next steps.",
-    "You'll hear from us as the founding cohort dates get closer.",
     "",
     "In the meantime, feel free to follow us on Instagram @tmqs_qro",
     "or reply to this email if you have any questions.",
@@ -51,7 +50,6 @@ export async function sendApplicationConfirmation(opts: {
 
       <p style="margin:0 0 16px;font-size:15px;">
         If you're a strong fit we'll reach out from this address with next steps.
-        You'll hear from us as the founding cohort dates get closer.
       </p>
 
       <p style="margin:0 0 28px;font-size:15px;color:#475569;">
@@ -108,11 +106,11 @@ export async function sendAcceptanceEmail(opts: {
   const text = [
     `Hi ${firstName},`,
     "",
-    "Congratulations, you've been accepted into the founding cohort of the",
+    "Congratulations, you've been accepted into the",
     "Tec Monterrey Quant Society (TMQS).",
     "",
     "Join the community WhatsApp group, that's where we'll share updates",
-    "and coordinate before the first session.",
+    "and coordinate sessions and events.",
     whatsappUrl,
     "",
     "You can also follow us on Instagram @tmqs_qro",
@@ -130,13 +128,13 @@ export async function sendAcceptanceEmail(opts: {
       <p style="margin:0 0 20px;font-size:15px;">Hi ${escapeHtml(firstName)},</p>
 
       <p style="margin:0 0 24px;font-size:15px;">
-        Congratulations, you've been accepted into the founding cohort of the
+        Congratulations, you've been accepted into the
         <strong>Tec Monterrey Quant Society</strong> (TMQS).
       </p>
 
       <p style="margin:0 0 12px;font-size:15px;">
         Join the community WhatsApp group, that's where we'll share updates and
-        coordinate before the first session.
+        coordinate sessions and events.
       </p>
 
       <p style="margin:0 0 28px;">
