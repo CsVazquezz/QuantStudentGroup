@@ -6,6 +6,16 @@ export type Mode = "maker" | "trader";
 export type Side = "buy" | "sell";
 export type Style = "sharp" | "cautious" | "rough" | "stale" | "momentum" | "gambler";
 export type ErrCode = "missing" | "order" | "wide" | "limit";
+export type Level = "easy" | "normal" | "hard";
+
+// Decision seconds per mode (makers set two numbers, so they get longer), max quote width, and
+// whether the rough "shown + 7 × hidden" estimate is shown.
+export const LEVELS: Record<Level, { secs: Record<Mode, number>; spread: number; hint: boolean }> = {
+  easy:   { secs: { maker: 12, trader: 8 }, spread: 10, hint: true },
+  normal: { secs: { maker: 8,  trader: 5 }, spread: 10, hint: false },
+  hard:   { secs: { maker: 5,  trader: 3 }, spread: 6,  hint: false },
+};
+export const DAILY_ROUNDS = 5;
 
 export type Card = { r: string; v: number; s: string; red: boolean };
 export type Quote = { stage: number; maker: string; bid: number; ask: number; fv: number; filled?: number };
@@ -14,6 +24,8 @@ export type UserAction = { stage: number; side: Side | null; qty: number; q: Quo
 
 export type Game = {
   mode: Mode;
+  level: Level;
+  daily: string | null; // date seed (YYYY-MM-DD) for the daily challenge; null = free play
   maxSpread: number;
   round: number;
   cards: Card[];
@@ -31,7 +43,7 @@ export type Game = {
 };
 
 type Ctx = { fv: number; short: number; fvPrev: number; last: number };
-type Bot = { name: string; style: Style; thr: number; est: (c: Ctx) => number };
+type Bot = { name: string; style: Style; thr: number; est: (c: Ctx, n: () => number) => number };
 
 const RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 const SUITS: [string, boolean][] = [["♠", false], ["♥", true], ["♦", true], ["♣", false]];
@@ -39,30 +51,50 @@ export const LIMIT = 5; // max |position| per player
 export const CAP = 3;   // max contracts traded per quote
 export const YOU = "You";
 
-function gauss() {
+type Rng = () => number;
+
+// mulberry32 seeded by a string hash: same seed → same sequence on every device.
+function seeded(seed: string): Rng {
+  let h = 1779033703 ^ seed.length;
+  for (let i = 0; i < seed.length; i++) h = Math.imul(h ^ seed.charCodeAt(i), 3432918353), h = (h << 13) | (h >>> 19);
+  let a = h >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Daily games get one independent stream per purpose, so a player's choices
+// never shift the cards or the bots' noise. Free play uses Math.random.
+const rngFor = (g: Game, tag: string): Rng =>
+  g.daily ? seeded(`${g.daily}|${tag}|${g.round}|${g.stage}`) : Math.random;
+
+function gauss(rnd: Rng) {
   let u = 0, v = 0;
-  while (!u) u = Math.random();
-  while (!v) v = Math.random();
+  while (!u) u = rnd();
+  while (!v) v = rnd();
   return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
 }
 
 // thr = minimum edge (points) a bot needs before it trades
 export const BOTS: Bot[] = [
-  { name: "Bot 1", style: "sharp",    thr: 0.5, est: c => c.fv + gauss() * 0.6 },
-  { name: "Bot 2", style: "cautious", thr: 3,   est: c => c.fv + gauss() * 0.5 },
-  { name: "Bot 3", style: "rough",    thr: 1,   est: c => c.short + gauss() * 2.5 },
-  { name: "Bot 4", style: "stale",    thr: 1,   est: c => c.fvPrev + gauss() * 0.5 },
-  { name: "Bot 5", style: "momentum", thr: 1,   est: c => c.fv + (c.last ? (c.last - 7) * 0.9 : 0) + gauss() * 0.8 },
-  { name: "Bot 6", style: "gambler",  thr: 0,   est: c => c.short + gauss() * 6 },
+  { name: "Bot 1", style: "sharp",    thr: 0.5, est: (c, n) => c.fv + n() * 0.6 },
+  { name: "Bot 2", style: "cautious", thr: 3,   est: (c, n) => c.fv + n() * 0.5 },
+  { name: "Bot 3", style: "rough",    thr: 1,   est: (c, n) => c.short + n() * 2.5 },
+  { name: "Bot 4", style: "stale",    thr: 1,   est: (c, n) => c.fvPrev + n() * 0.5 },
+  { name: "Bot 5", style: "momentum", thr: 1,   est: (c, n) => c.fv + (c.last ? (c.last - 7) * 0.9 : 0) + n() * 0.8 },
+  { name: "Bot 6", style: "gambler",  thr: 0,   est: (c, n) => c.short + n() * 6 },
 ];
 export const PLAYERS = [YOU, ...BOTS.map(b => b.name)];
 export const styleOf = (name: string) => BOTS.find(b => b.name === name)?.style;
 
-export function deal(): Card[] {
+export function deal(rnd: Rng = Math.random): Card[] {
   const deck: Card[] = [];
   for (const [s, red] of SUITS) RANKS.forEach((r, i) => deck.push({ r, v: i + 1, s, red }));
   for (let i = deck.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(rnd() * (i + 1));
     [deck[i], deck[j]] = [deck[j], deck[i]];
   }
   return deck.slice(0, 5);
@@ -95,9 +127,11 @@ function addTrade(g: Game, buyer: string, seller: string, price: number, qty: nu
   g.trades.push({ stage: g.stage, buyer, seller, price, qty, fv });
 }
 
-export function newGame(mode: Mode = "maker", maxSpread = 10): Game {
+// Daily challenge is always Normal, trader mode, so every score is comparable.
+export function newGame(mode: Mode = "trader", level: Level = "normal", daily: string | null = null): Game {
+  if (daily) { mode = "trader"; level = "normal"; }
   const g: Game = {
-    mode, maxSpread, round: 0, cards: [], stage: 0, trades: [], quotes: [], est: [],
+    mode, level, daily, maxSpread: LEVELS[level].spread, round: 0, cards: [], stage: 0, trades: [], quotes: [], est: [],
     acted: false, settled: false, err: null, userActions: [], missed: [],
     totals: Object.fromEntries(PLAYERS.map(p => [p, 0])), roundPnl: {},
   };
@@ -106,16 +140,19 @@ export function newGame(mode: Mode = "maker", maxSpread = 10): Game {
 }
 
 export function newRound(g: Game) {
+  if (dailyDone(g)) return;
   g.round++;
-  g.cards = deal();
-  g.stage = 0; g.trades = []; g.quotes = []; g.est = []; g.userActions = []; g.missed = [];
+  g.stage = 0;
+  g.cards = deal(rngFor(g, "deck"));
+  g.trades = []; g.quotes = []; g.est = []; g.userActions = []; g.missed = [];
   g.settled = false; g.err = null;
   startStage(g);
 }
 
 function startStage(g: Game) {
   const c = ctx(g.cards, g.stage);
-  g.est[g.stage] = Object.fromEntries(BOTS.map(b => [b.name, b.est(c)]));
+  const rnd = rngFor(g, "est");
+  g.est[g.stage] = Object.fromEntries(BOTS.map(b => [b.name, b.est(c, () => gauss(rnd))]));
   g.acted = false; g.err = null;
   if (g.mode === "trader") g.quotes.push(botQuote(g));
 }
@@ -132,14 +169,15 @@ function botQuote(g: Game): Quote {
 
 // Bots trade against quote q, best edge first; returns contracts left under the cap.
 function botsHit(g: Game, q: Quote, capLeft: number) {
+  const rnd = rngFor(g, "hit");
   const orders: { who: string; side: Side; edge: number }[] = [];
   for (const b of BOTS) {
     if (b.name === q.maker) continue;
     const e = g.est[g.stage][b.name];
     if (e - q.ask > b.thr) orders.push({ who: b.name, side: "buy", edge: e - q.ask });
     else if (q.bid - e > b.thr) orders.push({ who: b.name, side: "sell", edge: q.bid - e });
-    else if (b.style === "gambler" && Math.random() < 0.3)
-      orders.push({ who: b.name, side: Math.random() < 0.5 ? "buy" : "sell", edge: 0.1 });
+    else if (b.style === "gambler" && rnd() < 0.3)
+      orders.push({ who: b.name, side: rnd() < 0.5 ? "buy" : "sell", edge: 0.1 });
   }
   orders.sort((a, b) => b.edge - a.edge);
   for (const o of orders) {
@@ -202,7 +240,7 @@ export function advance(g: Game) {
   g.settled = true;
 }
 
-export function setMode(g: Game, m: Mode) { g.mode = m; newRound(g); }
+export const dailyDone = (g: Game) => !!g.daily && g.round >= DAILY_ROUNDS && g.settled;
 
 // Your P&L measured against fair value at trade time — the part that isn't luck.
 export const edgePnl = (g: Game) =>
