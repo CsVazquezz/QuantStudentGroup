@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { motion, AnimatePresence, MotionConfig } from "framer-motion";
+import { motion, MotionConfig } from "framer-motion";
 import { useLang } from "@/lib/useLang";
 import MobileNav from "@/components/MobileNav";
 import {
@@ -63,8 +63,9 @@ const en = {
   revealLast: "Reveal last card & settle",
   nobody: "Nobody traded.",
   tradeLine: (b: string, q: number, s: string, p: number) => `${b} bought ${q} from ${s} at ${p}`,
-  bubbleBuy: (q: number, p: number) => `Buy ${q} @ ${p}`,
-  bubbleSell: (q: number, p: number) => `Sell ${q} @ ${p}`,
+  bubbleBuy: (q: number, p: number) => `bought ${q} @ ${p}`,
+  bubbleSell: (q: number, p: number) => `sold ${q} @ ${p}`,
+  seatRound: (x: string) => `round ${x}`,
   qty: "Qty",
   buyAt: (p: number) => `Buy at ${p}`,
   sellAt: (p: number) => `Sell at ${p}`,
@@ -87,7 +88,7 @@ const en = {
     wide: (s: number) => `Too wide: keep bid and ask at most ${s} apart.`,
     limit: () => "That would break a ±5 position limit.",
   },
-  score: { title: "Scoreboard", note: "total P&L" },
+  score: { title: "Scoreboard", note: "Total P&L" },
   tape: { title: "Tape", debrief: "Debrief", cols: ["Buyer", "Seller", "Px", "Qty"], empty: "No trades yet this round." },
   styles: {
     sharp:    { tag: "Sharp",    desc: "Knows the exact fair value." },
@@ -166,8 +167,9 @@ const es: typeof en = {
   revealLast: "Revelar última carta y liquidar",
   nobody: "Nadie operó.",
   tradeLine: (b, q, s, p) => `${b} compró ${q} a ${s} en ${p}`,
-  bubbleBuy: (q, p) => `Compra ${q} @ ${p}`,
-  bubbleSell: (q, p) => `Vende ${q} @ ${p}`,
+  bubbleBuy: (q, p) => `compró ${q} @ ${p}`,
+  bubbleSell: (q, p) => `vendió ${q} @ ${p}`,
+  seatRound: x => `ronda ${x}`,
   qty: "Cant.",
   buyAt: p => `Comprar en ${p}`,
   sellAt: p => `Vender en ${p}`,
@@ -278,7 +280,8 @@ const FOCUS = "focus-visible:outline focus-visible:outline-2 focus-visible:outli
 const BTN = `px-5 py-2.5 text-sm font-sans font-semibold rounded-full transition-colors duration-200 ${FOCUS}`;
 const BTN_LIGHT = `${BTN} bg-white text-tec-800 hover:bg-tec-50 shadow-lg shadow-tec-600/30`;
 const KICKER = "text-[11px] font-sans tracking-[0.18em] uppercase";
-const GLASS = "rounded-xl bg-white/[0.04] border border-white/10";
+const GLASS = "rounded-md bg-[#0a1430] border border-white/10";
+const PANEL_H = "font-sans text-[13px] font-semibold text-white";
 const INPUT = `w-20 px-3 py-2 font-mono text-xl text-center text-white bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-tec-300 ${FOCUS}`;
 
 // 7 seats evenly around the oval, "You" at the bottom. Exposed as CSS vars
@@ -291,7 +294,6 @@ function seatPos(i: number) {
       "--l": `${(50 + 39 * Math.cos(a)).toFixed(2)}%`,
       "--t": `${(50 + 38 * Math.sin(a)).toFixed(2)}%`,
     } as CSSProperties,
-    below: Math.sin(a) > 0.2,
   };
 }
 
@@ -862,73 +864,55 @@ function Clock({ t, secs, onExpire }: { t: Copy; secs: number; onExpire: () => v
 }
 
 function SeatCard({ g, t, p, i, who }: { g: Game; t: Copy; p: string; i: number; who: (p: string) => string }) {
-  const { style: posVars, below } = seatPos(i);
+  const { style: posVars } = seatPos(i);
   const you = p === YOU;
   const style = styleOf(p);
   const pos = position(g.trades, p);
 
-  // Badge: this quote's net trade while live; round P&L once settled.
-  let badge: { text: string; good: boolean } | null = null;
+  // One status line: this quote's net trade while live, round P&L once settled.
+  let line: { text: string; good: boolean } | null = null;
+  const now = g.settled ? [] : g.trades.filter(x => x.stage === g.stage && (x.buyer === p || x.seller === p));
   if (g.settled) {
     const r = g.roundPnl[p];
-    if (r) badge = { text: sgn(r), good: r > 0 };
-  } else {
-    const now = g.trades.filter(x => x.stage === g.stage && (x.buyer === p || x.seller === p));
-    if (now.length) {
-      const net = now.reduce((a, x) => a + (x.buyer === p ? x.qty : -x.qty), 0);
-      const px = now[now.length - 1].price;
-      badge = net >= 0 ? { text: t.bubbleBuy(net || now[0].qty, px), good: true } : { text: t.bubbleSell(-net, px), good: false };
-    }
+    if (r) line = { text: t.seatRound(sgn(r)), good: r > 0 };
+  } else if (now.length) {
+    const net = now.reduce((a, x) => a + (x.buyer === p ? x.qty : -x.qty), 0);
+    const px = now[now.length - 1].price;
+    line = net >= 0 ? { text: t.bubbleBuy(net || now[0].qty, px), good: true } : { text: t.bubbleSell(-net, px), good: false };
   }
-  const live = !g.settled && badge;
   const role = you ? (g.mode === "maker" ? t.roleMaker : t.roleTrader)
     : g.mode === "trader" && p === g.quotes[0]?.maker ? t.roleMaker
     : t.styles[style!].tag;
 
   return (
     <div style={posVars} className="relative md:absolute md:left-[var(--l)] md:top-[var(--t)] md:-translate-x-1/2 md:-translate-y-1/2 md:z-10 md:pointer-events-auto">
-      <AnimatePresence>
-        {badge && (
-          <motion.div
-            key={`${g.round}-${g.stage}-${badge.text}`}
-            initial={{ opacity: 0, scale: 0.8, y: below ? 6 : -6 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 18, delay: g.settled ? 0.6 : 0 }}
-            className={`hidden md:block absolute left-1/2 -translate-x-1/2 ${below ? "top-full mt-2" : "bottom-full mb-2"} whitespace-nowrap rounded-full px-2.5 py-1 font-mono text-[11px] font-semibold text-white shadow-lg ${badge.good ? "bg-emerald-600" : "bg-red-600"}`}
-          >
-            {badge.text}
-          </motion.div>
-        )}
-      </AnimatePresence>
       <div
         title={style ? t.styles[style].desc : undefined}
-        className={`flex items-center gap-2 sm:gap-2.5 rounded-2xl pl-1.5 pr-2.5 sm:pr-3 py-1.5 bg-white/[0.06] backdrop-blur-md border ${you ? "border-tec-400/60" : "border-white/10"} shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)]`}
+        className={`relative overflow-hidden md:min-w-[172px] rounded-md border bg-[#0a1430] px-2.5 py-1.5 ${you ? "border-tec-400/50" : "border-white/10"}`}
       >
-        <div className="relative shrink-0">
-          {live && (
-            <motion.span
-              className={`absolute inset-0 rounded-full ring-2 ${badge!.good ? "ring-emerald-400" : "ring-red-400"}`}
-              animate={{ scale: [1, 1.6], opacity: [0.9, 0] }}
-              transition={{ repeat: Infinity, duration: 1.4 }}
-            />
-          )}
-          <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full grid place-items-center text-sm sm:text-base ${you ? "bg-tec-600 text-white font-mono" : "bg-white text-slate-900 font-serif"}`}>
+        {/* one brief flash when this seat trades; no looping animation */}
+        {!g.settled && line && (
+          <motion.span
+            key={`${g.round}-${g.stage}-${now.length}`}
+            aria-hidden="true"
+            className={`absolute inset-0 ${line.good ? "bg-emerald-400" : "bg-red-400"}`}
+            initial={{ opacity: 0.25 }}
+            animate={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          />
+        )}
+        <div className="relative flex items-baseline gap-2">
+          <span className={`w-4 shrink-0 text-center font-serif text-[15px] leading-none ${you ? "text-tec-300" : "text-white/55"}`}>
             {you ? "★" : GLYPH[style!]}
-          </div>
+          </span>
+          <span className="font-sans text-[13px] font-semibold text-white whitespace-nowrap">{who(p)}</span>
+          <span className={`ml-auto pl-2 font-mono text-[13px] tabular-nums ${pos ? tone(pos) : "text-white/30"}`}>{sgn(pos)}</span>
         </div>
-        <div className="leading-tight min-w-0">
-          <p className="font-sans text-[13px] font-semibold text-white whitespace-nowrap">{who(p)}</p>
-          <p className="font-mono text-[9.5px] font-semibold uppercase tracking-[0.1em] text-tec-300 whitespace-nowrap">{role}</p>
-          {badge && <p className={`md:hidden font-mono text-[10px] font-semibold ${badge.good ? "text-emerald-400" : "text-red-400"}`}>{badge.text}</p>}
-        </div>
-        <div className="flex flex-col items-end ml-auto pl-1">
-          <span className={`font-mono text-sm font-semibold tabular-nums ${tone(pos)}`}>{sgn(pos)}</span>
-          <div className="flex -space-x-1 h-2" aria-hidden="true">
-            {Array.from({ length: Math.abs(pos) }).map((_, k) => (
-              <span key={k} className={`w-2 h-2 rounded-full border border-slate-900 ${pos > 0 ? "bg-emerald-500" : "bg-red-500"}`} />
-            ))}
-          </div>
+        <div className="relative flex items-baseline gap-2 pl-6">
+          <span className="font-sans text-[11px] text-white/45 whitespace-nowrap">{role}</span>
+          {line && (
+            <span className={`ml-auto pl-2 font-mono text-[11px] whitespace-nowrap ${line.good ? "text-emerald-300" : "text-red-300"}`}>{line.text}</span>
+          )}
         </div>
       </div>
     </div>
@@ -942,57 +926,48 @@ function SeatCard({ g, t, p, i, who }: { g: Game; t: Copy; p: string; i: number;
 function Scoreboard({ g, t, c }: { g: Game; t: Copy; c: Ctl }) {
   const { who, stats } = c;
   const order = [...PLAYERS].sort((a, b) => g.totals[b] - g.totals[a]);
-  const cell = "rounded-md bg-white/[0.05] px-2 py-1.5 min-w-0";
+  const meta = "font-sans text-[11px] text-white/45 tabular-nums";
   return (
-    <section className={`${GLASS} p-4 flex flex-col gap-1 shrink-0`} aria-label={t.score.title}>
-      <div className="flex justify-between items-baseline mb-1.5">
-        <h2 className="font-serif text-lg text-white">{t.score.title}</h2>
-        <span className={`${KICKER} text-white/40`}>{t.score.note}</span>
+    <section className={`${GLASS} px-4 py-3.5 flex flex-col shrink-0`} aria-label={t.score.title}>
+      <div className="flex justify-between items-baseline">
+        <h2 className={PANEL_H}>{t.score.title}</h2>
+        <span className="font-sans text-[11px] text-white/40">{t.score.note}</span>
       </div>
-      <div className="relative grid grid-cols-3 gap-1.5 mb-2">
+
+      {/* personal records: one quiet line, not tiles */}
+      <p className={`${meta} mt-1 mb-2.5 flex flex-wrap gap-x-2`}>
         {g.daily ? (
-          <div className={`${cell} col-span-3 flex items-baseline justify-between`}>
-            <span className="font-sans text-[11px] text-white/50">{t.stats.dailyToday}</span>
-            <b className={`font-mono text-sm tabular-nums ${c.dailyOfficial == null ? "text-white/40 font-normal" : tone(c.dailyOfficial)}`}>
+          <span>
+            {t.stats.dailyToday}{" "}
+            <span className={c.dailyOfficial == null ? "" : tone(c.dailyOfficial)}>
               {c.dailyOfficial == null ? t.stats.notYet : sgn(c.dailyOfficial)}
-            </b>
-          </div>
+            </span>
+          </span>
         ) : (
-          [
-            [t.stats.best, stats ? sgn(stats.bestTotal) : "—"],
-            [t.stats.bestRound, stats ? sgn(stats.bestRound) : "—"],
-            [`${t.stats.streak}${stats?.bestStreak ? ` (${stats.bestStreak})` : ""}`, String(stats?.streak ?? 0)],
-          ].map(([label, v]) => (
-            <div key={label} className={cell}>
-              <p className="font-mono text-sm font-semibold text-white tabular-nums">{v}</p>
-              <p className="font-sans text-[10px] leading-tight text-white/45 truncate">{label}</p>
-            </div>
-          ))
+          <>
+            <span>{t.stats.best} <span className="text-white/80">{stats ? sgn(stats.bestTotal) : "—"}</span></span>
+            <span>·</span>
+            <span>{t.stats.bestRound} <span className="text-white/80">{stats ? sgn(stats.bestRound) : "—"}</span></span>
+            <span>·</span>
+            <span>{t.stats.streak} <span className="text-white/80">{stats?.streak ?? 0}</span>{stats?.bestStreak ? ` (${stats.bestStreak})` : ""}</span>
+          </>
         )}
-        <AnimatePresence>
-          {c.newBest && (
-            <motion.span
-              initial={{ opacity: 0, scale: 0.8, y: 4 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="absolute -top-3 right-0 rounded-full bg-amber-400 px-2 py-0.5 font-mono text-[10px] font-bold text-slate-900 shadow-lg"
-            >
-              {t.stats.newBest}
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </div>
-      {order.map((p, k) => (
-        <motion.div
-          layout
-          key={p}
-          className={`flex items-center gap-2 font-sans text-sm py-0.5 ${p === YOU ? "bg-tec-500/20 text-white font-semibold -mx-2 px-2 rounded-md" : "text-white/80"}`}
-        >
-          <span className="w-4 font-mono text-[11px] text-white/30">{k + 1}</span>
-          <span className="flex-1">{who(p)}</span>
-          <span className={`font-mono tabular-nums ${tone(g.totals[p])}`}>{sgn(g.totals[p])}</span>
-        </motion.div>
-      ))}
+        {c.newBest && <span className="text-amber-300">{t.stats.newBest}</span>}
+      </p>
+
+      <ol className="border-t border-white/10">
+        {order.map((p, k) => (
+          <motion.li
+            layout
+            key={p}
+            className="flex items-baseline gap-3 py-1.5 border-b border-white/[0.06] last:border-b-0 font-sans text-[13px]"
+          >
+            <span className="w-3 font-mono text-[11px] text-white/30 tabular-nums">{k + 1}</span>
+            <span className={`flex-1 ${p === YOU ? "text-white font-semibold" : "text-white/70"}`}>{who(p)}</span>
+            <span className={`font-mono tabular-nums ${g.totals[p] ? tone(g.totals[p]) : "text-white/30"}`}>{sgn(g.totals[p])}</span>
+          </motion.li>
+        ))}
+      </ol>
     </section>
   );
 }
@@ -1002,27 +977,27 @@ function TapePanel({ g, t, who }: { g: Game; t: Copy; who: (p: string) => string
   // The debrief opens by default each time a round settles.
   useEffect(() => setTab("debrief"), [g.round]);
   const view = g.settled ? tab : "tape";
-  const th = "font-mono text-[10.5px] font-semibold tracking-[0.08em] uppercase px-2 py-1.5 text-white/40 border-b border-white/10 sticky top-0 bg-[#08112a]";
-  const td = "px-2 py-1.5 border-b border-white/5 whitespace-nowrap";
-  const tabBtn = (on: boolean) => `font-serif text-lg transition-colors ${on ? "text-white" : "text-white/35 hover:text-white/70"} ${FOCUS}`;
+  const th = "font-sans text-[11px] font-normal px-1.5 pb-1.5 text-white/40 border-b border-white/10 sticky top-0 bg-[#0a1430]";
+  const td = "px-1.5 py-1.5 border-b border-white/[0.06] whitespace-nowrap";
+  const tabBtn = (on: boolean) => `font-sans text-[13px] font-semibold transition-colors ${on ? "text-white" : "text-white/35 hover:text-white/70"} ${FOCUS}`;
 
   return (
-    <section className={`${GLASS} p-4 flex flex-col gap-3 min-h-[200px] max-h-80 lg:max-h-none lg:flex-1 lg:min-h-0`}>
+    <section className={`${GLASS} px-4 py-3.5 flex flex-col gap-2.5 min-h-[200px] max-h-80 lg:max-h-none lg:flex-1 lg:min-h-0`}>
       <div className="flex items-baseline gap-4">
         <button onMouseUp={dropFocus} onClick={() => setTab("tape")} aria-pressed={view === "tape"} className={tabBtn(view === "tape")}>{t.tape.title}</button>
         {g.settled && <button onMouseUp={dropFocus} onClick={() => setTab("debrief")} aria-pressed={view === "debrief"} className={tabBtn(view === "debrief")}>{t.tape.debrief}</button>}
       </div>
       <div className="overflow-auto flex-1 min-h-0 -mx-1 px-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [scrollbar-color:rgba(255,255,255,0.2)_transparent]">
         {view === "tape" ? (
-          <table className="w-full border-collapse font-sans text-[13px] tabular-nums text-white/90">
+          <table className="w-full border-collapse font-sans text-[13px] tabular-nums">
             <thead>
               <tr>{t.tape.cols.map((c, i) => <th key={c} className={`${th} ${i >= 2 ? "text-right" : "text-left"}`}>{c}</th>)}</tr>
             </thead>
             <tbody>
               {g.trades.length === 0 ? (
-                <tr><td colSpan={4} className="py-2 text-white/40">{t.tape.empty}</td></tr>
+                <tr><td colSpan={4} className="px-1.5 py-2 text-[12px] text-white/35">{t.tape.empty}</td></tr>
               ) : g.trades.map((x, i) => ({ x, i })).reverse().map(({ x, i }) => (
-                <tr key={i} className={x.buyer === YOU || x.seller === YOU ? "bg-tec-500/15 font-semibold" : ""}>
+                <tr key={i} className={x.buyer === YOU || x.seller === YOU ? "text-white font-semibold" : "text-white/70"}>
                   <td className={td}>{who(x.buyer)}</td>
                   <td className={td}>{who(x.seller)}</td>
                   <td className={`${td} font-mono text-right`}>{x.price}</td>
@@ -1085,7 +1060,7 @@ function Debrief({ g, t }: { g: Game; t: Copy }) {
     : missed && missed.missedEdge > 1 ? d.missed(missed.stage + 1, fmt(missed.missedEdge))
     : total > 0 ? d.clean : d.quiet;
 
-  const th = "font-mono text-[10px] font-semibold tracking-[0.08em] uppercase text-white/35";
+  const th = "font-sans text-[11px] text-white/40";
   return (
     <div className="flex flex-col gap-3">
       <p className="font-sans text-[12.5px] leading-snug text-white/80">{takeaway}</p>
