@@ -15,7 +15,7 @@ const PILLAR_STYLES = [
 
 const T = {
   en: {
-    nav: { about: "About", team: "Team", learn: "Learn", events: "Events", blog: "Blog", contact: "Contact", apply: "Apply" },
+    nav: { play: "Play", about: "About", team: "Team", learn: "Learn", events: "Events", blog: "Blog", contact: "Contact", apply: "Apply" },
     hero: {
       eyebrow:      "Tec de Monterrey, Campus Querétaro · Est. 2026",
       line1:        "Tec Monterrey",
@@ -67,7 +67,7 @@ const T = {
   },
 
   es: {
-    nav: { about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", blog: "Blog", contact: "Contacto", apply: "Aplicar" },
+    nav: { play: "Jugar", about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", blog: "Blog", contact: "Contacto", apply: "Aplicar" },
     hero: {
       eyebrow:      "Tec de Monterrey, Campus Querétaro · Fundado en 2026",
       line1:        "Tec Monterrey",
@@ -339,6 +339,7 @@ export default function Page() {
             <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
             <Link href="/blog" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.blog}</Link>
             <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
+            <Link href="/play"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.play}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
@@ -361,6 +362,7 @@ export default function Page() {
               { href: "/events", label: t.nav.events },
               { href: "/blog", label: t.nav.blog },
               { href: "/contact", label: t.nav.contact },
+              { href: "/play", label: t.nav.play },
             ]} />
           </div>
 
