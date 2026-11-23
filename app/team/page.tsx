@@ -17,7 +17,7 @@ const MAJOR_NAMES: Record<string, { en: string; es: string }> = {
 
 const T = {
   en: {
-    nav: { home: "Home", learn: "Learn", events: "Events", blog: "Blog", contact: "Contact", apply: "Apply" },
+    nav: { play: "Play", home: "Home", learn: "Learn", events: "Events", blog: "Blog", contact: "Contact", apply: "Apply" },
     eyebrow: "Leadership",
     heading: "The team.",
     roles: [
@@ -73,7 +73,7 @@ const T = {
   },
 
   es: {
-    nav: { home: "Inicio", learn: "Aprender", events: "Eventos", blog: "Blog", contact: "Contacto", apply: "Aplicar" },
+    nav: { play: "Jugar", home: "Inicio", learn: "Aprender", events: "Eventos", blog: "Blog", contact: "Contacto", apply: "Aplicar" },
     eyebrow: "Liderazgo",
     heading: "El equipo.",
     roles: [
@@ -202,6 +202,7 @@ export default function TeamPage() {
             <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
             <Link href="/blog" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.blog}</Link>
             <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
+            <Link href="/play"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.play}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
@@ -223,6 +224,7 @@ export default function TeamPage() {
               { href: "/events", label: t.nav.events },
               { href: "/blog", label: t.nav.blog },
               { href: "/contact", label: t.nav.contact },
+              { href: "/play", label: t.nav.play },
             ]} />
           </div>
         </div>
