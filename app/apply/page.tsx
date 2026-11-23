@@ -27,7 +27,7 @@ const INTEREST_ICONS = [BarChart2, Zap, Database, Cpu]          as const;
 
 const T = {
   en: {
-    nav: { home: "Home", about: "About", team: "Team", learn: "Learn", events: "Events", blog: "Blog", contact: "Contact" },
+    nav: { play: "Play", home: "Home", about: "About", team: "Team", learn: "Learn", events: "Events", blog: "Blog", contact: "Contact" },
     page: {
       eyebrow:    "Join 20+ active members",
       heading:    "Apply to TMQS.",
@@ -119,7 +119,7 @@ const T = {
   },
 
   es: {
-    nav: { home: "Inicio", about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", blog: "Blog", contact: "Contacto" },
+    nav: { play: "Jugar", home: "Inicio", about: "Acerca", team: "Equipo", learn: "Aprender", events: "Eventos", blog: "Blog", contact: "Contacto" },
     page: {
       eyebrow:    "Únete a más de 20 miembros activos",
       heading:    "Aplica a TMQS.",
@@ -346,6 +346,7 @@ export default function ApplyPage() {
             <Link href="/events" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
             <Link href="/blog" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.blog}</Link>
             <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
+            <Link href="/play"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.play}</Link>
           </nav>
 
           {/* Right */}
@@ -369,6 +370,7 @@ export default function ApplyPage() {
               { href: "/events", label: t.nav.events },
               { href: "/blog", label: t.nav.blog },
               { href: "/contact", label: t.nav.contact },
+              { href: "/play", label: t.nav.play },
             ]} />
           </div>
 
