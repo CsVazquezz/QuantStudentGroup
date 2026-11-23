@@ -10,7 +10,7 @@ import type { BlogPost } from "@/lib/blog";
 
 const T = {
   en: {
-    nav: { home: "Home", team: "Team", learn: "Learn", events: "Events", contact: "Contact", apply: "Apply" },
+    nav: { play: "Play", home: "Home", team: "Team", learn: "Learn", events: "Events", contact: "Contact", apply: "Apply" },
     eyebrow: "Insights",
     heading: "Blog.",
     sub: "Ideas and research on markets, data, and quantitative finance — written for anyone curious, not just our members.",
@@ -19,7 +19,7 @@ const T = {
     footer: "Extracting alpha from noise.",
   },
   es: {
-    nav: { home: "Inicio", team: "Equipo", learn: "Aprender", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
+    nav: { play: "Jugar", home: "Inicio", team: "Equipo", learn: "Aprender", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
     eyebrow: "Ideas",
     heading: "Blog.",
     sub: "Ideas e investigación sobre mercados, datos y finanzas cuantitativas, escritas para cualquier persona curiosa, no solo para nuestros miembros.",
@@ -58,6 +58,7 @@ export default function BlogPage() {
             <Link href="/learn"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
             <Link href="/events"  className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
             <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
+            <Link href="/play"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.play}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
@@ -79,6 +80,7 @@ export default function BlogPage() {
               { href: "/learn", label: t.nav.learn },
               { href: "/events", label: t.nav.events },
               { href: "/contact", label: t.nav.contact },
+              { href: "/play", label: t.nav.play },
             ]} />
           </div>
         </div>

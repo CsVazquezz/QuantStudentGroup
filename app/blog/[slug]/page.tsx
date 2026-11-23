@@ -13,13 +13,13 @@ import type { BlogPost } from "@/lib/blog";
 
 const T = {
   en: {
-    nav: { home: "Home", team: "Team", learn: "Learn", events: "Events", contact: "Contact", apply: "Apply" },
+    nav: { play: "Play", home: "Home", team: "Team", learn: "Learn", events: "Events", contact: "Contact", apply: "Apply" },
     back: "Back to blog",
     notFound: "This post doesn't exist.",
     footer: "Extracting alpha from noise.",
   },
   es: {
-    nav: { home: "Inicio", team: "Equipo", learn: "Aprender", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
+    nav: { play: "Jugar", home: "Inicio", team: "Equipo", learn: "Aprender", events: "Eventos", contact: "Contacto", apply: "Aplicar" },
     back: "Volver al blog",
     notFound: "Esta publicación no existe.",
     footer: "Extrayendo alpha del ruido.",
@@ -88,6 +88,7 @@ export default function BlogPostPage() {
             <Link href="/learn"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.learn}</Link>
             <Link href="/events"  className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.events}</Link>
             <Link href="/contact" className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.contact}</Link>
+            <Link href="/play"   className="text-xs font-sans text-slate-500 hover:text-slate-900 transition-colors tracking-wide">{t.nav.play}</Link>
           </nav>
 
           <div className="flex items-center gap-3 shrink-0">
@@ -109,6 +110,7 @@ export default function BlogPostPage() {
               { href: "/learn", label: t.nav.learn },
               { href: "/events", label: t.nav.events },
               { href: "/contact", label: t.nav.contact },
+              { href: "/play", label: t.nav.play },
             ]} />
           </div>
         </div>
