@@ -7,13 +7,10 @@ import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { useLang } from "@/lib/useLang";
 import MobileNav from "@/components/MobileNav";
 import {
-  PLAYERS, YOU, type Game, type Mode, type Side, type Style,
-  advance, edgePnl, fvShort, newGame, newRound, position, postQuote,
-  setMode, shownSum, styleOf, timeout, userTrade,
+  DAILY_ROUNDS, LEVELS, PLAYERS, YOU, type Game, type Level, type Mode, type Style,
+  advance, dailyDone, edgePnl, fvShort, newGame, newRound, position, postQuote,
+  shownSum, styleOf, timeout, userTrade,
 } from "@/lib/market";
-
-// Seconds per decision. When it hits zero the controls lock (lib/market.ts timeout()).
-const DECISION_SECS = 5;
 
 // ─────────────────────────────────────────────────────────────────
 // Copy
@@ -21,11 +18,35 @@ const DECISION_SECS = 5;
 
 const en = {
   nav: { home: "Home", team: "Team", learn: "Learn", events: "Events", blog: "Blog", contact: "Contact", apply: "Apply" },
-  eyebrow: "Practice simulator",
   heading: "Make Me a Market.",
   sub: "The contract settles at the sum of 5 cards (A = 1 … K = 13), revealed one at a time. Quote six bots, or trade against the sharpest one.",
   modes: { maker: "You make the market", trader: "You trade" } as Record<Mode, string>,
   modeLabel: "Mode",
+  levels: { easy: "Easy", normal: "Normal", hard: "Hard" } as Record<Level, string>,
+  levelLabel: "Difficulty",
+  daily: "Daily",
+  dailyRound: (n: number) => `Daily · Round ${n} of ${DAILY_ROUNDS}`,
+  hint: (v: number) => `Rough estimate: shown + 7 × hidden ≈ ${v}`,
+  keysMaker: "↑↓ move · ←→ spread · Enter post",
+  stats: { best: "Best total", bestRound: "Best round", streak: "Streak", newBest: "New best!", dailyToday: "Today's official", notYet: "not played yet" },
+  dailyCard: {
+    title: (d: string) => `Daily challenge · ${d}`,
+    total: "Your total",
+    official: "Official score",
+    practice: "Practice run",
+    officialWas: (x: string) => `Today's official score: ${x}`,
+    copy: "Copy result", copied: "Copied!",
+    again: "Play again (practice)", free: "Back to free play", view: "View table", result: "Daily result",
+    share: (d: string, x: string) => `TMQS · Make Me a Market · Daily ${d}: ${x}`,
+  },
+  ready: {
+    maker: "You quote a bid and an ask; six bots trade against you.",
+    trader: "Bot 1 quotes; you buy, sell or pass before the clock runs out.",
+  } as Record<Mode, string>,
+  perDecision: (s: number) => `${s}s per decision`,
+  dailyInfo: "Same 5 deals for everyone today. Your first finished run is your official score.",
+  start: "Start game",
+  startDaily: "Start daily challenge",
   newRound: "New round",
   round: (n: number) => `Round ${n}`,
   stage: (n: number) => `Quote ${n} of 5`,
@@ -78,32 +99,57 @@ const en = {
   } as Record<Style, { tag: string; desc: string }>,
   you: "You",
   debrief: {
-    quote: (n: number) => `Quote ${n}`,
-    makerLine: (bid: number, ask: number, fv: string, filled: number) => `${bid} at ${ask}, fair value ${fv}, ${filled} filled.`,
-    askLow: "Your ask was below fair value. Buyers picked you off.",
-    bidHigh: "Your bid was above fair value. Sellers picked you off.",
-    noFill: "No trades: your market was fair, or too wide to be worth hitting.",
-    fair: "Fair value was inside your market. Trades here earn you the spread on average.",
-    traderLine: (m: string, bid: number, ask: number, fv: string) => `${m} quoted ${bid} at ${ask}, fair value ${fv}.`,
-    youDid: (side: Side, q: number) => side === "buy" ? `You bought ${q}.` : `You sold ${q}.`,
-    goodBuy: (e: string) => `Good buy: ${e} points under fair value.`,
-    badBuy: (e: string) => `You paid ${e} over fair value.`,
-    goodSell: (e: string) => `Good sale: ${e} points over fair value.`,
-    badSell: (e: string) => `You sold ${e} under fair value.`,
-    missed: (e: string) => `You passed, but the market was ${e} off fair value. That was free edge.`,
-    goodPass: "Good pass: fair value was inside the market.",
-    timeUp: "Time ran out.",
+    cols: ["#", "Market vs fair value", "Edge"],
+    fv: "fv",
+    buy: (q: number) => `Buy ${q}`,
+    sell: (q: number) => `Sell ${q}`,
+    pass: "Pass",
+    time: "Time",
+    filled: (n: number) => `${n} filled`,
+    worst: (n: number, e: string) => `Quote ${n} cost you ${e} points.`,
+    askLow: "Your ask was under fair value, so buyers picked you off.",
+    bidHigh: "Your bid was over fair value, so sellers picked you off.",
+    badBuy: "You paid more than it was worth.",
+    badSell: "You sold for less than it was worth.",
+    missed: (n: number, e: string) => `Quote ${n} was ${e} off fair value and you passed. That was free edge.`,
+    clean: "Every trade had edge. Clean round.",
+    quiet: "No edge either way this round.",
+    legend: "bar = the market · tick = fair value",
   },
   footer: "Extracting alpha from noise.",
 };
 
 const es: typeof en = {
   nav: { home: "Inicio", team: "Equipo", learn: "Aprender", events: "Eventos", blog: "Blog", contact: "Contacto", apply: "Aplicar" },
-  eyebrow: "Simulador de práctica",
   heading: "Make Me a Market.",
   sub: "El contrato liquida a la suma de 5 cartas (A = 1 … K = 13), reveladas una por una. Cotiza a seis bots, u opera contra el más preciso.",
   modes: { maker: "Tú haces el mercado", trader: "Tú operas" },
   modeLabel: "Modo",
+  levels: { easy: "Fácil", normal: "Normal", hard: "Difícil" },
+  levelLabel: "Dificultad",
+  daily: "Diario",
+  dailyRound: n => `Diario · Ronda ${n} de ${DAILY_ROUNDS}`,
+  hint: v => `Estimación rápida: visible + 7 × ocultas ≈ ${v}`,
+  keysMaker: "↑↓ mover · ←→ spread · Enter publicar",
+  stats: { best: "Mejor total", bestRound: "Mejor ronda", streak: "Racha", newBest: "¡Nuevo récord!", dailyToday: "Oficial de hoy", notYet: "aún sin jugar" },
+  dailyCard: {
+    title: d => `Reto diario · ${d}`,
+    total: "Tu total",
+    official: "Puntaje oficial",
+    practice: "Ronda de práctica",
+    officialWas: x => `Puntaje oficial de hoy: ${x}`,
+    copy: "Copiar resultado", copied: "¡Copiado!",
+    again: "Jugar otra vez (práctica)", free: "Volver al juego libre", view: "Ver mesa", result: "Resultado diario",
+    share: (d, x) => `TMQS · Make Me a Market · Diario ${d}: ${x}`,
+  },
+  ready: {
+    maker: "Cotizas un bid y un ask; seis bots operan contra ti.",
+    trader: "Bot 1 cotiza; tú compras, vendes o pasas antes de que se acabe el tiempo.",
+  },
+  perDecision: s => `${s}s por decisión`,
+  dailyInfo: "Las mismas 5 manos para todos hoy. Tu primera partida terminada es tu puntaje oficial.",
+  start: "Empezar juego",
+  startDaily: "Empezar reto diario",
   newRound: "Nueva ronda",
   round: n => `Ronda ${n}`,
   stage: n => `Cotización ${n} de 5`,
@@ -156,21 +202,22 @@ const es: typeof en = {
   },
   you: "Tú",
   debrief: {
-    quote: n => `Cotización ${n}`,
-    makerLine: (bid, ask, fv, filled) => `${bid} a ${ask}, valor justo ${fv}, ${filled} ejecutados.`,
-    askLow: "Tu ask estaba debajo del valor justo. Los compradores te aprovecharon.",
-    bidHigh: "Tu bid estaba arriba del valor justo. Los vendedores te aprovecharon.",
-    noFill: "Sin operaciones: tu mercado era justo, o muy amplio para que valiera la pena.",
-    fair: "El valor justo estaba dentro de tu mercado. Aquí, en promedio, ganas el spread.",
-    traderLine: (m, bid, ask, fv) => `${m} cotizó ${bid} a ${ask}, valor justo ${fv}.`,
-    youDid: (side, q) => side === "buy" ? `Compraste ${q}.` : `Vendiste ${q}.`,
-    goodBuy: e => `Buena compra: ${e} puntos debajo del valor justo.`,
-    badBuy: e => `Pagaste ${e} arriba del valor justo.`,
-    goodSell: e => `Buena venta: ${e} puntos arriba del valor justo.`,
-    badSell: e => `Vendiste ${e} debajo del valor justo.`,
-    missed: e => `Pasaste, pero el mercado estaba ${e} fuera del valor justo. Era ventaja gratis.`,
-    goodPass: "Buen pase: el valor justo estaba dentro del mercado.",
-    timeUp: "Se acabó el tiempo.",
+    cols: ["#", "Mercado vs valor justo", "Ventaja"],
+    fv: "vj",
+    buy: q => `Compra ${q}`,
+    sell: q => `Vende ${q}`,
+    pass: "Pasa",
+    time: "Tiempo",
+    filled: n => `${n} ejec.`,
+    worst: (n, e) => `La cotización ${n} te costó ${e} puntos.`,
+    askLow: "Tu ask estaba debajo del valor justo y los compradores te aprovecharon.",
+    bidHigh: "Tu bid estaba arriba del valor justo y los vendedores te aprovecharon.",
+    badBuy: "Pagaste más de lo que valía.",
+    badSell: "Vendiste por menos de lo que valía.",
+    missed: (n, e) => `La cotización ${n} estaba ${e} fuera del valor justo y pasaste. Era ventaja gratis.`,
+    clean: "Todas tus operaciones tuvieron ventaja. Ronda limpia.",
+    quiet: "Sin ventaja en ninguna dirección esta ronda.",
+    legend: "barra = el mercado · marca = valor justo",
   },
   footer: "Extrayendo alpha del ruido.",
 };
@@ -186,6 +233,43 @@ type Act = (fn: (d: Game) => void) => void;
 const fmt = (x: number, d = 1) => (Math.round(x * 10 ** d) / 10 ** d).toFixed(d);
 const sgn = (x: number) => (x > 0 ? "+" : x < 0 ? "−" : "") + fmt(Math.abs(x), Number.isInteger(x) ? 0 : 1);
 const tone = (x: number) => (x > 0 ? "text-emerald-400" : x < 0 ? "text-red-400" : "text-white/50");
+
+// Per-browser records. Storage can be blocked (private mode), so every access is guarded
+// and the game still works without it.
+type Stats = { bestTotal: number; bestRound: number; streak: number; bestStreak: number };
+const STATS_KEY = "tmqs-play-stats";
+const dailyKey = (d: string) => `tmqs-play-daily-${d}`;
+function readStore<T>(key: string): T | null {
+  try { const v = localStorage.getItem(key); return v == null ? null : (JSON.parse(v) as T); } catch { return null; }
+}
+function writeStore(key: string, v: unknown) {
+  try { localStorage.setItem(key, JSON.stringify(v)); } catch { /* storage blocked */ }
+}
+// The daily challenge rolls over at midnight in Querétaro.
+const today = () => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Mexico_City" }).format(new Date());
+
+type Ctl = {
+  act: Act;
+  expire: () => void;
+  start: (mode: Mode, level: Level, daily: boolean) => void;
+  who: (p: string) => string;
+  qty: number; setQty: (n: number) => void;
+  quote: { bid: string; ask: string }; setQuote: (q: { bid: string; ask: string }) => void;
+  post: () => void;
+  stats: Stats | null; newBest: boolean;
+  dailyOfficial: number | null; thisOfficial: boolean;
+  showResult: boolean; setShowResult: (v: boolean) => void;
+  started: boolean; begin: () => void;
+};
+
+// Mouse clicks on persistent buttons (mode, level, tabs) drop focus, so a later Enter
+// drives the game instead of re-clicking that button. Keyboard activation keeps focus.
+const dropFocus = (e: React.MouseEvent<HTMLElement>) => e.currentTarget.blur();
+
+// Small key hint shown on buttons, desktop only.
+const Kbd = ({ k }: { k: string }) => (
+  <kbd className="hidden lg:inline-block ml-1.5 px-1.5 rounded bg-black/15 font-mono text-[10px] leading-5 opacity-80">{k}</kbd>
+);
 
 // Each bot's avatar is a symbol for its habit.
 const GLYPH: Record<Style, string> = { sharp: "μ", cautious: "σ", rough: "≈", stale: "Δt", momentum: "β", gambler: "ε" };
@@ -220,6 +304,14 @@ export default function PlayPage() {
   const t = T[lang];
   const [g, setG] = useState<Game | null>(null);
   const [qty, setQty] = useState(1);
+  const [quote, setQuote] = useState({ bid: "", ask: "" });
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [newBest, setNewBest] = useState(false);
+  const [dailyOfficial, setDailyOfficial] = useState<number | null>(null);
+  const [thisOfficial, setThisOfficial] = useState(false);
+  const [showResult, setShowResult] = useState(true);
+  // Nothing runs until the player presses Start; any settings change returns here.
+  const [started, setStarted] = useState(false);
 
   // Deal on the client only: a server-side deal would differ from the
   // client's and cause a hydration mismatch.
@@ -238,7 +330,118 @@ export default function PlayPage() {
     timeout(d);
     return d;
   });
+  const start = (mode: Mode, level: Level, daily: boolean) => {
+    const date = daily ? today() : null;
+    setG(newGame(mode, level, date));
+    setStarted(false);
+    setShowResult(true);
+    setThisOfficial(false);
+    setDailyOfficial(date ? readStore<number>(dailyKey(date)) : null);
+  };
   const who = (p: string) => (p === YOU ? t.you : p);
+  const statKey = g && !g.daily ? `${g.mode}-${g.level}` : null;
+
+  // Load this mode + difficulty's records whenever it changes.
+  useEffect(() => {
+    setStats(statKey ? readStore<Record<string, Stats>>(STATS_KEY)?.[statKey] ?? null : null);
+  }, [statKey]);
+
+  // Maker quote inputs start at the rough estimate ± 3 for every new decision.
+  const decisionId = g ? `${g.daily}|${g.level}|${g.mode}|${g.round}|${g.stage}|${g.cards.map(c => c.r + c.s).join()}` : "";
+  useEffect(() => {
+    if (!g || g.mode !== "maker") return;
+    const guess = Math.round(fvShort(g.cards, g.stage));
+    const half = Math.floor(Math.min(g.maxSpread, 6) / 2);
+    setQuote({ bid: String(guess - half), ask: String(guess + half) });
+  }, [decisionId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // On settle: update records (free play) or lock in the daily's first completed score.
+  const seen = useRef<Game | null>(null);
+  useEffect(() => {
+    if (!g || !g.settled || seen.current === g) return;
+    seen.current = g;
+    if (g.daily) {
+      if (!dailyDone(g)) return;
+      const prev = readStore<number>(dailyKey(g.daily));
+      if (prev == null) writeStore(dailyKey(g.daily), g.totals[YOU]);
+      setDailyOfficial(prev ?? g.totals[YOU]);
+      setThisOfficial(prev == null);
+      return;
+    }
+    const all = readStore<Record<string, Stats>>(STATS_KEY) ?? {};
+    const old = all[statKey!];
+    const r = g.roundPnl[YOU], tot = g.totals[YOU];
+    const streak = r > 0 ? (old?.streak ?? 0) + 1 : 0;
+    const next: Stats = {
+      bestTotal: Math.max(old?.bestTotal ?? tot, tot),
+      bestRound: Math.max(old?.bestRound ?? r, r),
+      streak,
+      bestStreak: Math.max(old?.bestStreak ?? 0, streak),
+    };
+    all[statKey!] = next;
+    writeStore(STATS_KEY, all);
+    setStats(next);
+    const beat = !!old && (next.bestTotal > old.bestTotal || next.bestRound > old.bestRound);
+    if (beat) { setNewBest(true); setTimeout(() => setNewBest(false), 2500); }
+  }, [g, statKey]);
+
+  const post = () => act(d => postQuote(d, parseFloat(quote.bid), parseFloat(quote.ask)));
+
+  // Keyboard: arrows nudge the maker's quote, B/S/P/1-3 for traders, Enter/Space to move on.
+  // Re-bound every render so the handler always sees the current game.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!g || e.metaKey || e.ctrlKey || e.altKey) return;
+      const el = e.target as HTMLElement;
+      const typing = !!el.closest?.("input, select, textarea");
+      const onControl = !!el.closest?.("button, a, input, select, textarea");
+      const k = e.key;
+      if (dailyDone(g) && showResult) return;
+      if (!started) {
+        if ((k === "Enter" || k === " ") && !onControl) { e.preventDefault(); setStarted(true); }
+        return;
+      }
+
+      if (!g.settled && !g.acted && g.mode === "maker") {
+        const bid = parseFloat(quote.bid), ask = parseFloat(quote.ask);
+        if (k.startsWith("Arrow") && Number.isFinite(bid) && Number.isFinite(ask)) {
+          e.preventDefault();
+          const w = ask - bid;
+          const [db, da] =
+            k === "ArrowUp" ? [1, 1] : k === "ArrowDown" ? [-1, -1]
+            : k === "ArrowLeft" ? (w - 2 >= 1 ? [1, -1] : [0, 0])
+            : w + 2 <= g.maxSpread ? [-1, 1] : [0, 0];
+          setQuote({ bid: String(bid + db), ask: String(ask + da) });
+        } else if (k === "Enter" && !onControl) {
+          e.preventDefault();
+          post();
+        }
+        return;
+      }
+      if (typing) return;
+      if (!g.settled && !g.acted && g.mode === "trader") {
+        const key = k.toLowerCase();
+        if (key === "b") act(d => userTrade(d, "buy", qty));
+        else if (key === "s") act(d => userTrade(d, "sell", qty));
+        else if (key === "p") act(d => userTrade(d, null));
+        else if (["1", "2", "3"].includes(k)) setQty(Number(k));
+        return;
+      }
+      if ((k === "Enter" || k === " ") && !onControl) {
+        e.preventDefault();
+        if (!g.settled) act(advance);
+        else if (!dailyDone(g)) act(newRound);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
+  const c: Ctl = {
+    act, expire, start, who, qty, setQty, quote, setQuote, post,
+    stats, newBest, dailyOfficial, thisOfficial, showResult, setShowResult,
+    started, begin: () => setStarted(true),
+  };
 
   return (
     <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden">
@@ -285,7 +488,7 @@ export default function PlayPage() {
       </header>
 
       {/* ── GAME ── fills the viewport under the nav on desktop; side panels scroll internally */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col gap-4 lg:h-[calc(100svh-3.5rem)] lg:min-h-[680px]">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col gap-3 lg:h-[calc(100svh-3.5rem)] lg:min-h-[700px]">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -293,19 +496,18 @@ export default function PlayPage() {
           className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 shrink-0"
         >
           <div className="min-w-0">
-            <p className="text-[11px] font-sans text-slate-400 tracking-[0.18em] uppercase mb-1">{t.eyebrow}</p>
-            <h1 className="font-serif tracking-tight text-slate-900 text-3xl lg:text-4xl mb-1">{t.heading}</h1>
-            <p className="font-sans text-slate-500 text-sm max-w-2xl leading-snug">{t.sub}</p>
+            <h1 className="font-serif tracking-tight text-slate-900 text-2xl lg:text-[1.75rem] leading-tight">{t.heading}</h1>
+            <p className="font-sans text-slate-500 text-xs max-w-md leading-snug">{t.sub}</p>
           </div>
-          {g && <Controls g={g} t={t} act={act} />}
+          {g && <Controls g={g} t={t} c={c} />}
         </motion.div>
 
         <div className="lg:flex-1 lg:min-h-0 rounded-2xl p-3 sm:p-4 bg-[radial-gradient(ellipse_at_40%_20%,#0d1f4a_0%,#060c1c_55%,#03060f_100%)] grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_280px] gap-3 sm:gap-4 shadow-[0_30px_80px_-40px_rgba(0,57,166,0.6)]">
           {g ? (
             <MotionConfig reducedMotion="user">
-              <TableArea g={g} t={t} act={act} expire={expire} qty={qty} setQty={setQty} who={who} />
+              <TableArea g={g} t={t} c={c} />
               <div className="flex flex-col gap-3 sm:gap-4 min-w-0 lg:min-h-0">
-                <Scoreboard g={g} t={t} who={who} />
+                <Scoreboard g={g} t={t} c={c} />
                 <TapePanel g={g} t={t} who={who} />
               </div>
             </MotionConfig>
@@ -330,27 +532,42 @@ export default function PlayPage() {
 // Controls (on the white page, above the dark game panel)
 // ─────────────────────────────────────────────────────────────────
 
-function Controls({ g, t, act }: { g: Game; t: Copy; act: Act }) {
+function Controls({ g, t, c }: { g: Game; t: Copy; c: Ctl }) {
+  const seg = "inline-flex border border-slate-200 rounded-full bg-white p-1";
+  const pill = (on: boolean) =>
+    `px-3.5 py-1.5 rounded-full text-xs font-sans font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${FOCUS} ${on ? "bg-tec-600 text-white" : "text-slate-500 hover:text-slate-900"}`;
+  const daily = !!g.daily;
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <div role="group" aria-label={t.modeLabel} className="inline-flex border border-slate-200 rounded-full bg-white p-1">
-        {(["maker", "trader"] as Mode[]).map(m => (
-          <button
-            key={m}
-            aria-pressed={g.mode === m}
-            onClick={() => act(d => setMode(d, m))}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-sans font-semibold transition-colors ${FOCUS} ${g.mode === m ? "bg-tec-600 text-white" : "text-slate-500 hover:text-slate-900"}`}
-          >
+    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+      <div role="group" aria-label={t.modeLabel} className={seg}>
+        {(["trader", "maker"] as Mode[]).map(m => (
+          <button onMouseUp={dropFocus} key={m} aria-pressed={g.mode === m} disabled={daily} onClick={() => c.start(m, g.level, false)} className={pill(g.mode === m)}>
             {t.modes[m]}
           </button>
         ))}
       </div>
-      <button
-        onClick={() => act(newRound)}
-        className={`px-4 py-2 text-xs font-sans font-semibold rounded-full border border-slate-200 bg-white text-slate-600 hover:border-slate-400 hover:text-slate-900 transition-colors ${FOCUS}`}
+      <div role="group" aria-label={t.levelLabel} className={seg}>
+        {(["easy", "normal", "hard"] as Level[]).map(l => (
+          <button onMouseUp={dropFocus} key={l} aria-pressed={g.level === l} disabled={daily} onClick={() => c.start(g.mode, l, false)} className={pill(g.level === l)}>
+            {t.levels[l]}
+          </button>
+        ))}
+      </div>
+      <button onMouseUp={dropFocus}
+        aria-pressed={daily}
+        onClick={() => c.start(g.mode, g.level, !daily)}
+        className={`px-4 py-2 text-xs font-sans font-semibold rounded-full border transition-colors ${FOCUS} ${daily ? "bg-tec-600 border-tec-600 text-white" : "border-slate-200 bg-white text-slate-600 hover:border-slate-400 hover:text-slate-900"}`}
       >
-        {t.newRound}
+        ★ {t.daily}
       </button>
+      {!daily && (
+        <button onMouseUp={dropFocus}
+          onClick={() => c.act(newRound)}
+          className={`px-4 py-2 text-xs font-sans font-semibold rounded-full border border-slate-200 bg-white text-slate-600 hover:border-slate-400 hover:text-slate-900 transition-colors ${FOCUS}`}
+        >
+          {t.newRound}
+        </button>
+      )}
     </div>
   );
 }
@@ -359,16 +576,14 @@ function Controls({ g, t, act }: { g: Game; t: Copy; act: Act }) {
 // Table
 // ─────────────────────────────────────────────────────────────────
 
-function TableArea({ g, t, act, expire, qty, setQty, who }: {
-  g: Game; t: Copy; act: Act; expire: () => void; qty: number; setQty: (n: number) => void; who: (p: string) => string;
-}) {
+function TableArea({ g, t, c }: { g: Game; t: Copy; c: Ctl }) {
   const done = g.settled ? 5 : g.stage;
   return (
     // Phones: header, felt card, seat grid stacked. md+: oval felt with seats placed around it.
     <section aria-label={t.round(g.round)} className="relative min-w-0 flex flex-col gap-3 md:block md:min-h-[600px] lg:min-h-0">
       <div className="flex items-start justify-between gap-3 md:absolute md:top-3 md:inset-x-4 md:z-20 pointer-events-none">
         <div>
-          <p className={`${KICKER} text-white/40`}>{t.round(g.round)}</p>
+          <p className={`${KICKER} ${g.daily ? "text-tec-300" : "text-white/40"}`}>{g.daily ? t.dailyRound(g.round) : t.round(g.round)}</p>
           <p className="font-serif text-lg text-white">{g.settled ? t.settled : t.stage(g.stage + 1)}</p>
         </div>
         <div className="flex gap-1.5 pt-2" aria-hidden="true">
@@ -383,14 +598,16 @@ function TableArea({ g, t, act, expire, qty, setQty, who }: {
         <div className="absolute inset-[4%] md:inset-[5%] rounded-[28px] md:rounded-[50%] border border-white/10 pointer-events-none" />
         <div className="relative h-full flex flex-col items-center justify-center gap-4 md:gap-5">
           <Cards g={g} t={t} />
-          <Center g={g} t={t} act={act} expire={expire} qty={qty} setQty={setQty} who={who} />
+          <Center g={g} t={t} c={c} />
         </div>
       </div>
 
       {/* seats: overlay layer ignores clicks so the felt's controls stay usable */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:block md:absolute md:inset-0 md:pointer-events-none">
-        {PLAYERS.map((p, i) => <SeatCard key={p} g={g} t={t} p={p} i={i} who={who} />)}
+        {PLAYERS.map((p, i) => <SeatCard key={p} g={g} t={t} p={p} i={i} who={c.who} />)}
       </div>
+
+      {dailyDone(g) && c.showResult && <DailyResult g={g} t={t} c={c} />}
     </section>
   );
 }
@@ -398,7 +615,7 @@ function TableArea({ g, t, act, expire, qty, setQty, who }: {
 function Cards({ g, t }: { g: Game; t: Copy }) {
   const k = Math.min(g.stage, 5);
   const fan = [-8, -4, 0, 4, 8];
-  const box = "w-10 h-14 sm:w-12 sm:h-[68px] lg:w-[60px] lg:h-[84px] rounded-lg grid place-items-center relative shadow-[0_10px_24px_-8px_rgba(0,0,0,0.6)]";
+  const box = "w-10 h-14 sm:w-12 sm:h-[68px] lg:w-[60px] lg:h-[84px] xl:w-[68px] xl:h-[96px] rounded-lg grid place-items-center relative shadow-[0_10px_24px_-8px_rgba(0,0,0,0.6)]";
   return (
     <div className="flex items-end gap-1.5 sm:gap-2" style={{ perspective: 600 }}>
       {g.cards.map((c, i) => {
@@ -411,7 +628,7 @@ function Cards({ g, t }: { g: Game; t: Copy }) {
             transition={shown ? { duration: 0.35, ease: "easeOut" } : { delay: i * 0.07, type: "spring", stiffness: 260, damping: 20 }}
             aria-label={shown ? `${c.r}${c.s}` : t.hidden}
             className={`${box} ${shown
-              ? `bg-white border-[1.5px] font-serif text-lg sm:text-xl lg:text-2xl ${c.red ? "border-red-500 text-red-600" : "border-slate-900 text-slate-900"}`
+              ? `bg-white border-[1.5px] font-serif text-lg sm:text-xl lg:text-2xl xl:text-3xl ${c.red ? "border-red-500 text-red-600" : "border-slate-900 text-slate-900"}`
               : "bg-white/5 border border-white/20 text-tec-200 font-mono text-base lg:text-lg backdrop-blur"}`}
           >
             {shown ? (<><small className="absolute top-0.5 left-1 sm:top-1 sm:left-1.5 font-mono text-[9px] sm:text-[10px]">{c.s}</small>{c.r}</>) : "?"}
@@ -424,7 +641,7 @@ function Cards({ g, t }: { g: Game; t: Copy }) {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.35, type: "spring", stiffness: 200, damping: 14 }}
         aria-label={t.finalValue}
-        className={`ml-1.5 sm:ml-3 h-14 sm:h-[68px] lg:h-[84px] min-w-[56px] sm:min-w-[72px] px-2 sm:px-3 rounded-lg grid place-items-center font-mono text-lg sm:text-2xl font-semibold border-[1.5px] ${
+        className={`ml-1.5 sm:ml-3 h-14 sm:h-[68px] lg:h-[84px] xl:h-[96px] min-w-[56px] sm:min-w-[72px] px-2 sm:px-3 rounded-lg grid place-items-center font-mono text-lg sm:text-2xl font-semibold border-[1.5px] ${
           g.settled
             ? "border-tec-200 bg-tec-500 text-white shadow-[0_0_40px_rgba(74,131,205,0.8)]"
             : "border-dashed border-tec-300 text-white bg-tec-500/20"
@@ -436,11 +653,30 @@ function Cards({ g, t }: { g: Game; t: Copy }) {
   );
 }
 
-function Center({ g, t, act, expire, qty, setQty, who }: {
-  g: Game; t: Copy; act: Act; expire: () => void; qty: number; setQty: (n: number) => void; who: (p: string) => string;
-}) {
-  const clock = <Clock key={`${g.round}-${g.stage}-${g.mode}`} t={t} onExpire={expire} />;
+function Center({ g, t, c }: { g: Game; t: Copy; c: Ctl }) {
+  const { act, who } = c;
+  const clock = (
+    <Clock key={`${g.daily}-${g.level}-${g.mode}-${g.round}-${g.stage}`} t={t} secs={LEVELS[g.level].secs[g.mode]} onExpire={c.expire} />
+  );
+  const hint = LEVELS[g.level].hint && (
+    <p className="font-mono text-[11px] text-tec-200/80">{t.hint(fvShort(g.cards, g.stage))}</p>
+  );
   const err = g.err && <p role="alert" className="font-sans text-xs text-red-300 text-center">{t.errs[g.err](g.maxSpread)}</p>;
+  if (!c.started) {
+    const secs = LEVELS[g.level].secs[g.mode];
+    return (
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex flex-col items-center gap-3 text-center">
+        <p className={`${KICKER} text-tec-200`}>
+          {g.daily ? `★ ${t.daily}` : t.modes[g.mode]} · {t.levels[g.level]} · {t.perDecision(secs)}
+        </p>
+        <p className="font-sans text-sm text-white/65 max-w-[300px] leading-snug">{g.daily ? t.dailyInfo : t.ready[g.mode]}</p>
+        <button onClick={c.begin} className={`${BTN_LIGHT} px-7 py-3 text-base`}>
+          {g.daily ? t.startDaily : t.start}<Kbd k="Enter" />
+        </button>
+      </motion.div>
+    );
+  }
+
   const q = g.quotes[g.quotes.length - 1];
   const bigQuote = q && (
     <p className="font-mono text-3xl sm:text-4xl font-semibold tabular-nums text-white">
@@ -467,7 +703,11 @@ function Center({ g, t, act, expire, qty, setQty, who }: {
           <span>{t.luck} <b className="text-white/80">{sgn(actual - edge)}</b></span>
         </div>
         <p className="font-sans text-xs text-white/55 max-w-[280px]">{verdict}</p>
-        <button onClick={() => act(newRound)} className={`${BTN_LIGHT} mt-1.5`}>{t.next}</button>
+        {dailyDone(g) ? (
+          <button onClick={() => c.setShowResult(true)} className={`${BTN_LIGHT} mt-1.5`}>★ {t.dailyCard.result}</button>
+        ) : (
+          <button onClick={() => act(newRound)} className={`${BTN_LIGHT} mt-1.5`}>{t.next}<Kbd k="Enter" /></button>
+        )}
       </motion.div>
     );
   }
@@ -487,39 +727,34 @@ function Center({ g, t, act, expire, qty, setQty, who }: {
             </p>
           </>
         )}
-        <button onClick={() => act(advance)} className={`${BTN_LIGHT} mt-1`}>{nextLabel}</button>
+        <button onClick={() => act(advance)} className={`${BTN_LIGHT} mt-1`}>{nextLabel}<Kbd k="Enter" /></button>
       </div>
     );
   }
 
   if (g.mode === "maker") {
-    const guess = Math.round(fvShort(g.cards, g.stage));
-    const half = Math.floor(Math.min(g.maxSpread, 6) / 2);
     return (
       <form
-        key={`${g.round}-${g.stage}`}
         className="flex flex-col items-center gap-2"
-        onSubmit={e => {
-          e.preventDefault();
-          const f = new FormData(e.currentTarget);
-          act(d => postQuote(d, parseFloat(String(f.get("bid"))), parseFloat(String(f.get("ask")))));
-        }}
+        onSubmit={e => { e.preventDefault(); c.post(); }}
       >
         {clock}
         <p className={`${KICKER} text-tec-200`}>{t.makeMe}</p>
+        {hint}
         <div className="flex items-end gap-2.5">
           <label className="flex flex-col items-center gap-1">
             <span className="font-mono text-[10px] font-semibold tracking-[0.12em] uppercase text-emerald-300">{t.bid}</span>
-            <input name="bid" type="number" step="0.5" defaultValue={guess - half} className={INPUT} />
+            <input name="bid" type="number" step="0.5" value={c.quote.bid} onChange={e => c.setQuote({ ...c.quote, bid: e.target.value })} className={INPUT} />
           </label>
           <span className="pb-2.5 font-mono text-white/40">{t.at}</span>
           <label className="flex flex-col items-center gap-1">
             <span className="font-mono text-[10px] font-semibold tracking-[0.12em] uppercase text-red-300">{t.ask}</span>
-            <input name="ask" type="number" step="0.5" defaultValue={guess + half} className={INPUT} />
+            <input name="ask" type="number" step="0.5" value={c.quote.ask} onChange={e => c.setQuote({ ...c.quote, ask: e.target.value })} className={INPUT} />
           </label>
         </div>
         <p className="font-sans text-[11px] text-white/40">{t.makerHint(g.maxSpread)}</p>
         <button type="submit" className={BTN_LIGHT}>{t.post}</button>
+        <p className="hidden lg:block font-mono text-[10.5px] text-white/35">{t.keysMaker}</p>
         {err}
       </form>
     );
@@ -529,49 +764,94 @@ function Center({ g, t, act, expire, qty, setQty, who }: {
     <div className="flex flex-col items-center gap-2.5">
       {clock}
       <p className={`${KICKER} text-tec-200`}>{t.botMakes(q.maker)}</p>
+      {hint}
       {bigQuote}
       <div className="flex flex-wrap items-center justify-center gap-2">
         <label className="inline-flex items-center gap-1.5 font-sans text-xs text-white/60">
           {t.qty}
           <select
-            value={qty}
-            onChange={e => setQty(parseInt(e.target.value, 10))}
+            value={c.qty}
+            onChange={e => c.setQty(parseInt(e.target.value, 10))}
             className={`px-2 py-2 font-mono text-sm text-white bg-white/10 border border-white/20 rounded-lg ${FOCUS}`}
           >
             {[1, 2, 3].map(n => <option key={n} value={n} className="text-slate-900">{n}</option>)}
           </select>
         </label>
-        <button onClick={() => act(d => userTrade(d, "buy", qty))} className={`${BTN} bg-emerald-600 text-white hover:bg-emerald-500`}>{t.buyAt(q.ask)}</button>
-        <button onClick={() => act(d => userTrade(d, "sell", qty))} className={`${BTN} bg-red-600 text-white hover:bg-red-500`}>{t.sellAt(q.bid)}</button>
-        <button onClick={() => act(d => userTrade(d, null))} className={`${BTN} border border-white/25 text-white hover:bg-white/10`}>{t.pass}</button>
+        <button onClick={() => act(d => userTrade(d, "buy", c.qty))} className={`${BTN} bg-emerald-600 text-white hover:bg-emerald-500`}>{t.buyAt(q.ask)}<Kbd k="B" /></button>
+        <button onClick={() => act(d => userTrade(d, "sell", c.qty))} className={`${BTN} bg-red-600 text-white hover:bg-red-500`}>{t.sellAt(q.bid)}<Kbd k="S" /></button>
+        <button onClick={() => act(d => userTrade(d, null))} className={`${BTN} border border-white/25 text-white hover:bg-white/10`}>{t.pass}<Kbd k="P" /></button>
       </div>
       {err}
     </div>
   );
 }
 
+function DailyResult({ g, t, c }: { g: Game; t: Copy; c: Ctl }) {
+  const [copied, setCopied] = useState(false);
+  const d = t.dailyCard;
+  const total = g.totals[YOU];
+  const copy = () =>
+    navigator.clipboard
+      ?.writeText(`${d.share(g.daily!, sgn(total))} · ${window.location.origin}/play`)
+      .then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); })
+      .catch(() => { /* clipboard blocked */ });
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.2 }}
+      className="absolute inset-0 z-30 grid place-items-center rounded-xl bg-[#03060f]/70 backdrop-blur-sm p-4"
+    >
+      <motion.div
+        role="dialog"
+        aria-label={d.title(g.daily!)}
+        initial={{ scale: 0.9, y: 12 }}
+        animate={{ scale: 1, y: 0 }}
+        transition={{ delay: 1.2, type: "spring", stiffness: 220, damping: 18 }}
+        className="w-full max-w-sm rounded-2xl border border-white/15 bg-[radial-gradient(ellipse_at_50%_0%,#17408f_0%,#0a1f52_60%,#050d24_100%)] p-6 flex flex-col items-center gap-3 text-center shadow-[0_30px_80px_-20px_rgba(0,57,166,0.7)]"
+      >
+        <p className={`${KICKER} text-tec-200`}>{d.title(g.daily!)}</p>
+        <p className="font-sans text-xs text-white/60 -mb-2">{d.total}</p>
+        <p className={`font-mono text-5xl font-semibold ${tone(total)}`}>{sgn(total)}</p>
+        <span className={`rounded-full px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.1em] ${c.thisOfficial ? "bg-tec-500 text-white" : "bg-white/10 text-white/70"}`}>
+          {c.thisOfficial ? d.official : d.practice}
+        </span>
+        {!c.thisOfficial && c.dailyOfficial != null && <p className="font-sans text-xs text-white/60">{d.officialWas(sgn(c.dailyOfficial))}</p>}
+        <div className="flex flex-wrap justify-center gap-2 mt-1">
+          <button onClick={copy} className={BTN_LIGHT}>{copied ? d.copied : d.copy}</button>
+          <button onClick={() => c.start("trader", "normal", true)} className={`${BTN} border border-white/25 text-white hover:bg-white/10`}>{d.again}</button>
+        </div>
+        <div className="flex gap-5 font-sans text-xs">
+          <button onClick={() => c.start("trader", "normal", false)} className={`text-tec-200 hover:text-white ${FOCUS}`}>{d.free}</button>
+          <button onClick={() => c.setShowResult(false)} className={`text-white/50 hover:text-white ${FOCUS}`}>{d.view}</button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 // Draining bar + seconds. Keyed per decision by the parent, so it restarts each quote.
 // Wall-clock based, so it stays honest if the tab is throttled.
-function Clock({ t, onExpire }: { t: Copy; onExpire: () => void }) {
-  const [left, setLeft] = useState(DECISION_SECS);
+function Clock({ t, secs, onExpire }: { t: Copy; secs: number; onExpire: () => void }) {
+  const [left, setLeft] = useState(secs);
   const expireRef = useRef(onExpire);
   expireRef.current = onExpire;
   useEffect(() => {
-    const end = Date.now() + DECISION_SECS * 1000;
+    const end = Date.now() + secs * 1000;
     const iv = setInterval(() => {
       const l = Math.max(0, (end - Date.now()) / 1000);
       setLeft(l);
       if (l === 0) { clearInterval(iv); expireRef.current(); }
     }, 100);
     return () => clearInterval(iv);
-  }, []);
+  }, [secs]);
   const urgent = left <= 2;
   return (
     <div role="timer" aria-label={t.clock} className="flex items-center gap-2.5">
       <div className="w-36 sm:w-44 h-1.5 rounded-full bg-white/10 overflow-hidden">
         <div
           className={`h-full rounded-full transition-[width] duration-100 ease-linear ${urgent ? "bg-red-400" : "bg-tec-300"}`}
-          style={{ width: `${(left / DECISION_SECS) * 100}%` }}
+          style={{ width: `${(left / secs) * 100}%` }}
         />
       </div>
       <span className={`w-10 font-mono text-sm font-semibold tabular-nums ${urgent ? "text-red-300 animate-pulse" : "text-white/80"}`}>
@@ -659,13 +939,48 @@ function SeatCard({ g, t, p, i, who }: { g: Game; t: Copy; p: string; i: number;
 // Side panels
 // ─────────────────────────────────────────────────────────────────
 
-function Scoreboard({ g, t, who }: { g: Game; t: Copy; who: (p: string) => string }) {
+function Scoreboard({ g, t, c }: { g: Game; t: Copy; c: Ctl }) {
+  const { who, stats } = c;
   const order = [...PLAYERS].sort((a, b) => g.totals[b] - g.totals[a]);
+  const cell = "rounded-md bg-white/[0.05] px-2 py-1.5 min-w-0";
   return (
     <section className={`${GLASS} p-4 flex flex-col gap-1 shrink-0`} aria-label={t.score.title}>
       <div className="flex justify-between items-baseline mb-1.5">
         <h2 className="font-serif text-lg text-white">{t.score.title}</h2>
         <span className={`${KICKER} text-white/40`}>{t.score.note}</span>
+      </div>
+      <div className="relative grid grid-cols-3 gap-1.5 mb-2">
+        {g.daily ? (
+          <div className={`${cell} col-span-3 flex items-baseline justify-between`}>
+            <span className="font-sans text-[11px] text-white/50">{t.stats.dailyToday}</span>
+            <b className={`font-mono text-sm tabular-nums ${c.dailyOfficial == null ? "text-white/40 font-normal" : tone(c.dailyOfficial)}`}>
+              {c.dailyOfficial == null ? t.stats.notYet : sgn(c.dailyOfficial)}
+            </b>
+          </div>
+        ) : (
+          [
+            [t.stats.best, stats ? sgn(stats.bestTotal) : "—"],
+            [t.stats.bestRound, stats ? sgn(stats.bestRound) : "—"],
+            [`${t.stats.streak}${stats?.bestStreak ? ` (${stats.bestStreak})` : ""}`, String(stats?.streak ?? 0)],
+          ].map(([label, v]) => (
+            <div key={label} className={cell}>
+              <p className="font-mono text-sm font-semibold text-white tabular-nums">{v}</p>
+              <p className="font-sans text-[10px] leading-tight text-white/45 truncate">{label}</p>
+            </div>
+          ))
+        )}
+        <AnimatePresence>
+          {c.newBest && (
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8, y: 4 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="absolute -top-3 right-0 rounded-full bg-amber-400 px-2 py-0.5 font-mono text-[10px] font-bold text-slate-900 shadow-lg"
+            >
+              {t.stats.newBest}
+            </motion.span>
+          )}
+        </AnimatePresence>
       </div>
       {order.map((p, k) => (
         <motion.div
@@ -694,8 +1009,8 @@ function TapePanel({ g, t, who }: { g: Game; t: Copy; who: (p: string) => string
   return (
     <section className={`${GLASS} p-4 flex flex-col gap-3 min-h-[200px] max-h-80 lg:max-h-none lg:flex-1 lg:min-h-0`}>
       <div className="flex items-baseline gap-4">
-        <button onClick={() => setTab("tape")} aria-pressed={view === "tape"} className={tabBtn(view === "tape")}>{t.tape.title}</button>
-        {g.settled && <button onClick={() => setTab("debrief")} aria-pressed={view === "debrief"} className={tabBtn(view === "debrief")}>{t.tape.debrief}</button>}
+        <button onMouseUp={dropFocus} onClick={() => setTab("tape")} aria-pressed={view === "tape"} className={tabBtn(view === "tape")}>{t.tape.title}</button>
+        {g.settled && <button onMouseUp={dropFocus} onClick={() => setTab("debrief")} aria-pressed={view === "debrief"} className={tabBtn(view === "debrief")}>{t.tape.debrief}</button>}
       </div>
       <div className="overflow-auto flex-1 min-h-0 -mx-1 px-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [scrollbar-color:rgba(255,255,255,0.2)_transparent]">
         {view === "tape" ? (
@@ -726,34 +1041,99 @@ function TapePanel({ g, t, who }: { g: Game; t: Copy; who: (p: string) => string
 
 function Debrief({ g, t }: { g: Game; t: Copy }) {
   const d = t.debrief;
-  const lines =
-    g.mode === "maker"
-      ? [
-          ...g.quotes.map(q => {
-            const bad = q.ask < q.fv - 0.5 || q.bid > q.fv + 0.5;
-            const note = q.ask < q.fv - 0.5 ? d.askLow : q.bid > q.fv + 0.5 ? d.bidHigh : !q.filled ? d.noFill : d.fair;
-            return { stage: q.stage, bad, text: `${d.makerLine(q.bid, q.ask, fmt(q.fv), q.filled || 0)} ${note}` };
-          }),
-          ...g.missed.map(stage => ({ stage, bad: true, text: d.timeUp })),
-        ].sort((a, b) => a.stage - b.stage)
-      : g.userActions.map(u => {
-          const q = u.q;
-          let note: string, bad: boolean;
-          if (u.side === "buy") { const e = q.fv - q.ask; bad = e < 0; note = e >= 0 ? d.goodBuy(fmt(e)) : d.badBuy(fmt(-e)); }
-          else if (u.side === "sell") { const e = q.bid - q.fv; bad = e < 0; note = e >= 0 ? d.goodSell(fmt(e)) : d.badSell(fmt(-e)); }
-          else { const best = Math.max(q.fv - q.ask, q.bid - q.fv); bad = best > 1; note = best > 1 ? d.missed(fmt(best)) : d.goodPass; }
-          const did = u.side ? d.youDid(u.side, u.qty) + " " : g.missed.includes(u.stage) ? d.timeUp + " " : "";
-          return { stage: q.stage, bad, text: `${d.traderLine(q.maker, q.bid, q.ask, fmt(q.fv))} ${did}${note}` };
-        });
+  type Row = {
+    stage: number; bid?: number; ask?: number; fv?: number;
+    action: string; actionCls: string; edge: number; missedEdge: number; why?: string;
+  };
+  // Points made or lost against fair value on this quote's trades.
+  const edgeAt = (s: number) =>
+    g.trades.filter(x => x.stage === s).reduce((a, x) =>
+      a + (x.buyer === YOU ? (x.fv - x.price) * x.qty : 0) + (x.seller === YOU ? (x.price - x.fv) * x.qty : 0), 0);
 
+  const rows: Row[] = [];
+  for (let s = 0; s < 5; s++) {
+    const timedOut = g.missed.includes(s);
+    const edge = edgeAt(s);
+    if (g.mode === "maker") {
+      const q = g.quotes.find(x => x.stage === s);
+      if (!q) { rows.push({ stage: s, action: d.time, actionCls: "text-amber-300", edge: 0, missedEdge: 0 }); continue; }
+      rows.push({
+        stage: s, bid: q.bid, ask: q.ask, fv: q.fv, edge, missedEdge: 0,
+        action: q.filled ? d.filled(q.filled) : "—", actionCls: "text-white/45",
+        why: q.ask < q.fv ? d.askLow : q.bid > q.fv ? d.bidHigh : undefined,
+      });
+    } else {
+      const u = g.userActions.find(x => x.stage === s);
+      if (!u) continue;
+      const q = u.q;
+      rows.push({
+        stage: s, bid: q.bid, ask: q.ask, fv: q.fv, edge,
+        missedEdge: u.side ? 0 : Math.max(q.fv - q.ask, q.bid - q.fv),
+        action: timedOut ? d.time : u.side === "buy" ? d.buy(u.qty) : u.side === "sell" ? d.sell(u.qty) : d.pass,
+        actionCls: timedOut ? "text-amber-300" : u.side === "buy" ? "text-emerald-300" : u.side === "sell" ? "text-red-300" : "text-white/45",
+        why: u.side === "buy" ? d.badBuy : u.side === "sell" ? d.badSell : undefined,
+      });
+    }
+  }
+
+  // One takeaway: the costliest quote, else the biggest edge left on the table.
+  const worst = rows.reduce<Row | null>((w, r) => (!w || r.edge < w.edge ? r : w), null);
+  const missed = rows.reduce<Row | null>((w, r) => (!w || r.missedEdge > w.missedEdge ? r : w), null);
+  const total = rows.reduce((a, r) => a + r.edge, 0);
+  const takeaway =
+    worst && worst.edge < -0.5 ? `${d.worst(worst.stage + 1, fmt(-worst.edge))} ${worst.why ?? ""}`
+    : missed && missed.missedEdge > 1 ? d.missed(missed.stage + 1, fmt(missed.missedEdge))
+    : total > 0 ? d.clean : d.quiet;
+
+  const th = "font-mono text-[10px] font-semibold tracking-[0.08em] uppercase text-white/35";
   return (
-    <ol className="flex flex-col gap-2.5 font-sans text-[13px] leading-snug text-white/75">
-      {lines.map(l => (
-        <li key={l.stage} className={`pl-3 border-l-2 ${l.bad ? "border-red-400/70" : "border-emerald-400/70"}`}>
-          <b className="block font-mono text-[10.5px] tracking-[0.08em] uppercase text-white/45">{d.quote(l.stage + 1)}</b>
-          {l.text}
-        </li>
-      ))}
-    </ol>
+    <div className="flex flex-col gap-3">
+      <p className="font-sans text-[12.5px] leading-snug text-white/80">{takeaway}</p>
+      <div className="grid grid-cols-[16px_minmax(0,1fr)_44px] gap-x-2.5 pb-1.5 border-b border-white/10">
+        <span className={th}>{d.cols[0]}</span>
+        <span className={th}>{d.cols[1]}</span>
+        <span className={`${th} text-right`}>{d.cols[2]}</span>
+      </div>
+
+      <ol className="flex flex-col gap-3">
+        {rows.map(r => {
+          const has = r.bid != null && r.ask != null && r.fv != null;
+          const lo = has ? Math.min(r.bid!, r.fv!) - 1.5 : 0;
+          const hi = has ? Math.max(r.ask!, r.fv!) + 1.5 : 1;
+          const pct = (v: number) => `${(((v - lo) / (hi - lo)) * 100).toFixed(1)}%`;
+          const tick = r.edge < -0.05 ? "bg-red-400" : r.edge > 0.05 ? "bg-emerald-400" : "bg-tec-200";
+          return (
+            <li key={r.stage} className="grid grid-cols-[16px_minmax(0,1fr)_44px] gap-x-2.5 items-center">
+              <span className="font-mono text-[11px] text-white/35 tabular-nums">{r.stage + 1}</span>
+              <div className="min-w-0 flex flex-col gap-1.5">
+                <div className="flex items-baseline gap-2 font-mono text-[11.5px] tabular-nums">
+                  {has ? (
+                    <>
+                      <span className="text-white/90">{r.bid}–{r.ask}</span>
+                      <span className="text-white/40">{d.fv} {fmt(r.fv!)}</span>
+                    </>
+                  ) : <span className="text-white/30">—</span>}
+                  <span className={`ml-auto text-[10px] font-semibold uppercase tracking-[0.06em] ${r.actionCls}`}>{r.action}</span>
+                </div>
+                <div className="relative h-3" aria-hidden="true">
+                  <div className="absolute inset-x-0 top-1/2 h-px bg-white/10" />
+                  {has && (
+                    <>
+                      <div className="absolute top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-white/25" style={{ left: pct(r.bid!), right: `calc(100% - ${pct(r.ask!)})` }} />
+                      <div className={`absolute top-0 h-3 w-0.5 -translate-x-1/2 rounded-full ${tick}`} style={{ left: pct(r.fv!) }} />
+                    </>
+                  )}
+                </div>
+              </div>
+              <span className={`font-mono text-[13px] font-semibold text-right tabular-nums ${r.edge ? tone(r.edge) : "text-white/30"}`}>
+                {r.edge ? sgn(Math.round(r.edge * 10) / 10) : "—"}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+
+      <p className="font-mono text-[10px] text-white/30">{d.legend}</p>
+    </div>
   );
 }
